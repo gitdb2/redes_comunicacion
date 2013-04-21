@@ -5,3 +5,4 @@ F:\ORT\REDES\Obligatorio\Lib-Comunicacion\Comunicacion\Pruebas\obj\x86\Debug\Pru
 F:\ORT\REDES\Obligatorio\Lib-Comunicacion\Comunicacion\Pruebas\obj\x86\Debug\Pruebas.pdb
 F:\ORT\REDES\Obligatorio\Lib-Comunicacion\Comunicacion\Pruebas\bin\Debug\Comunicacion.dll
 F:\ORT\REDES\Obligatorio\Lib-Comunicacion\Comunicacion\Pruebas\bin\Debug\Comunicacion.pdb
+F:\ORT\REDES\Obligatorio\Lib-Comunicacion\Comunicacion\Pruebas\bin\Debug\settings.properties

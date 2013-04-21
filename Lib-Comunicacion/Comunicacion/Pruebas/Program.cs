@@ -40,7 +40,9 @@ namespace Pruebas
             {
                 Console.WriteLine(ConversionUtil.GetString(item));
             }
+            Console.WriteLine("Done Multiple Payload");
 
+            Console.WriteLine("|"+Settings.GetInstance().GetProperty("REQ01") +"|");
 
             Console.WriteLine("Done");
             Console.ReadLine();

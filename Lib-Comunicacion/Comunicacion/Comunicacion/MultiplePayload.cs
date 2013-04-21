@@ -15,9 +15,6 @@ namespace Comunicacion
          public override List<byte[]> GetBytes()
         {
             var ret =new List<byte[]>();
-//"pos[0]: cantidad total de tramas (2 chars)
-//pos[1]: nro trama actual
-//pos[2 a n]: usuario#[1|0] usuario y si esta up o down"
             if (Message.Length < MAX_CHUNK)
             {
 
