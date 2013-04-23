@@ -1,0 +1,5 @@
+F:\ORT\REDES\Obligatorio\DNS\ServidorDns\ServidorDns\obj\x86\Debug\ResolveAssemblyReference.cache
+F:\ORT\REDES\Obligatorio\DNS\ServidorDns\ServidorDns\bin\Debug\ServidorDns.exe
+F:\ORT\REDES\Obligatorio\DNS\ServidorDns\ServidorDns\bin\Debug\ServidorDns.pdb
+F:\ORT\REDES\Obligatorio\DNS\ServidorDns\ServidorDns\obj\x86\Debug\ServidorDns.exe
+F:\ORT\REDES\Obligatorio\DNS\ServidorDns\ServidorDns\obj\x86\Debug\ServidorDns.pdb

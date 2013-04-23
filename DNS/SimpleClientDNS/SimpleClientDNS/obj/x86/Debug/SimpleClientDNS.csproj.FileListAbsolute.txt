@@ -1,0 +1,5 @@
+F:\ORT\REDES\Obligatorio\DNS\SimpleClientDNS\SimpleClientDNS\bin\Debug\SimpleClientDNS.exe
+F:\ORT\REDES\Obligatorio\DNS\SimpleClientDNS\SimpleClientDNS\bin\Debug\SimpleClientDNS.pdb
+F:\ORT\REDES\Obligatorio\DNS\SimpleClientDNS\SimpleClientDNS\obj\x86\Debug\ResolveAssemblyReference.cache
+F:\ORT\REDES\Obligatorio\DNS\SimpleClientDNS\SimpleClientDNS\obj\x86\Debug\SimpleClientDNS.exe
+F:\ORT\REDES\Obligatorio\DNS\SimpleClientDNS\SimpleClientDNS\obj\x86\Debug\SimpleClientDNS.pdb
