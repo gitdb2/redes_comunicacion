@@ -45,9 +45,9 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         
         TcpClient client;
         NetworkStream netStream;
-    
-        BinaryReader br;
-        BinaryWriter bw;
+
+        StreamReader br;
+        StreamWriter bw;
 
         void SetupConn()  // Setup connection and login
         {
@@ -55,8 +55,8 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             netStream = client.GetStream();
 
 
-            br = new BinaryReader(netStream, Encoding.UTF8);
-            bw = new BinaryWriter(netStream, Encoding.UTF8);
+            br = new StreamReader(netStream, Encoding.UTF8);
+            bw = new StreamWriter(netStream, Encoding.UTF8);
 
 
             bw.Write("REQ");
@@ -66,10 +66,19 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             bw.Flush();
             Console.WriteLine("mande");
 
-            string tmp1 = br.ReadString();//RES
-            string tmp2 = br.ReadString();//03
-            string tmp3 = br.ReadString();//00004
-            string tmp4 = br.ReadString();//CHAU
+            char[] buffer = new char[30];
+            int cantLecturas = br.Read(buffer, 0, 3);
+
+            string tmp1 = new string(buffer);
+            tmp1 = tmp1.Substring(0, 3);
+
+            string tmp2 = "";
+            string tmp3 = "";
+            string tmp4 = "";
+            //string tmp1 = br.ReadString();//RES
+            //string tmp2 = br.ReadString();//03
+            //string tmp3 = br.ReadString();//00004
+            //string tmp4 = br.ReadString();//CHAU
             Console.WriteLine(tmp1 + " " + tmp2 + " " + tmp3 + " " + tmp4);
             Console.WriteLine("termino");
 

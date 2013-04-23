@@ -13,8 +13,8 @@ namespace uy.edu.ort.obligatorio.ServidorDns
 
         public TcpClient client;
         public NetworkStream netStream;
-        public BinaryReader br;
-        public BinaryWriter bw;
+        public StreamReader br;
+        public StreamWriter bw;
         UserInfo userInfo;
 
         public DnsServer(TcpClient c)
@@ -37,18 +37,27 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             
 
 
-                br = new BinaryReader(netStream, Encoding.UTF8);
-                bw = new BinaryWriter(netStream, Encoding.UTF8);
+                br = new StreamReader(netStream, Encoding.UTF8);
+                bw = new StreamWriter(netStream, Encoding.UTF8);
 
                 // Say "hello".
                 //bw.Write(IM_Hello);
                 //bw.Flush();
+                char[] buffer = new char[30];
+                int cantLecturas = br.Read(buffer, 0, 3);
+
+                string tmp1 = new string(buffer);
+                tmp1 = tmp1.Substring(0, 3);
+
+                string tmp2 = "";
+                string tmp3 = "";
+                string tmp4 = "";
 
 
-                string tmp1 = br.ReadString();//REQ
-                string tmp2 = br.ReadString();//02
-                string tmp3 = br.ReadString();//00005
-                string tmp4 = br.ReadString();//HOLA!
+            //    string tmp1 = br.ReadString();//REQ
+                //string tmp2 = br.ReadString();//02
+                //string tmp3 = br.ReadString();//00005
+                //string tmp4 = br.ReadString();//HOLA!
 
                 Console.WriteLine(tmp1 + " " + tmp2 + " " + tmp3 + " " + tmp4);
                 Console.WriteLine("respondo");
