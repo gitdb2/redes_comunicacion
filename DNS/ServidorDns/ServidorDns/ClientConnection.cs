@@ -69,8 +69,10 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 }
                 catch (Exception e)
                 {
+                    Console.WriteLine(e.StackTrace);
                     Console.WriteLine(e.Message);
-                    throw;
+                    notEnd = false;
+                    CloseConn();
                 }
             }
          
@@ -90,7 +92,10 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 client.Close();
                 Console.WriteLine("[{0}] End of connection!", DateTime.Now);
             }
-            catch { }
+            catch (Exception e) {
+                Console.WriteLine(e.StackTrace);
+                Console.WriteLine(e.Message);
+            }
         }
       
     

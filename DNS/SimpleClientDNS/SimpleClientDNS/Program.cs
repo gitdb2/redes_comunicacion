@@ -83,11 +83,17 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         }
         void CloseConn() // Close connection.
         {
-            br.Close();
-            bw.Close();
-   
+
+            br.Dispose();
+            bw.Dispose();
             netStream.Close();
             client.Close();
+   
+
+            //br.Close();
+            //bw.Close();
+            //netStream.Close();
+            //client.Close();
           
         }
         public Data LoadObject(StreamReader br)
