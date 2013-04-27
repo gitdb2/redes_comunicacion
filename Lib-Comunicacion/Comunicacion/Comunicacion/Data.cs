@@ -13,7 +13,7 @@ namespace Comunicacion
        
 
         public Command Command { get;  set; }
-        public OpCode OpCode {  get;  set; }
+        public int OpCode {  get;  set; }
         public Payload Payload {  get;  set; }
 
         public List<byte[]> GetBytes()
@@ -21,7 +21,7 @@ namespace Comunicacion
             List<byte[]> ret = new List<byte[]>();
             //String comm = Enum.GetName(Command.GetType(), Command);
             String patron = "{0:D" + MAX_OPCODE_LENGTH + "}";
-            String commonHeader = Command + String.Format(patron, (int)OpCode);
+            String commonHeader = Command + String.Format(patron, OpCode);
             
             List<byte[]> payloads = Payload.GetBytes();
             foreach (var item in payloads)
