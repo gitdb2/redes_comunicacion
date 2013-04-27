@@ -15,3 +15,7 @@ Ankh.NoLoad
 *.dll
 /bin
 /obj
+Lib-Comunicacion/Comunicacion/Comunicacion.suo
+Lib-Comunicacion/Comunicacion/Comunicacion/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+Lib-Comunicacion/Comunicacion/Pruebas/obj/x86/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+Lib-Comunicacion/Comunicacion/Pruebas/obj/x86/Debug/Pruebas.csproj.FileListAbsolute.txt
