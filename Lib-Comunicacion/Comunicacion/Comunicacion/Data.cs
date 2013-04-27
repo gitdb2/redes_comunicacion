@@ -13,7 +13,7 @@ namespace Comunicacion
        
 
         public Command Command { get;  set; }
-        public OpCode OpCode {  get;  set; }
+        public int OpCode {  get;  set; }
         public Payload Payload {  get;  set; }
 
         public List<byte[]> GetBytes()

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace uy.edu.ort.obligatorio.ServidorDns
 {
-    class SingletonClientConnection
+    public class SingletonClientConnection
     {
         Dictionary<string, ClientConnection> clientsMap = new Dictionary<string, ClientConnection>();
 

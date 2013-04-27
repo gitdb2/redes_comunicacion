@@ -5,6 +5,7 @@ using System.Text;
 using System.Net.Sockets;
 using System.IO;
 using System.Threading;
+using Comunicacion;
 
 namespace uy.edu.ort.obligatorio.ServidorDns
 {
@@ -34,33 +35,13 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             {
                 Console.WriteLine("[{0}] New connection!", DateTime.Now);
                 netStream = client.GetStream();
-            
-
-
                 br = new StreamReader(netStream, Encoding.UTF8);
                 bw = new StreamWriter(netStream, Encoding.UTF8);
 
-                // Say "hello".
-                //bw.Write(IM_Hello);
-                //bw.Flush();
+       
+                ReceiveData();
 
-
-                string tmp1 = br.ReadString();//REQ
-                string tmp2 = br.ReadString();//02
-                string tmp3 = br.ReadString();//00005
-                string tmp4 = br.ReadString();//HOLA!
-
-                Console.WriteLine(tmp1 + " " + tmp2 + " " + tmp3 + " " + tmp4);
-                Console.WriteLine("respondo");
-
-
-                bw.Write("RES");
-                bw.Write("03");
-                bw.Write("00004");
-                bw.Write("CHAU");
-                bw.Flush();
-
-                Console.WriteLine("termino");
+               
                 //int hello = br.ReadInt32();
                 //if (hello == IM_Hello)
                 //{
@@ -118,6 +99,29 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 //CloseConn();
             }
             finally { CloseConn(); }
+        }
+        bool notEnd = true;
+
+        private void ReceiveData()
+        {
+
+            while (notEnd)
+            {
+                try
+                {
+                    Data dato = DataProccessor.GetInstance().LoadObject(br);
+                    CommandHandler.GetInstance().Handle(this, dato);
+                }
+                catch (Exception)
+                {
+                    
+                    throw;
+                }
+            }
+         
+
+
+            Console.WriteLine("termino");
         }
 
         void CloseConn() // Close connection.
