@@ -13,9 +13,9 @@ namespace Comunicacion
         public String Message { get; set; }
 
 
-        public virtual List<byte[]> GetBytes()
+        public virtual List<char[]> GetBytes()
         {
-            var ret =new List<byte[]>();
+            var ret = new List<char[]>();
             ret.Add(ConversionUtil.GetBytes(Message));
             return ret;
         }
@@ -24,7 +24,7 @@ namespace Comunicacion
         /// el payload por defecto asume que el mensaje no se parte, o sea que el payload tiene menos o 10000 caracteres
         /// </summary>
         /// <param name="bytes"></param>
-        public  Payload(byte[] bytes)
+        public Payload(char[] bytes)
         {
             Message = ConversionUtil.GetString(bytes);
         }

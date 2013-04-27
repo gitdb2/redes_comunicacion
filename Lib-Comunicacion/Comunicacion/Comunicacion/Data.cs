@@ -16,14 +16,14 @@ namespace Comunicacion
         public int OpCode {  get;  set; }
         public Payload Payload {  get;  set; }
 
-        public List<byte[]> GetBytes()
+        public List<char[]> GetBytes()
         {
-            List<byte[]> ret = new List<byte[]>();
+            List<char[]> ret = new List<char[]>();
             //String comm = Enum.GetName(Command.GetType(), Command);
             String patron = "{0:D" + MAX_OPCODE_LENGTH + "}";
             String commonHeader = Command + String.Format(patron, OpCode);
-            
-            List<byte[]> payloads = Payload.GetBytes();
+
+            List<char[]> payloads = Payload.GetBytes();
             foreach (var item in payloads)
             {
                 int length = item.Length;
@@ -31,8 +31,8 @@ namespace Comunicacion
               //  Console.WriteLine( ConversionUtil.GetString(item));
 
                 String frame = commonHeader + String.Format("{0:D" + MAX_LENGTH_LENGTH + "}", length);
-                byte[] tmp      = new byte[frame.Length + length];
-                byte[] framArr = ConversionUtil.GetBytes(frame);
+                char[] tmp = new char[frame.Length + length];
+                char[] framArr = ConversionUtil.GetBytes(frame);
                 for (int i = 0; i < framArr.Length; i++)
                 {
                     tmp[i] = framArr[i];
