@@ -8,16 +8,16 @@ using System.Threading;
 
 namespace uy.edu.ort.obligatorio.ServidorDns
 {
-    public class DnsServer
+    public class ClientConnection
     {
 
         public TcpClient client;
         public NetworkStream netStream;
-        public BinaryReader br;
-        public BinaryWriter bw;
-        UserInfo userInfo;
+        public StreamReader br;
+        public StreamWriter bw;
+      //  UserInfo userInfo;
 
-        public DnsServer(TcpClient c)
+        public ClientConnection(TcpClient c)
         {
           
             client = c;
@@ -37,8 +37,8 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             
 
 
-                br = new BinaryReader(netStream, Encoding.UTF8);
-                bw = new BinaryWriter(netStream, Encoding.UTF8);
+                br = new StreamReader(netStream, Encoding.UTF8);
+                bw = new StreamWriter(netStream, Encoding.UTF8);
 
                 // Say "hello".
                 //bw.Write(IM_Hello);
@@ -124,7 +124,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         {
             try
             {
-                userInfo.LoggedIn = false;
+             //   userInfo.LoggedIn = false;
                 br.Close();
                 bw.Close();
                 netStream.Close();

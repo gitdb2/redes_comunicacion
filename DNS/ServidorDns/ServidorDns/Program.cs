@@ -42,7 +42,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             while (running)
             {
                 TcpClient tcpClient = server.AcceptTcpClient();  // Accept incoming connection.
-                DnsServer client = new DnsServer(tcpClient);     // Handle in another thread.
+                ClientConnection client = new ClientConnection(tcpClient);     // Handle in another thread.
             }
         }
 

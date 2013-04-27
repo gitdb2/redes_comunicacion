@@ -13,7 +13,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         [NonSerialized]
         public bool LoggedIn;      // Is logged in and connected?
         [NonSerialized]
-        public DnsServer Connection;  // Connection info
+        public ClientConnection Connection;  // Connection info
 
         public UserInfo(string user, string pass)
         {
@@ -21,7 +21,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             this.Password = pass;
             this.LoggedIn = false;
         }
-        public UserInfo(string user, string pass, DnsServer conn)
+        public UserInfo(string user, string pass, ClientConnection conn)
         {
             this.UserName = user;
             this.Password = pass;
