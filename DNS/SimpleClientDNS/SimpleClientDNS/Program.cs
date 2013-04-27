@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Net.Sockets;
 using System.IO;
+using Comunicacion;
 
 namespace uy.edu.ort.obligatorio.ServidorDns
 {
@@ -46,8 +47,8 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         TcpClient client;
         NetworkStream netStream;
     
-        BinaryReader br;
-        BinaryWriter bw;
+        StreamReader br;
+        StreamWriter bw;
 
         void SetupConn()  // Setup connection and login
         {
@@ -55,54 +56,29 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             netStream = client.GetStream();
 
 
-            br = new BinaryReader(netStream, Encoding.UTF8);
-            bw = new BinaryWriter(netStream, Encoding.UTF8);
+            br = new StreamReader(netStream, Encoding.UTF8);
+            bw = new StreamWriter(netStream, Encoding.UTF8);
 
 
-            bw.Write("REQ");
-            bw.Write("02");
-            bw.Write("00005");
-            bw.Write("HOLA!");
-            bw.Flush();
+
+            Data data = new Data() { Command = Command.REQ, OpCode = 1, Payload = new Payload("rodrigo") };
+            int cont = 0;
+            foreach (var item in data.GetBytes())
+            {
+                Console.WriteLine("line " + cont++ + "   --->" + ConversionUtil.GetString(item));
+                bw.Write(item);
+                bw.Flush();
+            }
+
             Console.WriteLine("mande");
 
-            string tmp1 = br.ReadString();//RES
-            string tmp2 = br.ReadString();//03
-            string tmp3 = br.ReadString();//00004
-            string tmp4 = br.ReadString();//CHAU
-            Console.WriteLine(tmp1 + " " + tmp2 + " " + tmp3 + " " + tmp4);
+            Data data2 = LoadObject(br);
+
+          Console.WriteLine("line " + cont++ + "   --->" + ConversionUtil.GetString(data2.GetBytes()[0]));
+           
             Console.WriteLine("termino");
 
-            // Receive "hello"
-            //int hello = br.ReadInt32();
-            //if (hello == IM_Hello)
-            //{
-            //    // Hello OK, so answer.
-            //    bw.Write(IM_Hello);
-
-            //    bw.Write(reg ? IM_Register : IM_Login);  // Login or register
-            //    bw.Write(UserName);
-            //    bw.Write(Password);
-            //    bw.Flush();
-
-            //    byte ans = br.ReadByte();  // Read answer.
-            //    if (ans == IM_OK)  // Login/register OK
-            //    {
-            //        if (reg)
-            //            OnRegisterOK();  // Register is OK.
-            //        OnLoginOK();  // Login is OK (when registered, automatically logged in)
-            //        Receiver(); // Time for listening for incoming messages.
-            //    }
-            //    else
-            //    {
-            //        IMErrorEventArgs err = new IMErrorEventArgs((IMError)ans);
-            //        if (reg)
-            //            OnRegisterFailed(err);
-            //        else
-            //            OnLoginFailed(err);
-            //    }
-            //}
-            //if (_conn)
+       
                 CloseConn();
         }
         void CloseConn() // Close connection.
@@ -114,50 +90,36 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             client.Close();
           
         }
-        //void Receiver()  // Receive all incoming packets.
-        //{
-        //    _logged = true;
+        public Data LoadObject(StreamReader br)
+        {
 
-        //    try
-        //    {
-        //        while (client.Connected)  // While we are connected.
-        //        {
-        //            byte type = br.ReadByte();  // Get incoming packet type.
+            char[] buffer = new char[10];
+            int readQty = br.Read(buffer, 0, 10);//REQ99000050101A
 
-        //            if (type == IM_IsAvailable)
-        //            {
-        //                string user = br.ReadString();
-        //                bool isAvail = br.ReadBoolean();
-        //                OnUserAvail(new IMAvailEventArgs(user, isAvail));
-        //            }
-        //            else if (type == IM_Received)
-        //            {
-        //                string from = br.ReadString();
-        //                string msg = br.ReadString();
-        //                OnMessageReceived(new IMReceivedEventArgs(from, msg));
-        //            }
-        //        }
-        //    }
-        //    catch (IOException) { }
 
-        //    _logged = false;
-        //}
+            if (readQty < 10) throw new Exception("Errror en trama largo fijo");
 
-        //// Packet types
-        //public const int IM_Hello = 2012;      // Hello
-        //public const byte IM_OK = 0;           // OK
-        //public const byte IM_Login = 1;        // Login
-        //public const byte IM_Register = 2;     // Register
-        //public const byte IM_TooUsername = 3;  // Too long username
-        //public const byte IM_TooPassword = 4;  // Too long password
-        //public const byte IM_Exists = 5;       // Already exists
-        //public const byte IM_NoExists = 6;     // Doesn't exist
-        //public const byte IM_WrongPass = 7;    // Wrong password
-        //public const byte IM_IsAvailable = 8;  // Is user available?
-        //public const byte IM_Send = 9;         // Send message
-        //public const byte IM_Received = 10;    // Message received
-        
-      
-    
+            Command type = (Command)Enum.Parse(typeof(Command), ArrayToString(buffer, 0, 3));
+            int opCode = int.Parse(ArrayToString(buffer, 3, 2));
+            int payloadLength = int.Parse(ArrayToString(buffer, 5, 5));
+            //int partsTotal          = int.Parse(ArrayToString(buffer, 10, 2));
+            //int partsCurrent        = int.Parse(ArrayToString(buffer, 12, 2));
+
+            Console.WriteLine(type + " " + opCode + " " + payloadLength);//+ " " + partsTotal + " " + partsCurrent);
+
+
+            buffer = new char[payloadLength];
+            readQty = br.Read(buffer, 0, 14);
+            if (readQty < payloadLength - 4) throw new Exception("Errror en trama largo fijo leyendo payload");
+
+
+            Data ret = new Data() { Command = type, OpCode = opCode, Payload = new Payload(ArrayToString(buffer, 0, readQty)) };
+
+            return ret;
+        }
+        private static string ArrayToString(char[] buffer, int startIndex, int length)
+        {
+            return new string(buffer).Substring(startIndex, length);
+        }
     }
 }
