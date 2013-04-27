@@ -3,3 +3,8 @@ F:\ORT\REDES\Obligatorio\Lib-Comunicacion\Comunicacion\Comunicacion\bin\Debug\Co
 F:\ORT\REDES\Obligatorio\Lib-Comunicacion\Comunicacion\Comunicacion\bin\Debug\Comunicacion.pdb
 F:\ORT\REDES\Obligatorio\Lib-Comunicacion\Comunicacion\Comunicacion\obj\Debug\Comunicacion.dll
 F:\ORT\REDES\Obligatorio\Lib-Comunicacion\Comunicacion\Comunicacion\obj\Debug\Comunicacion.pdb
+C:\Users\mauricio\redes_comunicacion\Lib-Comunicacion\Comunicacion\Comunicacion\bin\Debug\Comunicacion.dll
+C:\Users\mauricio\redes_comunicacion\Lib-Comunicacion\Comunicacion\Comunicacion\bin\Debug\Comunicacion.pdb
+C:\Users\mauricio\redes_comunicacion\Lib-Comunicacion\Comunicacion\Comunicacion\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\mauricio\redes_comunicacion\Lib-Comunicacion\Comunicacion\Comunicacion\obj\Debug\Comunicacion.dll
+C:\Users\mauricio\redes_comunicacion\Lib-Comunicacion\Comunicacion\Comunicacion\obj\Debug\Comunicacion.pdb

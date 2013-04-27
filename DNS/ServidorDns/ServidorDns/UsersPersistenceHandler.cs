@@ -4,17 +4,20 @@ using System.Linq;
 using System.Text;
 using Comunicacion;
 using uy.edu.ort.obligatorio.LibOperations.intefaces;
+using System.Xml.Serialization;
+using System.IO;
 
 namespace uy.edu.ort.obligatorio.ServidorDns
 {
     public class UsersPersistenceHandler
     {
         private static UsersPersistenceHandler instance = new UsersPersistenceHandler();
+        private static string usersFile = "users.txt";
+        private Properties users = new Properties("users.txt");
 
-        Dictionary<string, string> users = new Dictionary<string, string>();
-
-
-        private UsersPersistenceHandler() { }
+        private UsersPersistenceHandler() 
+        {
+        }
 
         public static UsersPersistenceHandler GetInstance()
         {
@@ -23,19 +26,30 @@ namespace uy.edu.ort.obligatorio.ServidorDns
 
         public bool RegisterLoginServer(string login, string serverName)
         {
-
             if (!users.ContainsKey(login))
             {
-                users.Add(login, serverName);
+                users.Set(login, serverName);
                 return true;
             }
             return false;
-
         }
+
         public bool IsLoginRegistered(string login)
         {
             return users.ContainsKey(login);
         }
+
+        public void SaveUsers()
+        {
+            users.Save();
+        }
+
+        public void LoadUsers()
+        {
+            users.Reload();
+            Console.WriteLine("Users:\r\n{0}", users.ToString());
+        }
+
     }
    
 }

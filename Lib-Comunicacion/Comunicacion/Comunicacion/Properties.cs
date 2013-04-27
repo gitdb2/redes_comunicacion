@@ -48,12 +48,17 @@ namespace Comunicacion
             return (list.ContainsKey(field)) ? (list[field]) : (null);
         }
 
-        public void set(String field, Object value)
+        public void Set(String field, Object value)
         {
             if (!list.ContainsKey(field))
                 list.Add(field, value.ToString());
             else
                 list[field] = value.ToString();
+        }
+
+        public bool ContainsKey(string key)
+        {
+            return list.ContainsKey(key);
         }
 
         public void Save()
@@ -77,7 +82,7 @@ namespace Comunicacion
             file.Close();
         }
 
-        public void reload()
+        public void Reload()
         {
             reload(this.filename);
         }
@@ -123,6 +128,14 @@ namespace Comunicacion
             }
         }
 
+        public override string ToString()
+        {
+            StringBuilder res = new StringBuilder();
+            foreach (String prop in list.Keys.ToArray())
+                if (!String.IsNullOrWhiteSpace(list[prop]))
+                    res.Append(prop + "=" + list[prop] + "\r\n");
+            return res.ToString();
+        }
 
     }
 }

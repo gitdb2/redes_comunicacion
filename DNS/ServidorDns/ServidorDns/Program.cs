@@ -26,7 +26,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         {
             Console.Title = "Servidor DNS y CHAT";
             Console.WriteLine("----- DNS y CHAT Server -----");
-            //LoadUsers();
+            UsersPersistenceHandler.GetInstance().LoadUsers();
             Console.WriteLine("[{0}] Starting server...", DateTime.Now);
 
             server = new TcpListener(ip, port);

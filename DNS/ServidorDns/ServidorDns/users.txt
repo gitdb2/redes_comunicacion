@@ -1,0 +1,2 @@
+﻿rafa=server1
+pepe=server1

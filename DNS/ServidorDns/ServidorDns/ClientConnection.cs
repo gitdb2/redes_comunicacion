@@ -75,8 +75,6 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                     CloseConn();
                 }
             }
-         
-
 
             Console.WriteLine("termino");
         }
@@ -91,6 +89,9 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 netStream.Close();
                 client.Close();
                 Console.WriteLine("[{0}] End of connection!", DateTime.Now);
+
+                Console.WriteLine("Guardando usuarios");
+                UsersPersistenceHandler.GetInstance().SaveUsers();
             }
             catch (Exception e) {
                 Console.WriteLine(e.StackTrace);
