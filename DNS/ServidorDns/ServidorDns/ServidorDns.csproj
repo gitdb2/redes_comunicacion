@@ -45,9 +45,12 @@
   <ItemGroup>
     <Compile Include="ClientConnection.cs" />
     <Compile Include="CommandHandler.cs" />
+    <Compile Include="UsersPersistenceHandler.cs" />
     <Compile Include="DataProccessor.cs" />
+    <Compile Include="intefaces\IConnection.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="req\ReqLogin.cs" />
     <Compile Include="SingletonClientConnection.cs" />
     <Compile Include="UserInfo.cs" />
   </ItemGroup>

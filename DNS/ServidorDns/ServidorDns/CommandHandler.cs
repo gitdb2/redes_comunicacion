@@ -115,11 +115,22 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 scc.AddClient(login, clientConnection);
 
                Data data = new Data() { Command = Command.RES, OpCode = 1, Payload = new Payload("SUCCESS") };
-                clientConnection.WriteToStream(.GetBytes());
+
+               foreach (var item in data.GetBytes())
+	            {
+                    clientConnection.WriteToStream(item);
+	            }
+               
             }
             else
             {
-                clientConnection.WriteToStream(new Data() { Command = Command.RES, OpCode = 2, Payload = new Payload("ERROR REGISTRO") }.GetBytes());
+                Data data = new Data() { Command = Command.RES, OpCode = 2, Payload = new Payload("ERROR REGISTRO") };
+
+                foreach (var item in data.GetBytes())
+                {
+                    clientConnection.WriteToStream(item);
+                }
+               
             }
         }
 
