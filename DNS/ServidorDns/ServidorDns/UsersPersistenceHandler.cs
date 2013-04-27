@@ -11,7 +11,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
     {
         private static UsersPersistenceHandler instance = new UsersPersistenceHandler();
 
-        Dictionary<string, string> users = new Dictionary<string,string>();
+        Dictionary<string, string> users = new Dictionary<string, string>();
 
 
         private UsersPersistenceHandler() { }
@@ -21,18 +21,21 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             return instance;
         }
 
-      public bool RegisterLoginServer(string login, string serverName){
-          
-          if(!users.ContainsKey(login)){
-              users.Add(login, serverName);
-              return true;
-          }
-          return false;
+        public bool RegisterLoginServer(string login, string serverName)
+        {
 
-      }
-        public bool IsLoginRegistered(string login){
+            if (!users.ContainsKey(login))
+            {
+                users.Add(login, serverName);
+                return true;
+            }
+            return false;
+
+        }
+        public bool IsLoginRegistered(string login)
+        {
             return users.ContainsKey(login);
         }
-
+    }
    
 }

@@ -7,6 +7,6 @@ namespace uy.edu.ort.obligatorio.LibOperations.intefaces
 {
     public interface IConnection
     {
-        public void WriteToStream(char[] data);
+        void WriteToStream(char[] data);
     }
 }

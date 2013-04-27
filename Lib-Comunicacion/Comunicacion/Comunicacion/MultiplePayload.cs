@@ -12,9 +12,9 @@ namespace Comunicacion
         const int SEPARATOR_LENGTH      = 1;
         const int TOTAL_LENGTH          = 2 * SIZES_LENGTH + 2 * SEPARATOR_LENGTH;
         const int MAX_CHUNK = MAX_PAYLOAD_LENGTH - TOTAL_LENGTH;
-         public override List<byte[]> GetBytes()
+         public override List<char[]> GetBytes()
         {
-            var ret =new List<byte[]>();
+            var ret =new List<char[]>();
             if (Message.Length < MAX_CHUNK)
             {
 
@@ -53,7 +53,7 @@ namespace Comunicacion
         }
 
      
-        public  MultiplePayload(byte[] bytes){
+        public  MultiplePayload(char[] bytes){
             Message = ConversionUtil.GetString(bytes);
         }
         public MultiplePayload()

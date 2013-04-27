@@ -134,9 +134,15 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             }
         }
 
+        /// <summary>
+        /// Que lo arregle boris
+        /// </summary>
+        /// <param name="login"></param>
+        /// <param name="serverName"></param>
+        /// <returns></returns>
         private bool AddUserToServer(string login, string serverName)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         private string FindAGoodServer()

@@ -28,7 +28,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             (new Thread(new ThreadStart(SetupConn))).Start();
         }
 
-        public override void WriteToStream(char[] data)
+        public void WriteToStream(char[] data)
         {
             lock (this)
             {
@@ -67,9 +67,9 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                     Data dato = DataProccessor.GetInstance().LoadObject(br);
                     CommandHandler.GetInstance().Handle(this, dato);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    
+                    Console.WriteLine(e.Message);
                     throw;
                 }
             }

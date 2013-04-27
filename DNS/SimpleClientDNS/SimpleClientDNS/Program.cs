@@ -109,8 +109,8 @@ namespace uy.edu.ort.obligatorio.ServidorDns
 
 
             buffer = new char[payloadLength];
-            readQty = br.Read(buffer, 0, 14);
-            if (readQty < payloadLength - 4) throw new Exception("Errror en trama largo fijo leyendo payload");
+            readQty = br.Read(buffer, 0, payloadLength);
+            if (readQty < payloadLength) throw new Exception("Errror en trama largo fijo leyendo payload");
 
 
             Data ret = new Data() { Command = type, OpCode = opCode, Payload = new Payload(ArrayToString(buffer, 0, readQty)) };
