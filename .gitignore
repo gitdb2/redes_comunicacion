@@ -15,3 +15,5 @@ Ankh.NoLoad
 *.dll
 /bin
 /obj
+DNS/SimpleClientDNS/SimpleClientDNS/obj/x86/Debug/*
+DNS/SimpleClientDNS/SimpleClientDNS/bin/Debug/*
