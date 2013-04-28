@@ -26,6 +26,11 @@ namespace Comunicacion
             return config.Get(key);
         }
 
+        public String GetProperty(String key, String defval)
+        {
+            return config.Get(key, defval);
+        }
+
 
     }
 
@@ -127,6 +132,8 @@ namespace Comunicacion
                 }
             }
         }
+
+        public int Count { get { return list.Count; } }
 
         public override string ToString()
         {
