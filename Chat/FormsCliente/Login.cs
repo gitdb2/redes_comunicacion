@@ -38,7 +38,7 @@ namespace Chat
                 }
                 catch (Exception exc)
                 {
-                    MessageBox.Show("Mensaje detallado mmmmm: " + exc.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Mensaje detallado " + exc.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else 
