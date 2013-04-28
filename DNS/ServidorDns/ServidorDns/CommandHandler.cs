@@ -28,7 +28,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             {
                 HandleRES(clientConnection, dato);
             }
-       }
+        }
 
         private void HandleRES(Connection clientConnection, Data dato)
         {
@@ -86,7 +86,8 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 case 2: //un login pide su lista de contactos
                     CommandREQContactList(clientConnection, dato);
                     break;
-                case 3:
+                case 3: //un servidor se conecta y registra en el dns
+                    CommandREQServerConnect(clientConnection, dato);
                     break;
                 case 4:
                     break;
@@ -101,18 +102,45 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             }
         }
 
+        private void CommandREQServerConnect(Connection clientConnection, Data dato)
+        {
+            string[] tmp = dato.Payload.Message.Split(':');
+            string serverName = tmp[0];
+            int serverPort = int.Parse(tmp[1]);
+
+            SingletonServerConnection ssc = SingletonServerConnection.GetInstance();
+            Connection oldConnection = ssc.GetServer(serverName);
+            if (oldConnection != null)
+            {
+                ssc.RemoveServer(serverName);
+                oldConnection.CloseConn();
+            }
+
+            ssc.AddServer(serverName, serverPort, clientConnection);
+
+            SendMessage(clientConnection, Command.RES, 3, new Payload("SUCCESS"));
+        }
+
+        private void SendMessage(Connection connection, Command command, int opCode, Payload payload)
+        {
+            Data data = new Data() { Command = command, OpCode = opCode, Payload = payload };
+            foreach (var item in data.GetBytes())
+            {
+                connection.WriteToStream(item);
+            }
+        }
+
         private void CommandREQContactList(Connection clientConnection, Data dato)
         {
             string login = dato.Payload.Message;
             string serverName = UsersPersistenceHandler.GetInstance().GetServerName(login);
-            if (serverName != null) 
+            if (serverName != null)
             {
                 Connection serverConnection = SingletonServerConnection.GetInstance().GetServer(serverName);
                 foreach (var item in dato.GetBytes())
                 {
                     Console.WriteLine("Enviando peticion de contactos al servidor");
-                    //FIXME faltan servidores, comentado por ahora
-                    //serverConnection.WriteToStream(item);
+                    serverConnection.WriteToStream(item);
                 }
             }
         }
@@ -146,25 +174,13 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                     oldConnection.CloseConn();
                 }
 
-               scc.AddClient(login, clientConnection);
+                scc.AddClient(login, clientConnection);
 
-               Data data = new Data() { Command = Command.RES, OpCode = 1, Payload = new Payload("SUCCESS") };
-
-               foreach (var item in data.GetBytes())
-	            {
-                    clientConnection.WriteToStream(item);
-	            }
-               
+                SendMessage(clientConnection, Command.RES, 1, new Payload("SUCCESS"));
             }
             else
             {
-                Data data = new Data() { Command = Command.RES, OpCode = 2, Payload = new Payload("ERROR REGISTRO") };
-
-                foreach (var item in data.GetBytes())
-                {
-                    clientConnection.WriteToStream(item);
-                }
-               
+                SendMessage(clientConnection, Command.RES, 2, new Payload("ERROR REGISTRO"));
             }
         }
 

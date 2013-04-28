@@ -17,7 +17,9 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             Console.ReadLine();
         }
 
-        public IPAddress ip = IPAddress.Parse("127.0.0.1");
+        //public IPAddress ip = Dns.Resolve().AddressList[0];
+        //public IPAddress ip = Dns.GetHostEntry("localhost").AddressList[0];
+        public IPAddress ip = IPAddress.Any;
         public int port = 2000;
         public bool running = true;
         public TcpListener server;
@@ -35,7 +37,6 @@ namespace uy.edu.ort.obligatorio.ServidorDns
 
             Listen();
         }
-
 
         void Listen()  // Listen to incoming connections.
         {

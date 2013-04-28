@@ -12,15 +12,15 @@ namespace uy.edu.ort.obligatorio.ServidorDns
 {
     public class Connection : IConnection
     {
-
-        public TcpClient client;
-        public NetworkStream netStream;
-        public StreamReader br;
-        public StreamWriter bw;
+        private TcpClient tcpClient;
+        private NetworkStream networkStream;
+        private StreamReader streamReader;
+        private StreamWriter streamWriter;
+        public int Port { get; set; }
 
         public Connection(TcpClient c)
         {
-            client = c;
+            tcpClient = c;
             (new Thread(new ThreadStart(SetupConn))).Start();
         }
 
@@ -28,8 +28,8 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         {
             lock (this)
             {
-                bw.Write(data);
-                bw.Flush();
+                streamWriter.Write(data);
+                streamWriter.Flush();
             }
         }
 
@@ -38,9 +38,9 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             try
             {
                 Console.WriteLine("[{0}] New connection!", DateTime.Now);
-                netStream = client.GetStream();
-                br = new StreamReader(netStream, Encoding.UTF8);
-                bw = new StreamWriter(netStream, Encoding.UTF8);
+                networkStream = tcpClient.GetStream();
+                streamReader = new StreamReader(networkStream, Encoding.UTF8);
+                streamWriter = new StreamWriter(networkStream, Encoding.UTF8);
                 ReceiveData();
             }
             finally { 
@@ -56,7 +56,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             {
                 try
                 {
-                    Data dato = DataProccessor.GetInstance().LoadObject(br);
+                    Data dato = DataProccessor.GetInstance().LoadObject(streamReader);
                     CommandHandler.GetInstance().Handle(this, dato);
                 }
                 catch (Exception e)
@@ -74,10 +74,10 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         {
             try
             {
-                br.Close();
-                bw.Close();
-                netStream.Close();
-                client.Close();
+                streamReader.Close();
+                streamWriter.Close();
+                networkStream.Close();
+                tcpClient.Close();
                 Console.WriteLine("[{0}] End of connection!", DateTime.Now);
             }
             catch (Exception e) {
@@ -85,7 +85,6 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 Console.WriteLine(e.Message);
             }
         }
-      
     
     }
 
