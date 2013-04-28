@@ -25,10 +25,16 @@ namespace uy.edu.ort.obligatorio.ServidorDns
 
         public bool RegisterLoginServer(string login, string serverName)
         {
-            if (!users.ContainsKey(login))
+            lock (users)
             {
-                users.Set(login, serverName);
-                return true;
+                if (!users.ContainsKey(login))
+                {
+                    users.Set(login, serverName);
+                    users.Save();
+                    Console.WriteLine("[{0}] usuario {1} registrado al server {2} ", login, serverName, DateTime.Now);
+                
+                    return true;
+                }
             }
             return false;
         }
@@ -45,13 +51,20 @@ namespace uy.edu.ort.obligatorio.ServidorDns
 
         public void SaveUsers()
         {
-            users.Save();
+            lock (users)
+            {
+                users.Save();
+            }
         }
 
         public void LoadUsers()
         {
-            users.Reload();
-            Console.WriteLine("Users:\r\n{0}", users.ToString());
+            lock (users)
+            {
+                users.Reload();
+
+                Console.WriteLine("Users:\r\n{0}", users.ToString());
+            }
         }
 
     }

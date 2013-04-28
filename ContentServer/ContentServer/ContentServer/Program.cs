@@ -112,9 +112,9 @@ dns.port=2000
 
             Connection client = new Connection(new TcpClient(DNSServer, DNSPort));
            
-            string payload =  Settings.GetInstance().GetProperty("server.ip","127.0.0.1")
-                                +":"+ Settings.GetInstance().GetProperty("server.port","2001")
-                                +":"+ Settings.GetInstance().GetProperty("server.name","rodrigo-nb")
+            string payload =            Settings.GetInstance().GetProperty("server.name","rodrigo-nb")
+                                + ":" + Settings.GetInstance().GetProperty("server.ip","127.0.0.1")
+                                + ":" + Settings.GetInstance().GetProperty("server.port", "2001")
                                 + ":" + UsersContactsPersistenceHandler.GetInstance().Count;
                                 
             Data data = new Data()
