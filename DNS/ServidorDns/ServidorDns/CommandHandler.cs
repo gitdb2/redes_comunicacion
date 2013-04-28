@@ -68,10 +68,17 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             //obtengo el login del payload y le envio la trama actualizada con los contactos activos
             string login = UtilContactList.ExtractLogin(entryData.Payload.Message);
             Connection loginConnection = SingletonClientConnection.GetInstance().GetClient(login);
-            Data outData = new Data() { Command = Command.RES, OpCode = 2, Payload = new Payload(UtilContactList.StringFromContactList(tmpContactList, entryData.Payload.Message)) };
-            foreach (var item in outData.GetBytes())
+            if (loginConnection != null)
             {
-                loginConnection.WriteToStream(item);
+                Data outData = new Data() { Command = Command.RES, OpCode = 2, Payload = new Payload(UtilContactList.StringFromContactList(tmpContactList, entryData.Payload.Message)) };
+                foreach (var item in outData.GetBytes())
+                {
+                    loginConnection.WriteToStream(item);
+                }
+            }
+            else
+            {
+                Console.WriteLine(" Tengo que descartar respuesta para {0} que no tiene Conexion", login);
             }
         }
 
