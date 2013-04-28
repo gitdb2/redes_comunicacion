@@ -16,6 +16,9 @@ namespace Comunicacion
         public int OpCode {  get;  set; }
         public Payload Payload {  get;  set; }
 
+
+     
+
         public List<char[]> GetBytes()
         {
             List<char[]> ret = new List<char[]>();

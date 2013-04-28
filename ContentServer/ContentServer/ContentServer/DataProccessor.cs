@@ -36,15 +36,16 @@ namespace uy.edu.ort.obligatorio.ContentServer
             //int partsTotal          = int.Parse(ArrayToString(buffer, 10, 2));
             //int partsCurrent        = int.Parse(ArrayToString(buffer, 12, 2));
 
-            Console.WriteLine(type + " " + opCode + " " + payloadLength);//+ " " + partsTotal + " " + partsCurrent);
+       
 
 
             buffer = new char[payloadLength];
             readQty = br.Read(buffer, 0, payloadLength);
             if (readQty < payloadLength) throw new Exception("Errror en trama largo fijo leyendo payload");
 
-
-            Data ret = new Data() { Command = type, OpCode = opCode, Payload = new Payload(ArrayToString(buffer, 0, readQty)) };
+            String payloadTmp = ArrayToString(buffer, 0, readQty);
+            Console.WriteLine(type + " " + opCode + " " + payloadLength + " " + payloadTmp);//+ " " + partsTotal + " " + partsCurrent);
+            Data ret = new Data() { Command = type, OpCode = opCode, Payload = new Payload(payloadTmp) };
 
             return ret;
         }

@@ -23,8 +23,9 @@ namespace ClienteContentServer
             Thread tcpThread;      // Receiver
 
 
-            public string Server { get { return "localhost"; } }  // Address of server. In this case - local IP address.
-            public int Port { get { return 2000; } }
+        //    public string Server { get { return "localhost"; } }  // Address of server. In this case - local IP address.
+            public string Server { get { return "localhost";} }// return "192.168.0.201"; } }
+            public int Port { get { return 2001; } }
 
 
             // Start connection thread and login or register.
@@ -63,8 +64,8 @@ namespace ClienteContentServer
 
 
                 Data data = new Data() { Command = Command.REQ, 
-                                         OpCode = 2, 
-                                         Payload = new Payload("rod rigo") };
+                                         OpCode = 3, 
+                                         Payload = new Payload("rodrigo") };
                 int cont = 0;
                 foreach (var item in data.GetBytes())
                 {

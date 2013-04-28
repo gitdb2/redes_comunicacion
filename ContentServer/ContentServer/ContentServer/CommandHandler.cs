@@ -41,6 +41,7 @@ namespace uy.edu.ort.obligatorio.ContentServer
                 case 2:
                     break;
                 case 3:
+                   
                     break;
                 case 4:
                     break;
@@ -51,6 +52,8 @@ namespace uy.edu.ort.obligatorio.ContentServer
                 case 99:
                     break;
                 default:
+                    Console.WriteLine("default RES    --->" + ConversionUtil.GetString(dato.GetBytes()[0]));
+
                     break;
             }
         }
@@ -75,6 +78,8 @@ namespace uy.edu.ort.obligatorio.ContentServer
                 case 99:
                     break;
                 default:
+                    Console.WriteLine("default REQ    --->" + ConversionUtil.GetString(dato.GetBytes()[0]));
+                   
                     break;
             }
         }
