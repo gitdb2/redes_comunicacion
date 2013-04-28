@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Comunicacion;
+using System.IO;
 
 namespace uy.edu.ort.obligatorio.ContentServer
 {
@@ -38,12 +39,65 @@ namespace uy.edu.ort.obligatorio.ContentServer
             return contacts.ContainsKey(login);
         }
 
-        public void SaveUsers()
+        public void SaveContacts()
         {
             contacts.Save();
         }
 
-      
+
+        public int Count { get { return contacts.Count; } }
+
+        //solo se permite ageagar un usuario nuevo a la vez, crea el area compartida y lo da de alta en la lista de contactos con 0 contactos y salva el archivo
+        public bool AddNewUser(string login)
+        {
+            lock (contacts)
+            {
+                if (!contacts.ContainsKey(login))
+                {
+
+                    bool ok = CreateDiskSharedSpace(login);
+
+                    if (ok)
+                    {
+                        contacts.Set(login, "");
+                        contacts.Save();
+                    }
+                    return ok;
+                }
+                return false;
+            }
+        }
+        /*
+         base.shared.dir.path=c:/shared
+listen.ip=ANY
+
+server.ip=192.168.0.242
+server.port=2001
+server.name=rodrigo-nb
+
+dns.ip=127.0.0.1
+dns.port=2000
+         
+         */
+        private bool CreateDiskSharedSpace(string login)
+        {
+            string dir = Settings.GetInstance().GetProperty("base.shared.dir.path", @"c:/shared")+ "/"+login;
+            if (!Directory.Exists(dir))
+            {
+                try 
+	            {
+                    Directory.CreateDirectory(dir);
+                    return true;
+	            }
+	            catch (Exception)
+	            {
+		
+		            return false;
+	            }
+              
+            }
+             return false;
+        }
 
         public List<string> GetContacts(string login)
         {
