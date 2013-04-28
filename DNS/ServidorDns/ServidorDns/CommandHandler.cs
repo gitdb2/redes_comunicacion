@@ -35,25 +35,18 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         {
             switch (dato.OpCode)
             {
-                case 0:
-                    break;
+
                 case OpCodeConstants.REQ_LOGIN:
                     break;
                 case OpCodeConstants.RES_CONTACT_LIST:
                     CommandRESContactList(connection, dato);
                     break;
-                case 3:
-                    break;
                 case OpCodeConstants.RES_CREATE_USER:
                     CommandRESUserCreated(connection, dato);
                     break;
-                case 5:
-                    break;
-                case 6:
-                    break;
-                case 99:
-                    break;
+
                 default:
+                    Console.WriteLine("[{0}] connection owner: {1} ;  The data: {2} ", DateTime.Now, clientConnection.Name, dato.ToString());
                     break;
             }
         }
@@ -77,7 +70,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             Connection loginConnection = SingletonClientConnection.GetInstance().GetClient(login);
             if (loginConnection != null)
             {
-                Data outData = new Data() { Command = Command.RES, OpCode = 2, Payload = new Payload(UtilContactList.StringFromContactList(tmpContactList, entryData.Payload.Message)) };
+                Data outData = new Data() { Command = Command.RES, OpCode = OpCodeConstants.RES_CONTACT_LIST, Payload = new Payload(UtilContactList.StringFromContactList(tmpContactList, entryData.Payload.Message)) };
                 foreach (var item in outData.GetBytes())
                 {
                     loginConnection.WriteToStream(item);
@@ -134,7 +127,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
           
             ssc.AddServer(serverName, newConnection);
 
-            SendMessage(newConnection, Command.RES, 3, new Payload("SUCCESS"));
+            SendMessage(newConnection, Command.RES, OpCodeConstants.REQ_SERVER_CONNECT, new Payload("SUCCESS"));
         }
 
         private void SendMessage(Connection connection, Command command, int opCode, Payload payload)
@@ -204,11 +197,11 @@ namespace uy.edu.ort.obligatorio.ServidorDns
 
                 scc.AddClient(login, clientConnection);
 
-                SendMessage(clientConnection, Command.RES, 1, new Payload("SUCCESS"));
+                SendMessage(clientConnection, Command.RES, OpCodeConstants.REQ_LOGIN, new Payload("SUCCESS"));
             }
             else
             {
-                SendMessage(clientConnection, Command.RES, 2, new Payload("ERROR REGISTRO"));
+                SendMessage(clientConnection, Command.RES, OpCodeConstants.REQ_LOGIN, new Payload("ERROR REGISTRO"));
                 clientConnection.CloseConn();
             }
         }
