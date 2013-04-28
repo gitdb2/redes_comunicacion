@@ -17,6 +17,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         private StreamReader streamReader;
         private StreamWriter streamWriter;
         public int Port { get; set; }
+        public string Name { get; set; }
 
         public Connection(TcpClient c)
         {
@@ -63,6 +64,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 {
                     Console.WriteLine(e.StackTrace);
                     Console.WriteLine(e.Message);
+                    SingletonClientConnection.GetInstance().RemoveClient(Name);
                     notEnd = false;
                     CloseConn();
                 }

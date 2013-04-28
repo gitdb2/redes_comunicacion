@@ -23,7 +23,8 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         {
             lock (this)
             {
-                clientsMap.Add(login, connection); 
+                connection.Name = login;
+                clientsMap.Add(login, connection);
             }
         }
 

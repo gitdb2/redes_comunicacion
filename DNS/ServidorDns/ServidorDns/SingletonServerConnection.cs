@@ -22,6 +22,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         {
             lock (this)
             {
+                connection.Name = serverName;
                 connection.Port = serverPort;
                 serversMap.Add(serverName, connection); 
             }

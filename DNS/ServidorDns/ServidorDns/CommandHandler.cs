@@ -67,10 +67,11 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             }
             //obtengo el login del payload y le envio la trama actualizada con los contactos activos
             string login = UtilContactList.ExtractLogin(entryData.Payload.Message);
+            Connection loginConnection = SingletonClientConnection.GetInstance().GetClient(login);
             Data outData = new Data() { Command = Command.RES, OpCode = 2, Payload = new Payload(UtilContactList.StringFromContactList(tmpContactList, entryData.Payload.Message)) };
             foreach (var item in outData.GetBytes())
             {
-                clientConnection.WriteToStream(item);
+                loginConnection.WriteToStream(item);
             }
         }
 
@@ -197,7 +198,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
 
         private string FindAGoodServer()
         {
-            return "server1";
+            return "192.168.0.242";
         }
     }
 }
