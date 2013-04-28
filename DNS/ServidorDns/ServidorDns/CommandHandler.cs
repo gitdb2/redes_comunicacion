@@ -46,7 +46,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                     break;
 
                 default:
-                    Console.WriteLine("[{0}] connection owner: {1} ;  The data: {2} ", DateTime.Now, clientConnection.Name, dato.ToString());
+                    Console.WriteLine("[{0}] connection owner: {1} ;  The data: {2} ", DateTime.Now, connection.Name, dato.ToString());
                     break;
             }
         }
@@ -78,7 +78,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             }
             else
             {
-                Console.WriteLine(" Tengo que descartar respuesta para {0} que no tiene Conexion", login);
+                Console.WriteLine("Tengo que descartar respuesta para {0} que no tiene Conexion", login);
             }
         }
 
