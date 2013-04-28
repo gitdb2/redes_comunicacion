@@ -31,20 +31,21 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             }
         }
 
-        private void HandleRES(Connection clientConnection, Data dato)
+        private void HandleRES(Connection connection, Data dato)
         {
             switch (dato.OpCode)
             {
                 case 0:
                     break;
-                case 1:
+                case OpCodeConstants.REQ_LOGIN:
                     break;
-                case 2:
-                    CommandRESContactList(clientConnection, dato);
+                case OpCodeConstants.RES_CONTACT_LIST:
+                    CommandRESContactList(connection, dato);
                     break;
                 case 3:
                     break;
-                case 4:
+                case OpCodeConstants.RES_CREATE_USER:
+                    CommandRESUserCreated(connection, dato);
                     break;
                 case 5:
                     break;
@@ -55,6 +56,11 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 default:
                     break;
             }
+        }
+
+        private void CommandRESUserCreated(Connection clientConnection, Data dato)
+        {
+            throw new NotImplementedException();
         }
 
         private void CommandRESContactList(Connection clientConnection, Data entryData)
@@ -87,26 +93,19 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         {
             switch (dato.OpCode)
             {
-                case 0:
-                    break;
-                case 1: //viene el comando login
+            
+                case OpCodeConstants.REQ_LOGIN: //viene el comando login
                     CommandREQLogin(clientConnection, dato);
                     break;
-                case 2: //un login pide su lista de contactos
+                case OpCodeConstants.REQ_CONTACT_LIST: //un login pide su lista de contactos
                     CommandREQContactList(clientConnection, dato);
                     break;
-                case 3: //un servidor se conecta y registra en el dns
+                case OpCodeConstants.REQ_SERVER_CONNECT: //un servidor se conecta y registra en el dns
                     CommandREQServerConnect(clientConnection, dato);
                     break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    break;
-                case 99:
-                    break;
+               
                 default:
+                    Console.WriteLine("[{0}] connection owner: {1} ;  The data: {2} ", DateTime.Now, clientConnection.Name, dato.ToString());
                     break;
             }
         }
@@ -230,7 +229,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 {
                     //si se agrego en el dns, entonces pido al server que lo agregue, pero no espero confirmacion., las operaciones de un usuario sobe el server van a chequear que exista el usuario, y si no existe, lo va a crear.
                     SendMessage(SingletonServerConnection.GetInstance().GetServer(serverName), Command.REQ, 
-                                                        OpCodeConstants.REQ_ALTA_USUARIO, new Payload(login));
+                                                        OpCodeConstants.REQ_CREATE_USER, new Payload(login));
                     Console.WriteLine("El server {0} queda con {1} usuarios registrados", serverName, count);
                 }
                 else

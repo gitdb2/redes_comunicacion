@@ -31,7 +31,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 {
                     users.Set(login, serverName);
                     users.Save();
-                    Console.WriteLine("[{0}] usuario {1} registrado al server {2} ", login, serverName, DateTime.Now);
+                    Console.WriteLine("[{0}] usuario {1} registrado al server {2} ",DateTime.Now, login, serverName );
                 
                     return true;
                 }
