@@ -32,7 +32,14 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         {
             lock (this)
             {
-                return clientsMap.Remove(login);
+                if (login != null)
+                {
+                    return clientsMap.Remove(login);
+                }
+                else 
+                {
+                    return false;
+                }
             }
         }
 

@@ -18,6 +18,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
            Console.ReadLine();
         }
 
+        string login = "fffffff";
 
         Thread tcpThread;      // Receiver
 
@@ -49,7 +50,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             br = new StreamReader(netStream, Encoding.UTF8);
             bw = new StreamWriter(netStream, Encoding.UTF8);
 
-            Data data = new Data() { Command = Command.REQ, OpCode = 1, Payload = new Payload("mauricio") };
+            Data data = new Data() { Command = Command.REQ, OpCode = 1, Payload = new Payload(login) };
             int cont = 0;
             foreach (var item in data.GetBytes())
             {
@@ -68,7 +69,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             
             Console.WriteLine("Pido lista de contactos");
 
-            data = new Data() { Command = Command.REQ, OpCode = 2, Payload = new Payload("mauricio") };
+            data = new Data() { Command = Command.REQ, OpCode = 2, Payload = new Payload(login) };
             foreach (var item in data.GetBytes())
             {
                 Console.WriteLine("line " + cont++ + "   --->" + ConversionUtil.GetString(item));

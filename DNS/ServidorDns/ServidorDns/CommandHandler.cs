@@ -157,6 +157,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         {
             string login = dato.Payload.Message;
             bool ret = false;
+
             if (!UsersPersistenceHandler.GetInstance().IsLoginRegistered(login))
             {
                 string serverName = FindAGoodServer();
@@ -189,6 +190,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             else
             {
                 SendMessage(clientConnection, Command.RES, 2, new Payload("ERROR REGISTRO"));
+                clientConnection.CloseConn();
             }
         }
 
