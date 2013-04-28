@@ -70,6 +70,7 @@
             this.txtBoxLogin.Name = "txtBoxLogin";
             this.txtBoxLogin.Size = new System.Drawing.Size(135, 20);
             this.txtBoxLogin.TabIndex = 1;
+            this.txtBoxLogin.Text = "mauricio";
             // 
             // Login
             // 

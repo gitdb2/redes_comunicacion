@@ -8,46 +8,37 @@ using System.Text;
 using System.Windows.Forms;
 using FormsCliente;
 using Comunicacion;
+using ClientImplementation;
 
 namespace Chat
 {
     public partial class Login : Form
     {
-        private const int puertoDNS = 2000;
-        private const string ipDNS = "localhost";
+        private ClientHandler clientHandler;
 
         public Login()
         {
             InitializeComponent();
+            clientHandler = ClientHandler.GetInstance();
+            clientHandler.LoginOK += new EventHandler(EventLoginOK);
+            clientHandler.LoginFailed += new ClientHandler.ChatErrorEventHandler(EventLoginFailed);
         }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
             if (FormUtils.TxtBoxTieneDatos(txtBoxLogin))
             {
-                ComunicationHandler commHandler = new ComunicationHandler() { Server = ipDNS, Port = puertoDNS };
+                this.btnOK.Enabled = false;
                 try 
                 {
                     //intento establecer la conexion con el dns
-                    commHandler.SetupConnection();
-                    
-                    //request de login
-                    commHandler.SendData(Command.REQ, 1, new Payload(txtBoxLogin.Text));
-                    
-                    //espero respuesta SUCCESS
-                    Data response = commHandler.ReceiveData();
-
-                    if (LoginSuccessful(data))
-                    { 
-                    
-                    }
-
-                    VentanaPrincipalCliente vp = new VentanaPrincipalCliente() {NombreUsuario = txtBoxLogin.Text, commHandler = commHandler };
-                    vp.ShowDialog();
+                    clientHandler.Connect(txtBoxLogin.Text);
+                    //envio el request de login
+                    clientHandler.LoginClient(txtBoxLogin.Text);
                 }
                 catch (Exception exc)
                 {
-                    MessageBox.Show("Ocurrio un error al establecer la conexion al DNS", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Mensaje detallado mmmmm: " + exc.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else 
@@ -56,8 +47,26 @@ namespace Chat
             }
         }
 
+        void EventLoginOK(object sender, EventArgs e)
+        {
+            this.BeginInvoke((Action)(delegate
+            {
+                VentanaPrincipalCliente vp = new VentanaPrincipalCliente() { };
+                vp.ShowDialog();
+            }));
+        }
+
+        void EventLoginFailed(object sender, LoginErrorEventArgs e)
+        {
+            this.BeginInvoke((Action)(delegate
+            {
+                MessageBox.Show("Mensaje detallado: " + e.ErrorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }));
+        }
+
         private void btnCancelar_Click(object sender, EventArgs e)
         {
+            clientHandler.CloseConnection();
             this.Dispose();
         }
 

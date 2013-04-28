@@ -157,7 +157,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         private void CommandREQLogin(Connection clientConnection, Data dato)
         {
             string login = dato.Payload.Message;
-            bool ret = false;
+            bool ret = true;
 
             if (!UsersPersistenceHandler.GetInstance().IsLoginRegistered(login))
             {
