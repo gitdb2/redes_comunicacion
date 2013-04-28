@@ -12,12 +12,12 @@ namespace Pruebas
         {
 
             Data data = new Data();
-            data.OpCode = OpCode.HELLO;
+            data.OpCode = (int)OpCode.HELLO;
             data.Command = Command.REQ;
             data.Payload = new Payload("Hola soy Cli 1");
 
 
-            List<byte[]> lista = data.GetBytes();
+            List<char[]> lista = data.GetBytes();
             foreach (var item in lista)
 	        {
 		            Console.WriteLine(ConversionUtil.GetString(item));
@@ -26,9 +26,9 @@ namespace Pruebas
 
 
             data = new Data();
-            data.OpCode = OpCode.HELLO;
+            data.OpCode = (int)OpCode.HELLO;
             data.Command = Command.REQ;
-            data.Payload = new MultiplePayload();
+            data.Payload = new MultiplePayload() { Destination="rodrigo"};
 
             for (int i = 0; i < MultiplePayload.MAX_PAYLOAD_LENGTH; i++)
             {

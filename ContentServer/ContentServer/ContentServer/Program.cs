@@ -42,7 +42,7 @@ namespace uy.edu.ort.obligatorio.ContentServer
             while (running)
             {
                 TcpClient tcpClient = server.AcceptTcpClient();  // Accept incoming connection.
-                ClientConnection client = new ClientConnection(tcpClient);     // Handle in another thread.
+                Connection client = new Connection(tcpClient);     // Handle in another thread.
             }
         }
 
