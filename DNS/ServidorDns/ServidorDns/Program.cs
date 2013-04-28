@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using System.Net.Sockets;
+using uy.edu.ort.obligatorio.Commons;
 
 namespace uy.edu.ort.obligatorio.ServidorDns
 {
@@ -43,7 +44,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             while (running)
             {
                 TcpClient tcpClient = server.AcceptTcpClient();  // Accept incoming connection.
-                Connection client = new Connection(tcpClient);     // Handle in another thread.
+                Connection client = new Connection(tcpClient, new ReceiveEventHandler());     // Handle in another thread.
             }
         }
 

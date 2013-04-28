@@ -29,76 +29,57 @@
         private void InitializeComponent()
         {
             this.lblUsuario = new System.Windows.Forms.Label();
-            this.lblContrasena = new System.Windows.Forms.Label();
-            this.txtBoxUsuario = new System.Windows.Forms.TextBox();
-            this.txtBoxPassword = new System.Windows.Forms.TextBox();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancelar = new System.Windows.Forms.Button();
+            this.txtBoxLogin = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // lblUsuario
             // 
             this.lblUsuario.AutoSize = true;
-            this.lblUsuario.Location = new System.Drawing.Point(22, 18);
+            this.lblUsuario.Location = new System.Drawing.Point(23, 22);
             this.lblUsuario.Name = "lblUsuario";
             this.lblUsuario.Size = new System.Drawing.Size(43, 13);
             this.lblUsuario.TabIndex = 0;
             this.lblUsuario.Text = "Usuario";
             // 
-            // lblContrasena
-            // 
-            this.lblContrasena.AutoSize = true;
-            this.lblContrasena.Location = new System.Drawing.Point(22, 53);
-            this.lblContrasena.Name = "lblContrasena";
-            this.lblContrasena.Size = new System.Drawing.Size(53, 13);
-            this.lblContrasena.TabIndex = 1;
-            this.lblContrasena.Text = "Password";
-            // 
-            // txtBoxUsuario
-            // 
-            this.txtBoxUsuario.Location = new System.Drawing.Point(88, 15);
-            this.txtBoxUsuario.Name = "txtBoxUsuario";
-            this.txtBoxUsuario.Size = new System.Drawing.Size(178, 20);
-            this.txtBoxUsuario.TabIndex = 2;
-            // 
-            // txtBoxPassword
-            // 
-            this.txtBoxPassword.Location = new System.Drawing.Point(88, 50);
-            this.txtBoxPassword.Name = "txtBoxPassword";
-            this.txtBoxPassword.Size = new System.Drawing.Size(178, 20);
-            this.txtBoxPassword.TabIndex = 3;
-            // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(48, 91);
+            this.btnOK.Location = new System.Drawing.Point(26, 73);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 4;
+            this.btnOK.TabIndex = 2;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // btnCancelar
             // 
-            this.btnCancelar.Location = new System.Drawing.Point(166, 91);
+            this.btnCancelar.Location = new System.Drawing.Point(132, 73);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(75, 23);
-            this.btnCancelar.TabIndex = 5;
+            this.btnCancelar.TabIndex = 3;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = true;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
+            // 
+            // txtBoxLogin
+            // 
+            this.txtBoxLogin.Location = new System.Drawing.Point(72, 19);
+            this.txtBoxLogin.MaxLength = 8;
+            this.txtBoxLogin.Name = "txtBoxLogin";
+            this.txtBoxLogin.Size = new System.Drawing.Size(135, 20);
+            this.txtBoxLogin.TabIndex = 1;
             // 
             // Login
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(289, 129);
+            this.ClientSize = new System.Drawing.Size(230, 115);
+            this.Controls.Add(this.txtBoxLogin);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnOK);
-            this.Controls.Add(this.txtBoxPassword);
-            this.Controls.Add(this.txtBoxUsuario);
-            this.Controls.Add(this.lblContrasena);
             this.Controls.Add(this.lblUsuario);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
@@ -113,11 +94,9 @@
         #endregion
 
         private System.Windows.Forms.Label lblUsuario;
-        private System.Windows.Forms.Label lblContrasena;
-        private System.Windows.Forms.TextBox txtBoxUsuario;
-        private System.Windows.Forms.TextBox txtBoxPassword;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancelar;
+        private System.Windows.Forms.TextBox txtBoxLogin;
     }
 }
 

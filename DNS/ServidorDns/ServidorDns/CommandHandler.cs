@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Comunicacion;
 using uy.edu.ort.obligatorio.LibOperations.intefaces;
+using uy.edu.ort.obligatorio.Commons;
 
 namespace uy.edu.ort.obligatorio.ServidorDns
 {
@@ -207,7 +208,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
 
         private string FindAGoodServer()
         {
-            return "192.168.0.242";
+            return "127.0.0.1";
         }
     }
 }

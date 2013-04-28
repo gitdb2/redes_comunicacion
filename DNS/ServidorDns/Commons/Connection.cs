@@ -6,22 +6,25 @@ using System.Net.Sockets;
 using System.IO;
 using System.Threading;
 using Comunicacion;
-using uy.edu.ort.obligatorio.LibOperations.intefaces;
 
-namespace uy.edu.ort.obligatorio.ServidorDns
+namespace uy.edu.ort.obligatorio.Commons
 {
-    public class Connection : IConnection
+    public class Connection
     {
         private TcpClient tcpClient;
         private NetworkStream networkStream;
-        private StreamReader streamReader;
-        private StreamWriter streamWriter;
+        
+        public StreamReader StreamReader { get; set; }
+        public StreamWriter StreamWriter { get; set; }
+
         public int Port { get; set; }
         public string Name { get; set; }
+        public IReceiveEvent EventHandler { get; set; }
 
-        public Connection(TcpClient c)
+        public Connection(TcpClient c, IReceiveEvent ire)
         {
             tcpClient = c;
+            EventHandler = ire;
             (new Thread(new ThreadStart(SetupConn))).Start();
         }
 
@@ -29,8 +32,8 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         {
             lock (this)
             {
-                streamWriter.Write(data);
-                streamWriter.Flush();
+                StreamWriter.Write(data);
+                StreamWriter.Flush();
             }
         }
 
@@ -40,8 +43,8 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             {
                 Console.WriteLine("[{0}] New connection!", DateTime.Now);
                 networkStream = tcpClient.GetStream();
-                streamReader = new StreamReader(networkStream, Encoding.UTF8);
-                streamWriter = new StreamWriter(networkStream, Encoding.UTF8);
+                StreamReader = new StreamReader(networkStream, Encoding.UTF8);
+                StreamWriter = new StreamWriter(networkStream, Encoding.UTF8);
                 ReceiveData();
             }
             finally { 
@@ -57,14 +60,13 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             {
                 try
                 {
-                    Data dato = DataProccessor.GetInstance().LoadObject(streamReader);
-                    CommandHandler.GetInstance().Handle(this, dato);
+                    notEnd = EventHandler.OnReceiveData(this);
                 }
                 catch (Exception e)
                 {
+                    notEnd = EventHandler.OnFatalError(this);
                     Console.WriteLine(e.StackTrace);
                     Console.WriteLine(e.Message);
-                    SingletonClientConnection.GetInstance().RemoveClient(Name);
                     notEnd = false;
                     CloseConn();
                 }
@@ -76,8 +78,8 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         {
             try
             {
-                streamReader.Close();
-                streamWriter.Close();
+                StreamReader.Close();
+                StreamWriter.Close();
                 networkStream.Close();
                 tcpClient.Close();
                 Console.WriteLine("[{0}] End of connection!", DateTime.Now);

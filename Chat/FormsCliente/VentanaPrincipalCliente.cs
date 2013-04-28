@@ -7,24 +7,27 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Dominio;
+using Comunicacion;
 
 namespace Chat
 {
     public partial class VentanaPrincipalCliente : Form
     {
-        private string NombreUsuario;
+        public string NombreUsuario { get; set; }
+        public ComunicationHandler commHandler { get; set; }
 
-        public VentanaPrincipalCliente(string nombreUsuario)
+        public VentanaPrincipalCliente()
         {
             InitializeComponent();
             PopularListaContactos();
-            this.NombreUsuario = nombreUsuario;
         }
 
         private void PopularListaContactos()
         {
-            Controlador dominio = new Controlador();
-            List<Usuario> contactos = dominio.ObtenerContactos();
+            //request de la lista de contactos
+            commHandler.SendData(Command.REQ, 2, new Payload(NombreUsuario));
+            string rawContactList = commHandler.ReceiveData();
+
             foreach (Usuario contacto in contactos)
             {
                 ListViewItem lvi = new ListViewItem(contacto.Nombre);

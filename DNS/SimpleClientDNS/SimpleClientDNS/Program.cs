@@ -18,7 +18,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
            Console.ReadLine();
         }
 
-        string login = "fffffff";
+        string login = "mauricio";
 
         Thread tcpThread;      // Receiver
 
@@ -124,5 +124,6 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         {
             return new string(buffer).Substring(startIndex, length);
         }
+
     }
 }

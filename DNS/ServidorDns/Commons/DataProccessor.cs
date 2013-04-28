@@ -5,7 +5,7 @@ using System.Text;
 using Comunicacion;
 using System.IO;
 
-namespace uy.edu.ort.obligatorio.ServidorDns
+namespace uy.edu.ort.obligatorio.Commons
 {
     public class DataProccessor
     {

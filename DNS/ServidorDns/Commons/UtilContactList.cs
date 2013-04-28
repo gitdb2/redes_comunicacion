@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace uy.edu.ort.obligatorio.ServidorDns
+namespace uy.edu.ort.obligatorio.Commons
 {
     public class UtilContactList
     {
