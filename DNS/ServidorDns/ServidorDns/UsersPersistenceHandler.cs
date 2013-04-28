@@ -12,7 +12,6 @@ namespace uy.edu.ort.obligatorio.ServidorDns
     public class UsersPersistenceHandler
     {
         private static UsersPersistenceHandler instance = new UsersPersistenceHandler();
-        private static string usersFile = "users.txt";
         private Properties users = new Properties("users.txt");
 
         private UsersPersistenceHandler() 
@@ -32,6 +31,11 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 return true;
             }
             return false;
+        }
+
+        public string GetServerName(string login)
+        {
+            return users.Get(login);
         }
 
         public bool IsLoginRegistered(string login)

@@ -18,9 +18,8 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             return instance;
         }
 
-        public void Handle(ClientConnection clientConnection, Data dato)
+        public void Handle(Connection clientConnection, Data dato)
         {
-
             if (dato.Command == Command.REQ)
             {
                 HandleREQ(clientConnection, dato);
@@ -31,7 +30,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             }
        }
 
-        private void HandleRES(ClientConnection clientConnection, Data dato)
+        private void HandleRES(Connection clientConnection, Data dato)
         {
             switch (dato.OpCode)
             {
@@ -40,6 +39,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 case 1:
                     break;
                 case 2:
+                    CommandRESContactList(clientConnection, dato);
                     break;
                 case 3:
                     break;
@@ -56,16 +56,35 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             }
         }
 
-        private void HandleREQ(ClientConnection clientConnection, Data dato)
+        private void CommandRESContactList(Connection clientConnection, Data entryData)
+        {
+            //construyo un diccionario donde cada entrada es un login y el value indica si esta o no conectado
+            Dictionary<string, bool> tmpContactList = UtilContactList.ContactListFromString(entryData.Payload.Message);
+            var keys = new List<string>(tmpContactList.Keys);
+            foreach (string key in keys)
+            {
+                tmpContactList[key] = SingletonClientConnection.GetInstance().ClientIsConnected(key);
+            }
+            //obtengo el login del payload y le envio la trama actualizada con los contactos activos
+            string login = UtilContactList.ExtractLogin(entryData.Payload.Message);
+            Data outData = new Data() { Command = Command.RES, OpCode = 2, Payload = new Payload(UtilContactList.StringFromContactList(tmpContactList, entryData.Payload.Message)) };
+            foreach (var item in outData.GetBytes())
+            {
+                clientConnection.WriteToStream(item);
+            }
+        }
+
+        private void HandleREQ(Connection clientConnection, Data dato)
         {
             switch (dato.OpCode)
             {
                 case 0:
                     break;
                 case 1: //viene el comando login
-                    CommandLogin(clientConnection, dato);
+                    CommandREQLogin(clientConnection, dato);
                     break;
-                case 2:
+                case 2: //un login pide su lista de contactos
+                    CommandREQContactList(clientConnection, dato);
                     break;
                 case 3:
                     break;
@@ -82,13 +101,28 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             }
         }
 
-        private void CommandLogin(ClientConnection clientConnection, Data dato)
+        private void CommandREQContactList(Connection clientConnection, Data dato)
+        {
+            string login = dato.Payload.Message;
+            string serverName = UsersPersistenceHandler.GetInstance().GetServerName(login);
+            if (serverName != null) 
+            {
+                Connection serverConnection = SingletonServerConnection.GetInstance().GetServer(serverName);
+                foreach (var item in dato.GetBytes())
+                {
+                    Console.WriteLine("Enviando peticion de contactos al servidor");
+                    //FIXME faltan servidores, comentado por ahora
+                    //serverConnection.WriteToStream(item);
+                }
+            }
+        }
+
+        private void CommandREQLogin(Connection clientConnection, Data dato)
         {
             string login = dato.Payload.Message;
             bool ret = false;
             if (!UsersPersistenceHandler.GetInstance().IsLoginRegistered(login))
             {
-
                 string serverName = FindAGoodServer();
                 bool ok = AddUserToServer(login, serverName);
                 if (ok)
@@ -105,14 +139,14 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             if (ret)//si esta registrado
             {
                 SingletonClientConnection scc = SingletonClientConnection.GetInstance();
-                ClientConnection oldConnection = scc.GetClient(login);
+                Connection oldConnection = scc.GetClient(login);
                 if (oldConnection != null)
                 {
                     scc.RemoveClient(login);
                     oldConnection.CloseConn();
                 }
 
-                scc.AddClient(login, clientConnection);
+               scc.AddClient(login, clientConnection);
 
                Data data = new Data() { Command = Command.RES, OpCode = 1, Payload = new Payload("SUCCESS") };
 

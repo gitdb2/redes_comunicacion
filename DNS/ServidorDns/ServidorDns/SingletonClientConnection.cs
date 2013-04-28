@@ -7,7 +7,9 @@ namespace uy.edu.ort.obligatorio.ServidorDns
 {
     public class SingletonClientConnection
     {
-        Dictionary<string, ClientConnection> clientsMap = new Dictionary<string, ClientConnection>();
+        Dictionary<string, Connection> clientsMap = new Dictionary<string, Connection>();
+
+        Dictionary<string, List<string>> clientsContactsMap = new Dictionary<string, List<string>>();
 
         private static SingletonClientConnection instance = new SingletonClientConnection();
 
@@ -17,7 +19,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             return instance;
         }
 
-        public void AddClient(string login, ClientConnection connection)
+        public void AddClient(string login, Connection connection)
         {
             lock (this)
             {
@@ -33,9 +35,9 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             }
         }
 
-        public ClientConnection GetClient(string login)
+        public Connection GetClient(string login)
         {
-            ClientConnection ret = null;
+            Connection ret = null;
             lock (this)
             {
                 try
@@ -48,6 +50,11 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 }
             }
             return ret;
+        }
+
+        public bool ClientIsConnected(string login)
+        {
+            return clientsMap.ContainsKey(login);
         }
     }
 }

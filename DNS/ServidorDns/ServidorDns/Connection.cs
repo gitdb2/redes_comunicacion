@@ -10,21 +10,17 @@ using uy.edu.ort.obligatorio.LibOperations.intefaces;
 
 namespace uy.edu.ort.obligatorio.ServidorDns
 {
-    public class ClientConnection : IConnection
+    public class Connection : IConnection
     {
 
         public TcpClient client;
         public NetworkStream netStream;
         public StreamReader br;
         public StreamWriter bw;
-      //  UserInfo userInfo;
 
-        public ClientConnection(TcpClient c)
+        public Connection(TcpClient c)
         {
-          
             client = c;
-
-            // Handle client in another thread.
             (new Thread(new ThreadStart(SetupConn))).Start();
         }
 
@@ -37,9 +33,6 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             }
         }
 
-       
-
-
         void SetupConn()  // Setup connection and login or register.
         {
             try
@@ -48,18 +41,17 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 netStream = client.GetStream();
                 br = new StreamReader(netStream, Encoding.UTF8);
                 bw = new StreamWriter(netStream, Encoding.UTF8);
-
-       
                 ReceiveData();
-
             }
-            finally { CloseConn(); }
+            finally { 
+                CloseConn(); 
+            }
         }
+
         bool notEnd = true;
 
         private void ReceiveData()
         {
-
             while (notEnd)
             {
                 try
@@ -75,7 +67,6 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                     CloseConn();
                 }
             }
-
             Console.WriteLine("termino");
         }
 
@@ -83,15 +74,11 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         {
             try
             {
-             //   userInfo.LoggedIn = false;
                 br.Close();
                 bw.Close();
                 netStream.Close();
                 client.Close();
                 Console.WriteLine("[{0}] End of connection!", DateTime.Now);
-
-                Console.WriteLine("Guardando usuarios");
-                UsersPersistenceHandler.GetInstance().SaveUsers();
             }
             catch (Exception e) {
                 Console.WriteLine(e.StackTrace);

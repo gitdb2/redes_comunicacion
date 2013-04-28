@@ -44,8 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClientConnection.cs" />
+    <Compile Include="Connection.cs" />
     <Compile Include="CommandHandler.cs" />
+    <Compile Include="SingletonServerConnection.cs" />
     <Compile Include="UsersPersistenceHandler.cs" />
     <Compile Include="DataProccessor.cs" />
     <Compile Include="intefaces\IConnection.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="req\ReqLogin.cs" />
     <Compile Include="SingletonClientConnection.cs" />
     <Compile Include="UserInfo.cs" />
+    <Compile Include="UtilContactList.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Lib-Comunicacion\Comunicacion\Comunicacion\Comunicacion.csproj">

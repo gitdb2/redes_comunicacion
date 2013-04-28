@@ -23,7 +23,7 @@ namespace Comunicacion
 
         public String GetProperty(String key)
         {
-            return config.get(key);
+            return config.Get(key);
         }
 
 
@@ -41,9 +41,9 @@ namespace Comunicacion
 
         public String get(String field, String defValue)
         {
-            return (get(field) == null) ? (defValue) : (get(field));
+            return (Get(field) == null) ? (defValue) : (Get(field));
         }
-        public String get(String field)
+        public String Get(String field)
         {
             return (list.ContainsKey(field)) ? (list[field]) : (null);
         }

@@ -78,9 +78,37 @@ namespace uy.edu.ort.obligatorio.ServidorDns
            
             Console.WriteLine("termino");
 
-       
-                CloseConn();
+            
+            Console.WriteLine("Pido lista de contactos");
+
+            data = new Data() { Command = Command.REQ, OpCode = 2, Payload = new Payload("rodrigo") };
+            foreach (var item in data.GetBytes())
+            {
+                Console.WriteLine("line " + cont++ + "   --->" + ConversionUtil.GetString(item));
+                bw.Write(item);
+                bw.Flush();
+            }
+
+            pruebaRES02();
+
+            CloseConn();
         }
+
+        private void pruebaRES02()
+        {
+            string payload = "01|01|rodrigo|contact1@1|contact2@0|contact3@1";
+            Data data = new Data() { Command = Command.RES, OpCode = 2, Payload = new Payload(payload) };
+            foreach (var item in data.GetBytes())
+            {
+                Console.WriteLine("Enviando peticion de contactos al cliente");
+                //FIXME faltan servidores, comentado por ahora
+                bw.Write(item);
+                bw.Flush();
+            }
+        }
+
+
+
         void CloseConn() // Close connection.
         {
 
