@@ -18,10 +18,12 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             return instance;
         }
 
-        public void AddServer(string serverName, Connection connection)
+        public void AddServer(string serverName, int serverPort, Connection connection)
         {
             lock (this)
             {
+                connection.Name = serverName;
+                connection.Port = serverPort;
                 serversMap.Add(serverName, connection); 
             }
         }

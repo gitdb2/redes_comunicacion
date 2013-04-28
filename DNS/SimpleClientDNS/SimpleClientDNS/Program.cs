@@ -35,15 +35,6 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             
         }
        
-      
-
-       
-       
-
-        // Events
-     
-       
-        
         TcpClient client;
         NetworkStream netStream;
     
@@ -55,13 +46,10 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             client = new TcpClient(Server, Port);  // Connect to the server.
             netStream = client.GetStream();
 
-
             br = new StreamReader(netStream, Encoding.UTF8);
             bw = new StreamWriter(netStream, Encoding.UTF8);
 
-
-
-            Data data = new Data() { Command = Command.REQ, OpCode = 1, Payload = new Payload("rodrigo") };
+            Data data = new Data() { Command = Command.REQ, OpCode = 1, Payload = new Payload("mauricio") };
             int cont = 0;
             foreach (var item in data.GetBytes())
             {
@@ -74,14 +62,13 @@ namespace uy.edu.ort.obligatorio.ServidorDns
 
             Data data2 = LoadObject(br);
 
-          Console.WriteLine("line " + cont++ + "   --->" + ConversionUtil.GetString(data2.GetBytes()[0]));
+            Console.WriteLine("line " + cont++ + "   --->" + ConversionUtil.GetString(data2.GetBytes()[0]));
            
             Console.WriteLine("termino");
-
             
             Console.WriteLine("Pido lista de contactos");
 
-            data = new Data() { Command = Command.REQ, OpCode = 2, Payload = new Payload("rodrigo") };
+            data = new Data() { Command = Command.REQ, OpCode = 2, Payload = new Payload("mauricio") };
             foreach (var item in data.GetBytes())
             {
                 Console.WriteLine("line " + cont++ + "   --->" + ConversionUtil.GetString(item));
@@ -89,47 +76,28 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 bw.Flush();
             }
 
-            pruebaRES02();
+            Data data3 = LoadObject(br);
+
+            Console.WriteLine("lista de contactos en el cliente " + cont++ + "   --->" + ConversionUtil.GetString(data3.GetBytes()[0]));
 
             CloseConn();
         }
 
-        private void pruebaRES02()
-        {
-            string payload = "01|01|rodrigo|contact1@1|contact2@0|contact3@1";
-            Data data = new Data() { Command = Command.RES, OpCode = 2, Payload = new Payload(payload) };
-            foreach (var item in data.GetBytes())
-            {
-                Console.WriteLine("Enviando peticion de contactos al cliente");
-                //FIXME faltan servidores, comentado por ahora
-                bw.Write(item);
-                bw.Flush();
-            }
-        }
-
-
+       
 
         void CloseConn() // Close connection.
         {
-
             br.Dispose();
             bw.Dispose();
             netStream.Close();
             client.Close();
-   
-
-            //br.Close();
-            //bw.Close();
-            //netStream.Close();
-            //client.Close();
-          
         }
+
         public Data LoadObject(StreamReader br)
         {
 
             char[] buffer = new char[10];
             int readQty = br.Read(buffer, 0, 10);//REQ99000050101A
-
 
             if (readQty < 10) throw new Exception("Errror en trama largo fijo");
 
@@ -141,7 +109,6 @@ namespace uy.edu.ort.obligatorio.ServidorDns
 
             Console.WriteLine(type + " " + opCode + " " + payloadLength);//+ " " + partsTotal + " " + partsCurrent);
 
-
             buffer = new char[payloadLength];
             readQty = br.Read(buffer, 0, payloadLength);
             if (readQty < payloadLength) throw new Exception("Errror en trama largo fijo leyendo payload");
@@ -151,6 +118,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
 
             return ret;
         }
+
         private static string ArrayToString(char[] buffer, int startIndex, int length)
         {
             return new string(buffer).Substring(startIndex, length);
