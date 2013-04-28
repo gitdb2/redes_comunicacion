@@ -15,6 +15,15 @@ namespace Comunicacion
             //System.Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
             //return bytes;
         }
+        public static byte[] GetBytes2(string str)
+        {
+            return Encoding.UTF8.GetBytes(str);
+        }
+
+        public static string GetString(byte[] bytes)
+        {
+            return  Encoding.UTF8.GetString(bytes);
+        }
 
         public static string GetString(char[] bytes)
         {
@@ -33,6 +42,11 @@ namespace Comunicacion
             //char[] chars = new char[bytes.Length / sizeof(char)];
             //System.Buffer.BlockCopy(bytes, 0, chars, 0, bytes.Length);
             //return new string(chars);
+        }
+        public static string GetString(byte[] bytes, int bytesread)
+        {
+
+            return Encoding.UTF8.GetString(bytes, 0, bytesread);
         }
     }
 }

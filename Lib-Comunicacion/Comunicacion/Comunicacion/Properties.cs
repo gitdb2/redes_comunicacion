@@ -36,10 +36,10 @@ namespace Comunicacion
 
         public Properties(String file)
         {
-            reload(file);
+            Reload(file);
         }
 
-        public String get(String field, String defValue)
+        public String Get(String field, String defValue)
         {
             return (Get(field) == null) ? (defValue) : (Get(field));
         }
@@ -84,10 +84,10 @@ namespace Comunicacion
 
         public void Reload()
         {
-            reload(this.filename);
+            Reload(this.filename);
         }
 
-        public void reload(String filename)
+        public void Reload(String filename)
         {
             this.filename = filename;
             list = new Dictionary<String, String>();
