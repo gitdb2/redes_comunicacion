@@ -81,7 +81,7 @@ namespace uy.edu.ort.obligatorio.ContentServer
 
 
 
-        public string Server { get { return "192.168.0.201"; } }// return "192.168.0.201"; } }
+        public string Server { get { return "127.0.0.1"; } }// return "192.168.0.201"; } }
         public int Port { get { return 2000; } }
       
         //void connect()
@@ -111,7 +111,7 @@ namespace uy.edu.ort.obligatorio.ContentServer
             {
                 Command = Command.REQ,
                 OpCode = 3,
-                Payload = new Payload("192.168.0.242:2001")
+                Payload = new Payload("127.0.0.1:2001")
             };
 
             

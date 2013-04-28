@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace uy.edu.ort.obligatorio.ServidorDns
+namespace uy.edu.ort.obligatorio.Commons
 {
     public class UtilContactList
     {
@@ -37,7 +37,8 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 if (cont >= START_POS_CONTACT_LIST)
                 {
                     tmp = item.Split(INTERNAL_SEPARATOR);
-                    result.Add(tmp[0], tmp[1].Equals("1"));
+                    if (tmp[0].Length > 0)
+                        result.Add(tmp[0], tmp[1].Equals("1"));
                 }
                 cont++;
             }

@@ -2,20 +2,18 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{674458CB-53CC-4EEC-9EB0-DC006637D930}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{A4983E71-5669-45E3-A3C8-C428E056EF62}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>uy.edu.ort.obligatorio.ServidorDns</RootNamespace>
-    <AssemblyName>ServidorDns</AssemblyName>
+    <RootNamespace>Commons</RootNamespace>
+    <AssemblyName>Commons</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,8 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -36,7 +33,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,30 +40,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandHandler.cs" />
-    <Compile Include="ReceiveEventHandler.cs" />
-    <Compile Include="SingletonServerConnection.cs" />
-    <Compile Include="UsersPersistenceHandler.cs" />
-    <Compile Include="intefaces\IConnection.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Connection.cs" />
+    <Compile Include="DataProccessor.cs" />
+    <Compile Include="IReceiveEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="req\ReqLogin.cs" />
-    <Compile Include="SingletonClientConnection.cs" />
+    <Compile Include="UtilContactList.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Lib-Comunicacion\Comunicacion\Comunicacion\Comunicacion.csproj">
       <Project>{B4B3F489-2339-4AB7-ADDA-F17F6C15671D}</Project>
       <Name>Comunicacion</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Commons\Commons.csproj">
-      <Project>{A4983E71-5669-45E3-A3C8-C428E056EF62}</Project>
-      <Name>Commons</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="users.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Comunicacion;
 using uy.edu.ort.obligatorio.LibOperations.intefaces;
+using uy.edu.ort.obligatorio.Commons;
 
 namespace uy.edu.ort.obligatorio.ServidorDns
 {
@@ -157,6 +158,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         {
             string login = dato.Payload.Message;
             bool ret = false;
+
             if (!UsersPersistenceHandler.GetInstance().IsLoginRegistered(login))
             {
                 string serverName = FindAGoodServer();
@@ -189,6 +191,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             else
             {
                 SendMessage(clientConnection, Command.RES, 2, new Payload("ERROR REGISTRO"));
+                clientConnection.CloseConn();
             }
         }
 
@@ -205,7 +208,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
 
         private string FindAGoodServer()
         {
-            return "192.168.0.242";
+            return "127.0.0.1";
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using uy.edu.ort.obligatorio.Commons;
 
 namespace uy.edu.ort.obligatorio.ServidorDns
 {
@@ -32,7 +33,14 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         {
             lock (this)
             {
-                return clientsMap.Remove(login);
+                if (login != null)
+                {
+                    return clientsMap.Remove(login);
+                }
+                else 
+                {
+                    return false;
+                }
             }
         }
 
