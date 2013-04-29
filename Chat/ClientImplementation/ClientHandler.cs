@@ -36,9 +36,23 @@ namespace ClientImplementation
             connection.Name = login;
         }
 
+        public void CloseConnection()
+        {
+            this.connection.CloseConn();
+        }
+
         public void LoginClient(string login)
         {
             Data data = new Data() { Command = Command.REQ, OpCode = 1, Payload = new Payload(login) };
+            foreach (var item in data.GetBytes())
+            {
+                connection.WriteToStream(item);
+            }
+        }
+
+        public void GetContactList(string login)
+        {
+            Data data = new Data() { Command = Command.REQ, OpCode = 2, Payload = new Payload(login) };
             foreach (var item in data.GetBytes())
             {
                 connection.WriteToStream(item);
@@ -63,9 +77,14 @@ namespace ClientImplementation
                 LoginFailed(this, e);
         }
 
-        public void CloseConnection()
+        public event ContactListEventHandler ContactListResponse;
+
+        public delegate void ContactListEventHandler(object sender, ContactListEventArgs e);
+        
+        public void OnContactListResponse(ContactListEventArgs contactListEventArgs)
         {
-            this.connection.CloseConn();
+            if (ContactListResponse != null)
+                ContactListResponse(this, contactListEventArgs);
         }
     }
 }

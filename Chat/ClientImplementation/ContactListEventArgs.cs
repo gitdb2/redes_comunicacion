@@ -5,9 +5,10 @@ using System.Text;
 
 namespace ClientImplementation
 {
-    public class LoginErrorEventArgs : EventArgs
+    public class ContactListEventArgs : EventArgs
     {
-        public string ErrorMessage { get; set; }
+
+        public Dictionary<string, bool> ContactList { get; set; }
 
     }
 }

@@ -14,37 +14,38 @@ namespace Chat
 {
     public partial class VentanaPrincipalCliente : Form
     {
-        public string NombreUsuario { get; set; }
-        private ClientHandler clientHandler = ClientHandler.GetInstance();
+        public string Login { get; set; }
+        private ClientHandler clientHandler;
 
         public VentanaPrincipalCliente()
         {
             InitializeComponent();
-            //PopularListaContactos();
+            clientHandler = ClientHandler.GetInstance();
+            clientHandler.ContactListResponse += new ClientHandler.ContactListEventHandler(EventContactListResponse);
         }
 
-        private void PopularListaContactos()
+        void EventContactListResponse(object sender, ContactListEventArgs e)
         {
-            //request de la lista de contactos
-
-            //foreach (Usuario contacto in contactos)
-            //{
-            //    ListViewItem lvi = new ListViewItem(contacto.Nombre);
-            //    lvi.Tag = contacto;
-            //    lvi.SubItems.Add(contacto.Servidor);
-            //    SetearEstadoContacto(lvi, contacto);
-            //    listaContactos.Items.Add(lvi);
-            //}
-            FormUtils.AjustarTamanoColumnas(listaContactos);
+            this.BeginInvoke((Action)(delegate
+            {
+                listaContactos.Items.Clear();
+                foreach (KeyValuePair<string, bool> contacto in e.ContactList)
+                {
+                    ListViewItem lvi = new ListViewItem(contacto.Key);
+                    lvi.Tag = contacto.Key;
+                    SetearEstadoContacto(lvi, contacto);
+                    listaContactos.Items.Add(lvi);
+                }
+                FormUtils.AjustarTamanoColumnas(listaContactos);
+            }));
         }
 
-        private void SetearEstadoContacto(ListViewItem lvi, Usuario contacto)
+        private void SetearEstadoContacto(ListViewItem lvi, KeyValuePair<string, bool> contacto)
         {
             lvi.UseItemStyleForSubItems = false;
-            Color colorEstado = Color.Gray;
-            if (contacto.EstaConectado)
-                colorEstado = Color.Green;
-            lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, contacto.ObtenerEstadoEnTexto(), Color.White, colorEstado, lvi.Font));
+            Color colorEstado = contacto.Value ? Color.Green : Color.Gray;
+            string estado = contacto.Value ? "Conectado" : "Desconectado";
+            lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, estado, Color.White, colorEstado, lvi.Font));
         }
 
         private void menuArchivoOpcionSalir_Click(object sender, EventArgs e)
@@ -58,7 +59,7 @@ namespace Chat
             Usuario usuario = (Usuario) seleccion.Tag;
             if (usuario.EstaConectado)
             {
-                VentanaDeChat vt = new VentanaDeChat(usuario, this.NombreUsuario);
+                VentanaDeChat vt = new VentanaDeChat(usuario, this.Login);
                 vt.Show();
             }
             else 
@@ -84,6 +85,11 @@ namespace Chat
         {
             SubirArchivo sa = new SubirArchivo();
             sa.ShowDialog();
+        }
+
+        private void VentanaPrincipalCliente_Load(object sender, EventArgs e)
+        {
+            clientHandler.GetContactList(Login);
         }
     }
 }
