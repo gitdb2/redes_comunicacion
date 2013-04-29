@@ -77,7 +77,7 @@ namespace Chat
             }
             else 
             {
-                MessageBox.Show("No es posible chatear con " + contactSelected.Value + ", esta desconectado.",
+                MessageBox.Show("No es posible chatear con " + contactSelected.Key + ", esta desconectado.",
                     "Contacto Desconectado", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }

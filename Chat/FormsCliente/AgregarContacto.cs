@@ -7,43 +7,67 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Dominio;
+using ClientImplementation;
 
 namespace Chat
 {
     public partial class AgregarContacto : Form
     {
+        public string Login { get; set; }
+        private ClientHandler clientHandler;
+
+        //lista de contactos temporal en la que se acumulan todas las llegadas de RES02
+        //una vez que llego la ultima porcion de la lista se refresca el form y se vacia esta lista
+        private Dictionary<string, bool> tmpContactList = new Dictionary<string, bool>();
+
         public AgregarContacto()
         {
             InitializeComponent();
+            clientHandler = ClientHandler.GetInstance();
+            clientHandler.ContactListResponse += new ClientHandler.FindContactsEventHandler(EventFindContactsResponse);
         }
 
         private void btnBuscar_Click(object sender, EventArgs e)
         {
-            string patron = txtBuscarContacto.Text;
-            if (patron != null && !patron.Trim().Equals(""))
+            string pattern = txtBuscarContacto.Text;
+            if (pattern != null && !pattern.Trim().Equals(""))
             {
-                listaContactos.Items.Clear();
-                Controlador controlador = new Controlador();
-                List<Usuario> contactosEncontrados = controlador.BuscarContactos(patron);
-                foreach (Usuario contacto in contactosEncontrados)
-                {
-                    ListViewItem lvi = new ListViewItem(contacto.Nombre);
-                    lvi.Tag = contacto;
-                    lvi.SubItems.Add(contacto.Servidor);
-                    SetearEstadoContacto(lvi, contacto);
-                    listaContactos.Items.Add(lvi);
-                }
-                FormUtils.AjustarTamanoColumnas(listaContactos);
+                clientHandler.FindContacts(Login, pattern);
             }
         }
 
-        private void SetearEstadoContacto(ListViewItem lvi, Usuario contacto)
+        void EventFindContactsResponse(object sender, ContactListEventArgs e)
+        {
+            this.BeginInvoke((Action)(delegate
+            {
+                //agrego los contactos a la lista acumulada de contactos
+                e.ContactList.ToList().ForEach(x => tmpContactList.Add(x.Key, x.Value));
+
+                //cuando me mandaron la ultima porcion de la lista de contactos refresco el form
+                if (e.IsLastPart)
+                {
+                    listaContactos.Items.Clear();
+                    foreach (KeyValuePair<string, bool> contacto in tmpContactList)
+                    {
+                        ListViewItem lvi = new ListViewItem(contacto.Key);
+                        lvi.Tag = contacto;
+                        SetearEstadoContacto(lvi, contacto);
+                        listaContactos.Items.Add(lvi);
+                    }
+                    FormUtils.AjustarTamanoColumnas(listaContactos);
+
+                    //reseteo la lista de contactos temporal
+                    tmpContactList.Clear();
+                }
+            }));
+        }
+
+        private void SetearEstadoContacto(ListViewItem lvi, KeyValuePair<string, bool> contacto)
         {
             lvi.UseItemStyleForSubItems = false;
-            Color colorEstado = Color.Gray;
-            if (contacto.EstaConectado)
-                colorEstado = Color.Green;
-            lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, contacto.ObtenerEstadoEnTexto(), Color.White, colorEstado, lvi.Font));
+            Color colorEstado = contacto.Value ? Color.Green : Color.Gray;
+            string estado = contacto.Value ? "Conectado" : "Desconectado";
+            lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, estado, Color.White, colorEstado, lvi.Font));
         }
 
         private void btnAgregarContacto_Click(object sender, EventArgs e)

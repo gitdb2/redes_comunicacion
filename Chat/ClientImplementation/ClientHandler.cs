@@ -59,6 +59,15 @@ namespace ClientImplementation
             }
         }
 
+        public void FindContacts(string Login, string pattern)
+        {
+            Data data = new Data() { Command = Command.REQ, OpCode = 5, Payload = new Payload(Login + "|" + pattern) };
+            foreach (var item in data.GetBytes())
+            {
+                connection.WriteToStream(item);
+            }
+        }
+
         public event EventHandler LoginOK;
 
         public virtual void OnLoginOK()
@@ -86,5 +95,8 @@ namespace ClientImplementation
             if (ContactListResponse != null)
                 ContactListResponse(this, contactListEventArgs);
         }
+
+        public delegate void FindContactsEventHandler(object sender, ContactListEventArgs e);
+       
     }
 }

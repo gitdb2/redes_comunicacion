@@ -100,7 +100,8 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                     break;
                 case 4:
                     break;
-                case 5:
+                case 5: //un login hace una busqueda de contactos
+                    CommandREQFindContacts(clientConnection, dato);
                     break;
                 case 6:
                     break;
@@ -109,6 +110,14 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 default:
                     break;
             }
+        }
+
+        private void CommandREQFindContacts(Connection clientConnection, Data dato)
+        {
+            string[] payloadSplitted = dato.Payload.Message.Split('|');
+            string login = payloadSplitted[0];
+            string pattern = payloadSplitted[1];
+            //TODO
         }
 
         private void CommandREQServerConnect(Connection clientConnection, Data dato)
