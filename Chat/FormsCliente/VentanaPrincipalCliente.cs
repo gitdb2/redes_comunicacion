@@ -8,34 +8,33 @@ using System.Text;
 using System.Windows.Forms;
 using Dominio;
 using Comunicacion;
+using ClientImplementation;
 
 namespace Chat
 {
     public partial class VentanaPrincipalCliente : Form
     {
         public string NombreUsuario { get; set; }
-        public ComunicationHandler commHandler { get; set; }
+        private ClientHandler clientHandler = ClientHandler.GetInstance();
 
         public VentanaPrincipalCliente()
         {
             InitializeComponent();
-            PopularListaContactos();
+            //PopularListaContactos();
         }
 
         private void PopularListaContactos()
         {
             //request de la lista de contactos
-            commHandler.SendData(Command.REQ, 2, new Payload(NombreUsuario));
-            string rawContactList = commHandler.ReceiveData();
 
-            foreach (Usuario contacto in contactos)
-            {
-                ListViewItem lvi = new ListViewItem(contacto.Nombre);
-                lvi.Tag = contacto;
-                lvi.SubItems.Add(contacto.Servidor);
-                SetearEstadoContacto(lvi, contacto);
-                listaContactos.Items.Add(lvi);
-            }
+            //foreach (Usuario contacto in contactos)
+            //{
+            //    ListViewItem lvi = new ListViewItem(contacto.Nombre);
+            //    lvi.Tag = contacto;
+            //    lvi.SubItems.Add(contacto.Servidor);
+            //    SetearEstadoContacto(lvi, contacto);
+            //    listaContactos.Items.Add(lvi);
+            //}
             FormUtils.AjustarTamanoColumnas(listaContactos);
         }
 

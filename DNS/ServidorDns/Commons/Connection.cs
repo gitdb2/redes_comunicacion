@@ -70,6 +70,7 @@ namespace uy.edu.ort.obligatorio.Commons
                 catch (Exception e)
                 {
                     notEnd = EventHandler.OnFatalError(this);
+                    Console.WriteLine("Se rompio la conexion del login: " + this.Name);
                     Console.WriteLine(e.StackTrace);
                     Console.WriteLine(e.Message);
                     notEnd = false;
@@ -93,6 +94,7 @@ namespace uy.edu.ort.obligatorio.Commons
                 Console.WriteLine(e.StackTrace);
                 Console.WriteLine(e.Message);
             }
+            notEnd = false;
         }
     
     }

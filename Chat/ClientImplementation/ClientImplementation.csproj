@@ -5,21 +5,13 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{B4B3F489-2339-4AB7-ADDA-F17F6C15671D}</ProjectGuid>
+    <ProjectGuid>{2C2C0E33-CF9F-4415-993F-7B357FB46EB8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Comunicacion</RootNamespace>
-    <AssemblyName>Comunicacion</AssemblyName>
+    <RootNamespace>ClientImplementation</RootNamespace>
+    <AssemblyName>ClientImplementation</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,15 +40,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Command.cs" />
-    <Compile Include="ConversionUtil.cs" />
-    <Compile Include="Data.cs" />
-    <Compile Include="MultiplePayload.cs" />
-    <Compile Include="Payload.cs" />
-    <Compile Include="Properties.cs" />
+    <Compile Include="ClientHandler.cs" />
+    <Compile Include="CommandHandler.cs" />
+    <Compile Include="LoginErrorEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReceiveEventHandler.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\DNS\ServidorDns\Commons\Commons.csproj">
+      <Project>{A4983E71-5669-45E3-A3C8-C428E056EF62}</Project>
+      <Name>Commons</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Lib-Comunicacion\Comunicacion\Comunicacion\Comunicacion.csproj">
+      <Project>{B4B3F489-2339-4AB7-ADDA-F17F6C15671D}</Project>
+      <Name>Comunicacion</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
