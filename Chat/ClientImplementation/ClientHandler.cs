@@ -44,25 +44,27 @@ namespace ClientImplementation
 
         public void LoginClient(string login)
         {
-            Data data = new Data() { Command = Command.REQ, OpCode = 1, Payload = new Payload(login) };
-            foreach (var item in data.GetBytes())
-            {
-                connection.WriteToStream(item);
-            }
+            SendMessage(Command.REQ, OpCodeConstants.REQ_LOGIN, new Payload(login));
         }
 
         public void GetContactList(string login)
         {
-            Data data = new Data() { Command = Command.REQ, OpCode = 2, Payload = new Payload(login) };
-            foreach (var item in data.GetBytes())
-            {
-                connection.WriteToStream(item);
-            }
+            SendMessage(Command.REQ, OpCodeConstants.REQ_CONTACT_LIST, new Payload(login));
+        }
+
+        public void FindContact(string Login, string pattern)
+        {
+            SendMessage(Command.REQ, OpCodeConstants.REQ_FIND_CONTACT, new Payload(Login + "|" + pattern));
+        }
+
+        public void AddContact(string Login, string contactToAdd)
+        {
+            SendMessage(Command.REQ, OpCodeConstants.REQ_ADD_CONTACT, new Payload(Login + "|" + contactToAdd));
         }
 
         public event EventHandler LoginOK;
 
-        public virtual void OnLoginOK()
+        public void OnLoginOK()
         {
             if (LoginOK != null)
                 LoginOK(this, EventArgs.Empty);
@@ -72,7 +74,7 @@ namespace ClientImplementation
         
         public delegate void ChatErrorEventHandler(object sender, LoginErrorEventArgs e);
         
-        public virtual void OnLoginFailed(LoginErrorEventArgs e)
+        public void OnLoginFailed(LoginErrorEventArgs e)
         {
             if (LoginFailed != null)
                 LoginFailed(this, e);
@@ -87,5 +89,45 @@ namespace ClientImplementation
             if (ContactListResponse != null)
                 ContactListResponse(this, contactListEventArgs);
         }
+
+        public delegate void FindContactsEventHandler(object sender, ContactListEventArgs e);
+
+        public event FindContactsEventHandler FindContactResponse;
+
+        public void OnFindContactResponse(ContactListEventArgs contactListEventArgs)
+        {
+            if (FindContactResponse != null)
+                FindContactResponse(this, contactListEventArgs);
+        }
+
+        private void SendMessage(Command command, int opCode, Payload payload)
+        {
+            Data data = new Data() { Command = command, OpCode = opCode, Payload = payload };
+            foreach (var item in data.GetBytes())
+            {
+                connection.WriteToStream(item);
+            }
+        }
+
+        public delegate void AddContactEventHandler(object sender, SimpleEventArgs e);
+
+        public event AddContactEventHandler AddContactResponse;
+
+        public void OnAddContactResponse(SimpleEventArgs simpleEventArgs)
+        {
+            //el message de simpleEventArgs viene en el formato n|m|loginDestino|contactoAgregado@estado|mensaje
+            string contactAddedStatus = simpleEventArgs.Message.Split('|')[3];
+
+            if (AddContactResponse != null)
+                AddContactResponse(this, simpleEventArgs);
+
+            if (UpdateContactStatusResponse != null)
+                UpdateContactStatusResponse(this, new SimpleEventArgs() { Message = contactAddedStatus });
+        }
+
+        public delegate void UpdateContactStatusEventHandler(object sender, SimpleEventArgs e);
+
+        public event UpdateContactStatusEventHandler UpdateContactStatusResponse;
+
     }
 }

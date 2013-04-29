@@ -5,6 +5,7 @@ using System.Text;
 using Comunicacion;
 using uy.edu.ort.obligatorio.LibOperations.intefaces;
 using uy.edu.ort.obligatorio.Commons;
+using System.Text.RegularExpressions;
 
 namespace uy.edu.ort.obligatorio.ServidorDns
 {
@@ -38,7 +39,6 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             Console.WriteLine("[{0}] connection owner: {1} ;  The data: {2} ", DateTime.Now, connection.Name, dato.ToString());
             switch (dato.OpCode)
             {
-
                 case OpCodeConstants.REQ_LOGIN:
                     break;
                 case OpCodeConstants.RES_CONTACT_LIST:
@@ -47,11 +47,45 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 case OpCodeConstants.RES_CREATE_USER:
                     CommandRESUserCreated(connection, dato);
                     break;
-
+                case OpCodeConstants.RES_ADD_CONTACT:
+                    CommandRESAddContact(connection, dato);
+                    break;
                 default:
-                   
                     break;
             }
+        }
+
+        private void CommandRESAddContact(Connection connection, Data dato)
+        {
+            //la respuesta viene en el formato n|m|loginDestino|contactoAgregado@estado|mensaje_success_o_error
+            string[] payLoadSplitted = dato.Payload.Message.Split('|');
+            string login = payLoadSplitted[2];
+            string contactAddedInfo = payLoadSplitted[3];
+            string opStatus = payLoadSplitted[4];
+
+            //si el servidor agrego el contacto, lo agrego a la lista local de contactos
+            if (opStatus.Equals(MessageConstants.MESSAGE_SUCCESS))
+            {
+                string contactAdded = contactAddedInfo.Split('@')[0];
+
+                //agrego el contacto a la lista de contactos de los clientes local
+                SingletonClientConnection.GetInstance().AddContactToClient(login, contactAdded);
+
+                //si el usuario esta conectado actualizo la trama
+                if (SingletonClientConnection.GetInstance().ClientIsConnected(contactAdded))
+                {
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append(payLoadSplitted[0]).Append("|");
+                    sb.Append(payLoadSplitted[1]).Append("|");
+                    sb.Append(login).Append("|");
+                    sb.Append(contactAdded).Append("@1").Append("|");
+                    sb.Append(payLoadSplitted[4]);
+                    dato.Payload.Message = sb.ToString();
+                }
+            }
+
+            Connection loginConnection = SingletonClientConnection.GetInstance().GetClient(login);
+            SendMessage(loginConnection, Command.RES, dato.OpCode, dato.Payload);
         }
 
         private void CommandRESUserCreated(Connection connection, Data dato)
@@ -61,15 +95,23 @@ namespace uy.edu.ort.obligatorio.ServidorDns
 
         private void CommandRESContactList(Connection clientConnection, Data entryData)
         {
+            //obtengo el login del payload
+            string login = UtilContactList.ExtractLogin(entryData.Payload.Message);
+
             //construyo un diccionario donde cada entrada es un login y el value indica si esta o no conectado
             Dictionary<string, bool> tmpContactList = UtilContactList.ContactListFromString(entryData.Payload.Message);
+
+            //agrego la lista de contactos del usuario al cache local del DNS
+            SingletonClientConnection.GetInstance().AddContactToClient(login, tmpContactList.Keys.ToList<string>());
+
+            //marco los contactos que estan conectados
             var keys = new List<string>(tmpContactList.Keys);
             foreach (string key in keys)
             {
                 tmpContactList[key] = SingletonClientConnection.GetInstance().ClientIsConnected(key);
             }
-            //obtengo el login del payload y le envio la trama actualizada con los contactos activos
-            string login = UtilContactList.ExtractLogin(entryData.Payload.Message);
+
+            //envio la trama actualizada con los contactos conectados
             Connection loginConnection = SingletonClientConnection.GetInstance().GetClient(login);
             if (loginConnection != null)
             {
@@ -90,7 +132,6 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             Console.WriteLine("[{0}] connection owner: {1} ;  The data: {2} ", DateTime.Now, clientConnection.Name, dato.ToString());
             switch (dato.OpCode)
             {
-            
                 case OpCodeConstants.REQ_LOGIN: //viene el comando login
                     CommandREQLogin(clientConnection, dato);
                     break;
@@ -100,11 +141,66 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 case OpCodeConstants.REQ_SERVER_CONNECT: //un servidor se conecta y registra en el dns
                     CommandREQServerConnect(clientConnection, dato);
                     break;
-               
+                case OpCodeConstants.REQ_FIND_CONTACT: //un login hace una busqueda de contactos
+                    CommandREQFindContacts(clientConnection, dato);
+                    break;
+                case OpCodeConstants.REQ_ADD_CONTACT: //un login quiere agregar un contacto nuevo
+                    CommandREQADDContact(clientConnection, dato);
+                    break;
                 default:
-                    
                     break;
             }
+        }
+
+        private void CommandREQADDContact(Connection clientConnection, Data dato)
+        {
+            string login = dato.Payload.Message.Split('|')[0];
+            string serverName = UsersPersistenceHandler.GetInstance().GetServerName(login);
+            if (serverName != null)
+            {
+                Connection serverConnection = SingletonServerConnection.GetInstance().GetServer(serverName);
+                foreach (var item in dato.GetBytes())
+                {
+                    Console.WriteLine("Enviando peticion de agregar contacto al servidor");
+                    serverConnection.WriteToStream(item);
+                }
+            }
+        }
+
+        private void CommandREQFindContacts(Connection clientConnection, Data dato)
+        {
+            string[] payloadSplitted = dato.Payload.Message.Split('|');
+            string login = payloadSplitted[0];
+            string pattern = payloadSplitted[1];
+
+            //me fijo que contactos de los registrados matchea con el patron recibido
+            List<string> contactsFound = SingletonClientConnection.GetInstance().FindRegisteredClientByPattern(pattern, login);
+
+            //construyo el diccionario resultado, marcando los contactos que esten conectados
+            Dictionary<string, bool> result = new Dictionary<string, bool>();
+            foreach (string key in contactsFound)
+            {
+                result.Add(key, SingletonClientConnection.GetInstance().ClientIsConnected(key));
+            }
+
+            //armo la lista resultado y devuelvo
+            if (clientConnection != null)
+            {
+                Data outData = new Data() { 
+                    Command = Command.RES, 
+                    OpCode = OpCodeConstants.RES_FIND_CONTACT, 
+                    Payload = new MultiplePayload() {Message = UtilContactList.StringFromContactList(result), Destination = login}
+                };
+                foreach (var item in outData.GetBytes())
+                {
+                    clientConnection.WriteToStream(item);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Tengo que descartar respuesta para {0} que no tiene Conexion", login);
+            }
+
         }
 
         private void CommandREQServerConnect(Connection newConnection, Data dato)
@@ -128,20 +224,10 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 oldConnection.CloseConn();
             }
 
-           
             ssc.AddServer(serverName, newConnection);
             log.InfoFormat("Agregado nuevo servidor: {0}:{2} , name:{1}, userCount:{3}", 
                 newConnection.Ip,  newConnection.Name, newConnection.Port, newConnection.UserCount);
             SendMessage(newConnection, Command.RES, OpCodeConstants.REQ_SERVER_CONNECT, new Payload("SUCCESS"));
-        }
-
-        private void SendMessage(Connection connection, Command command, int opCode, Payload payload)
-        {
-            Data data = new Data() { Command = command, OpCode = opCode, Payload = payload };
-            foreach (var item in data.GetBytes())
-            {
-                connection.WriteToStream(item);
-            }
         }
 
         private void CommandREQContactList(Connection clientConnection, Data dato)
@@ -153,7 +239,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 Connection serverConnection = SingletonServerConnection.GetInstance().GetServer(serverName);
                 foreach (var item in dato.GetBytes())
                 {
-                    Console.WriteLine("Enviando peticion de contactos al servidor");
+                    Console.WriteLine("Enviando peticion de lista de contactos al servidor");
                     serverConnection.WriteToStream(item);
                 }
             }
@@ -247,7 +333,16 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         private string FindAGoodServer()
         {
             return SingletonServerConnection.GetInstance().FindBestServerForNewUser();
-           
         }
+
+        private void SendMessage(Connection connection, Command command, int opCode, Payload payload)
+        {
+            Data data = new Data() { Command = command, OpCode = opCode, Payload = payload };
+            foreach (var item in data.GetBytes())
+            {
+                connection.WriteToStream(item);
+            }
+        }
+
     }
 }

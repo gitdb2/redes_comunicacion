@@ -48,7 +48,6 @@ namespace uy.edu.ort.obligatorio.ContentServer
                 case 2:
                     break;
                 case 3:
-                   
                     break;
                 case 4:
                     break;
@@ -71,7 +70,6 @@ namespace uy.edu.ort.obligatorio.ContentServer
                    
             switch (dato.OpCode)
             {
-               
                 case OpCodeConstants.REQ_CONTACT_LIST: //viene el obtener lista de contactos
                     CommandGetContactList(Connection, dato);
                     log.Debug("procesé REQ LISTA DE CONTACTOS");
@@ -85,10 +83,10 @@ namespace uy.edu.ort.obligatorio.ContentServer
                     log.Debug("procesé REQ Buscar Archivos");
                     break;
 
-                    
+                case OpCodeConstants.REQ_ADD_CONTACT:
+                    CommandAddContact(Connection, dato);
+                    break;
                 default:
-                    
-                   
                     break;
             }
         }
@@ -138,12 +136,34 @@ namespace uy.edu.ort.obligatorio.ContentServer
             }
         }
 
+        private void CommandAddContact(Connection Connection, Data dato)
+        {
+            string[] payloadSplitted = dato.Payload.Message.Split('|');
+            string login = payloadSplitted[0];
+            string contactToAdd = payloadSplitted[1];
+            
+            bool ok = UsersContactsPersistenceHandler.GetInstance().AddContact(login, contactToAdd);
+
+            string statusMessage = ok ? "SUCCESS" : "ERROR";
+            string message = contactToAdd + STATUS_DELIMITER + "0" + CONTACT_DELIMITER + statusMessage;
+
+            Data retDato = new Data()
+            {
+                Command = Command.RES,
+                OpCode = OpCodeConstants.RES_ADD_CONTACT,
+                Payload = new MultiplePayload() { Message = message, Destination = login }
+            };
+            foreach (var item in retDato.GetBytes())
+            {
+                Console.WriteLine("Envio :{0}", ConversionUtil.GetString(item));
+                Connection.WriteToStream(item);
+            }
+        }
+
         private void CommandCreateNewUser(Connection Connection, Data dato)
         {
             string login = dato.Payload.Message;
             bool ok = UsersContactsPersistenceHandler.GetInstance().RegisterNewUser(login);
-
-
             Data retDato = new Data() { Command = Command.RES, 
                                         OpCode = OpCodeConstants.RES_CREATE_USER,
                                         Payload = new MultiplePayload() { Message = (ok? "SUCCESS" : "ERROR"), Destination = login }
@@ -184,11 +204,6 @@ namespace uy.edu.ort.obligatorio.ContentServer
 	        }
             Console.WriteLine("termina :CommandGetContactList");
         }
-
-       
-
-      
-
        
     }
 }

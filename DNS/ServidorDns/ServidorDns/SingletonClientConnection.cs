@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using uy.edu.ort.obligatorio.Commons;
+using System.Text.RegularExpressions;
 
 namespace uy.edu.ort.obligatorio.ServidorDns
 {
@@ -64,6 +65,34 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         public bool ClientIsConnected(string login)
         {
             return clientsMap.ContainsKey(login);
+        }
+
+        public List<string> FindRegisteredClientByPattern(string pattern, string exclude)
+        {
+            lock (this)
+            {
+                var regex = new Regex(pattern);
+                List<string> tmpKeyList = new List<string>(UsersPersistenceHandler.GetInstance().GetRegisteredUsers());
+                tmpKeyList.Remove(exclude);
+                return tmpKeyList.FindAll(delegate(string s) { return regex.IsMatch(s); });
+            }
+        }
+
+        public void AddContactToClient(string client, string contactToAdd)
+        {
+            lock (this)
+            {
+                if (!clientsContactsMap[client].Contains(contactToAdd))
+                    clientsContactsMap[client].Add(contactToAdd);
+            }
+        }
+
+        public void AddContactToClient(string login, List<string> clientContactList)
+        {
+            lock (this)
+            {
+                clientsContactsMap[login] = clientContactList;         
+            }
         }
     }
 }

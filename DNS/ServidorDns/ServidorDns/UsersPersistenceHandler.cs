@@ -67,6 +67,11 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             }
         }
 
+        public List<String> GetRegisteredUsers()
+        {
+            return users.GetRegisteredUsers();
+        }
+
     }
    
 }

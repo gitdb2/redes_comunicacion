@@ -70,7 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="users.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>

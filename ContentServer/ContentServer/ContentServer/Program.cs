@@ -40,7 +40,7 @@ namespace uy.edu.ort.obligatorio.ContentServer
 
         public bool running = true;
         public TcpListener server;
-        public bool DEBUG = true;
+        public bool DEBUG = bool.Parse(Settings.GetInstance().GetProperty("debug", "false"));
         public Program()
         {
             log4net.Config.XmlConfigurator.Configure(new FileInfo("log4net.config"));

@@ -87,6 +87,13 @@ namespace Comunicacion
             file.Close();
         }
 
+        public List<string> GetRegisteredUsers()
+        {
+            List<string> result = new List<string>();
+            result.AddRange(list.Keys);
+            return result;
+        }
+
         public void Reload()
         {
             Reload(this.filename);

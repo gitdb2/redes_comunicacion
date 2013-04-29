@@ -16,16 +16,24 @@ namespace Chat
     {
         public string Login { get; set; }
         private ClientHandler clientHandler;
+        private ClientHandler.ContactListEventHandler contactListResponse;
+        private ClientHandler.UpdateContactStatusEventHandler updateContactStatusResponse;
 
         //lista de contactos temporal en la que se acumulan todas las llegadas de RES02
         //una vez que llego la ultima porcion de la lista se refresca el form y se vacia esta lista
         private Dictionary<string, bool> tmpContactList = new Dictionary<string,bool>();
 
+        //lista de contactos actual, la uso para los cambios de estado ya que no puedo recorrer el listView
+        private Dictionary<string, bool> updateContactList = new Dictionary<string, bool>();
+
         public VentanaPrincipalCliente()
         {
             InitializeComponent();
             clientHandler = ClientHandler.GetInstance();
-            clientHandler.ContactListResponse += new ClientHandler.ContactListEventHandler(EventContactListResponse);
+            contactListResponse = new ClientHandler.ContactListEventHandler(EventContactListResponse);
+            updateContactStatusResponse = new ClientHandler.UpdateContactStatusEventHandler(EventUpdateContactStatusResponse);
+            clientHandler.ContactListResponse += contactListResponse;
+            clientHandler.UpdateContactStatusResponse += updateContactStatusResponse;
         }
 
         void EventContactListResponse(object sender, ContactListEventArgs e)
@@ -38,19 +46,44 @@ namespace Chat
                 //cuando me mandaron la ultima porcion de la lista de contactos refresco el form
                 if (e.IsLastPart) 
                 {
-                    listaContactos.Items.Clear();
-                    foreach (KeyValuePair<string, bool> contacto in tmpContactList)
-                    {
-                        ListViewItem lvi = new ListViewItem(contacto.Key);
-                        lvi.Tag = contacto;
-                        SetearEstadoContacto(lvi, contacto);
-                        listaContactos.Items.Add(lvi);
-                    }
-                    FormUtils.AjustarTamanoColumnas(listaContactos);
-
-                    //reseteo la lista de contactos temporal
-                    tmpContactList.Clear();
+                    UpdateFormContactList(tmpContactList);
                 }
+            }));
+        }
+
+        private void UpdateFormContactList(Dictionary<string, bool> from)
+        {
+            listaContactos.Items.Clear();
+            foreach (KeyValuePair<string, bool> contacto in from)
+            {
+                ListViewItem lvi = new ListViewItem(contacto.Key);
+                lvi.Tag = contacto;
+                SetearEstadoContacto(lvi, contacto);
+                listaContactos.Items.Add(lvi);
+            }
+            FormUtils.AjustarTamanoColumnas(listaContactos);
+            UpdateLocalContactLists();
+        }
+
+        private void UpdateLocalContactLists()
+        {
+            //agrego todos los elementos a la lista de contactos para updates
+            foreach (KeyValuePair<string, bool> item in tmpContactList)
+            {
+                updateContactList.Add(item.Key, item.Value);
+            }
+            //reseteo la lista de contactos temporal
+            tmpContactList.Clear();
+        }
+
+        void EventUpdateContactStatusResponse(object sender, SimpleEventArgs e)
+        {
+            this.BeginInvoke((Action)(delegate
+            {
+                string contact = e.Message.Split('@')[0];
+                bool isConnected = e.Message.Split('@')[1].Equals("1");
+                updateContactList[contact] = isConnected;
+                UpdateFormContactList(updateContactList);
             }));
         }
 
@@ -77,14 +110,14 @@ namespace Chat
             }
             else 
             {
-                MessageBox.Show("No es posible chatear con " + contactSelected.Value + ", esta desconectado.",
+                MessageBox.Show("No es posible chatear con " + contactSelected.Key + ", esta desconectado.",
                     "Contacto Desconectado", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
         private void menuAccionesOpcionAgregarContacto_Click(object sender, EventArgs e)
         {
-            AgregarContacto ac = new AgregarContacto();
+            AgregarContacto ac = new AgregarContacto() { Login = this.Login};
             ac.ShowDialog();
         }
 
@@ -104,5 +137,12 @@ namespace Chat
         {
             clientHandler.GetContactList(Login);
         }
+
+        private void VentanaPrincipalCliente_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            clientHandler.ContactListResponse -= contactListResponse;
+            clientHandler.UpdateContactStatusResponse -= updateContactStatusResponse;
+        }
+
     }
 }

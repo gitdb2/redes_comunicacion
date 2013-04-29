@@ -37,25 +37,34 @@ namespace ClientImplementation
             {
                 case 0:
                     break;
-                case 1:
+                case OpCodeConstants.RES_LOGIN:
                     CommandRESLogin(clientConnection, dato);
                     break;
-                case 2:
+                case OpCodeConstants.RES_CONTACT_LIST:
                     CommandRESContactList(clientConnection, dato);
                     break;
-                case 3:
+                case OpCodeConstants.RES_FIND_CONTACT:
+                    CommandRESFindContact(clientConnection, dato);
                     break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    break;
-                case 99:
+                case OpCodeConstants.RES_ADD_CONTACT:
+                    CommandRESAddContact(clientConnection, dato);
                     break;
                 default:
                     break;
             }
+        }
+
+        private void CommandRESAddContact(Connection clientConnection, Data dato)
+        {
+            //la respuesta viene en el formato n|m|loginDestino|contactoAgregado@estado|mensaje
+            ClientHandler.GetInstance().OnAddContactResponse(new SimpleEventArgs() { Message = dato.Payload.Message });
+        }
+
+        private void CommandRESFindContact(Connection clientConnection, Data dato)
+        {
+            Dictionary<string, bool> contactList = UtilContactList.ContactListFromString(dato.Payload.Message);
+            bool isLastPart = UtilContactList.IsLastPart(dato.Payload.Message);
+            ClientHandler.GetInstance().OnFindContactResponse(new ContactListEventArgs() { ContactList = contactList, IsLastPart = isLastPart });
         }
 
         private void CommandRESLogin(Connection clientConnection, Data dato)

@@ -46,6 +46,7 @@
     <Compile Include="LoginErrorEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReceiveEventHandler.cs" />
+    <Compile Include="SimpleEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\DNS\ServidorDns\Commons\Commons.csproj">
