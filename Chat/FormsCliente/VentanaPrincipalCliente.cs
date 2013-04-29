@@ -16,6 +16,8 @@ namespace Chat
     {
         public string Login { get; set; }
         private ClientHandler clientHandler;
+        private ClientHandler.ContactListEventHandler contactListResponse;
+        private ClientHandler.UpdateContactStatusEventHandler updateContactStatusResponse;
 
         //lista de contactos temporal en la que se acumulan todas las llegadas de RES02
         //una vez que llego la ultima porcion de la lista se refresca el form y se vacia esta lista
@@ -28,8 +30,10 @@ namespace Chat
         {
             InitializeComponent();
             clientHandler = ClientHandler.GetInstance();
-            clientHandler.ContactListResponse += new ClientHandler.ContactListEventHandler(EventContactListResponse);
-            clientHandler.UpdateContactStatusResponse += new ClientHandler.UpdateContactStatusEventHandler(EventUpdateContactStatusResponse);
+            contactListResponse = new ClientHandler.ContactListEventHandler(EventContactListResponse);
+            updateContactStatusResponse = new ClientHandler.UpdateContactStatusEventHandler(EventUpdateContactStatusResponse);
+            clientHandler.ContactListResponse += contactListResponse;
+            clientHandler.UpdateContactStatusResponse += updateContactStatusResponse;
         }
 
         void EventContactListResponse(object sender, ContactListEventArgs e)
@@ -132,6 +136,12 @@ namespace Chat
         private void VentanaPrincipalCliente_Load(object sender, EventArgs e)
         {
             clientHandler.GetContactList(Login);
+        }
+
+        private void VentanaPrincipalCliente_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            clientHandler.ContactListResponse -= contactListResponse;
+            clientHandler.UpdateContactStatusResponse -= updateContactStatusResponse;
         }
     }
 }
