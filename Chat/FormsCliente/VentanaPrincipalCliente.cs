@@ -84,7 +84,7 @@ namespace Chat
 
         private void menuAccionesOpcionAgregarContacto_Click(object sender, EventArgs e)
         {
-            AgregarContacto ac = new AgregarContacto();
+            AgregarContacto ac = new AgregarContacto() { Login = this.Login};
             ac.ShowDialog();
         }
 

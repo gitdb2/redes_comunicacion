@@ -5,6 +5,7 @@ using System.Text;
 using Comunicacion;
 using uy.edu.ort.obligatorio.LibOperations.intefaces;
 using uy.edu.ort.obligatorio.Commons;
+using System.Text.RegularExpressions;
 
 namespace uy.edu.ort.obligatorio.ServidorDns
 {
@@ -97,7 +98,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 case OpCodeConstants.REQ_SERVER_CONNECT: //un servidor se conecta y registra en el dns
                     CommandREQServerConnect(clientConnection, dato);
                     break;
-                case 5: //un login hace una busqueda de contactos
+                case OpCodeConstants.REQ_FIND_CONTACT: //un login hace una busqueda de contactos
                     CommandREQFindContacts(clientConnection, dato);
                     break;
                 default:
@@ -110,7 +111,35 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             string[] payloadSplitted = dato.Payload.Message.Split('|');
             string login = payloadSplitted[0];
             string pattern = payloadSplitted[1];
-            //TODO
+
+            //me fijo que contactos de los registrados matchea con el patron recibido
+            List<string> contactsFound = SingletonClientConnection.GetInstance().FindRegisteredClientByPattern(pattern, login);
+
+            //construyo el diccionario resultado, marcando los contactos que esten conectados
+            Dictionary<string, bool> result = new Dictionary<string, bool>();
+            foreach (string key in contactsFound)
+            {
+                result.Add(key, SingletonClientConnection.GetInstance().ClientIsConnected(key));
+            }
+
+            //armo la lista resultado y devuelvo
+            if (clientConnection != null)
+            {
+                Data outData = new Data() { 
+                    Command = Command.RES, 
+                    OpCode = OpCodeConstants.RES_FIND_CONTACT, 
+                    Payload = new MultiplePayload() {Message = UtilContactList.StringFromContactList(result), Destination = login}
+                };
+                foreach (var item in outData.GetBytes())
+                {
+                    clientConnection.WriteToStream(item);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Tengo que descartar respuesta para {0} que no tiene Conexion", login);
+            }
+
         }
 
         private void CommandREQServerConnect(Connection newConnection, Data dato)

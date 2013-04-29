@@ -1,2 +1,4 @@
-﻿rafa=server1
-pepe=server1
+﻿mauricio=server1
+rodrigo=server1
+rodtrab=server1
+alfajor=server1

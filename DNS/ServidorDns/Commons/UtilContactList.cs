@@ -80,5 +80,19 @@ namespace uy.edu.ort.obligatorio.Commons
             return result.ToString();
         }
 
+
+        public static string StringFromContactList(Dictionary<string, bool> contactList)
+        {
+            StringBuilder res = new StringBuilder();
+            int count = 0;
+            foreach (var key in contactList.Keys)
+            {
+                count++;
+                res.Append(key).Append(INTERNAL_SEPARATOR).Append(contactList[key] ? "1" : "0");
+                if (count < contactList.Count)
+                    res.Append(EXTERNAL_SEPARATOR);
+            }
+            return res.ToString();
+        }
     }
 }

@@ -44,7 +44,11 @@ namespace ClientImplementation
 
         public void LoginClient(string login)
         {
-            Data data = new Data() { Command = Command.REQ, OpCode = 1, Payload = new Payload(login) };
+            Data data = new Data() { 
+                Command = Command.REQ, 
+                OpCode = OpCodeConstants.REQ_LOGIN, 
+                Payload = new Payload(login) 
+            };
             foreach (var item in data.GetBytes())
             {
                 connection.WriteToStream(item);
@@ -53,16 +57,24 @@ namespace ClientImplementation
 
         public void GetContactList(string login)
         {
-            Data data = new Data() { Command = Command.REQ, OpCode = 2, Payload = new Payload(login) };
+            Data data = new Data() { 
+                Command = Command.REQ, 
+                OpCode = OpCodeConstants.REQ_CONTACT_LIST, 
+                Payload = new Payload(login) 
+            };
             foreach (var item in data.GetBytes())
             {
                 connection.WriteToStream(item);
             }
         }
 
-        public void FindContacts(string Login, string pattern)
+        public void FindContact(string Login, string pattern)
         {
-            Data data = new Data() { Command = Command.REQ, OpCode = 5, Payload = new Payload(Login + "|" + pattern) };
+            Data data = new Data() { 
+                Command = Command.REQ, 
+                OpCode = OpCodeConstants.REQ_FIND_CONTACT, 
+                Payload = new Payload(Login + "|" + pattern) 
+            };
             foreach (var item in data.GetBytes())
             {
                 connection.WriteToStream(item);
@@ -98,6 +110,13 @@ namespace ClientImplementation
         }
 
         public delegate void FindContactsEventHandler(object sender, ContactListEventArgs e);
-       
+
+        public event FindContactsEventHandler FindContactResponse;
+
+        public void OnFindContactResponse(ContactListEventArgs contactListEventArgs)
+        {
+            if (FindContactResponse != null)
+                FindContactResponse(this, contactListEventArgs);
+        }
     }
 }

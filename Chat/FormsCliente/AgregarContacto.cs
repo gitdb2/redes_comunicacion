@@ -24,7 +24,7 @@ namespace Chat
         {
             InitializeComponent();
             clientHandler = ClientHandler.GetInstance();
-            clientHandler.ContactListResponse += new ClientHandler.FindContactsEventHandler(EventFindContactsResponse);
+            clientHandler.FindContactResponse += new ClientHandler.FindContactsEventHandler(EventFindContactsResponse);
         }
 
         private void btnBuscar_Click(object sender, EventArgs e)
@@ -32,7 +32,7 @@ namespace Chat
             string pattern = txtBuscarContacto.Text;
             if (pattern != null && !pattern.Trim().Equals(""))
             {
-                clientHandler.FindContacts(Login, pattern);
+                clientHandler.FindContact(Login, pattern);
             }
         }
 
