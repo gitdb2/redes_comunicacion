@@ -18,5 +18,14 @@ namespace uy.edu.ort.obligatorio.Commons
         
         public const int REQ_CREATE_USER = 4;
         public const int RES_CREATE_USER = REQ_CREATE_USER;
+
+
+
+
+        public const int REQ_SEARCH_FILES = 7;
+        public const int RES_SEARCH_FILES = REQ_SEARCH_FILES;
+
+        public const int REQ_GET_FILE = 8;
+        public const int RES_GET_FILE = REQ_GET_FILE;
     }
 }

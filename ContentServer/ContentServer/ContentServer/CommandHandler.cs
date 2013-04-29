@@ -80,7 +80,10 @@ namespace uy.edu.ort.obligatorio.ContentServer
                     CommandCreateNewUser(Connection, dato);
                     log.Debug("procesé REQ Crear USUARIO");
                     break;
-
+                case OpCodeConstants.REQ_SEARCH_FILES:
+                    CommandSearchFiles(Connection, dato);
+                    log.Debug("procesé REQ Buscar Archivos");
+                    break;
 
                     
                 default:
@@ -88,6 +91,11 @@ namespace uy.edu.ort.obligatorio.ContentServer
                    
                     break;
             }
+        }
+
+        private void CommandSearchFiles(Connection Connection, Data dato)
+        {//REQ07
+            
         }
 
         private void CommandCreateNewUser(Connection Connection, Data dato)
