@@ -74,7 +74,7 @@ namespace ClienteContentServer
 
                 string dataToSend = login + "|" + hashQuery + "|"+pattern;
 
-                Data data = new Data() { Command = Command.REQ, 
+                Data data = new Data() { Command = Command.REQ,
                                          OpCode = OpCodeConstants.REQ_SEARCH_FILES,
                                          Payload = new Payload(dataToSend)
                 };
