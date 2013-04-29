@@ -53,6 +53,57 @@ namespace uy.edu.ort.obligatorio.ContentServer
             return Settings.GetInstance().GetProperty("base.shared.dir.path", @"c:\shared");
         }
 
+        public FileInfo GetFile(string hash)
+        {
+            return GetFile(hash, "");
+        }
+
+        public FileInfo GetFile(string hash, string owner)
+        {
+            FileInfo ret = null;
+
+
+            return ret;
+
+        }
+
+        private FileObject SearchFilesByHash(string hash, string owner)
+        {
+            FileObject ret = null;
+
+            try
+            {
+                //  string[] filePaths = Directory.GetFiles(@"c:\MyDir\", "*.bmp");
+                string basePath = BasePath();
+
+                if (owner.Length > 0)
+                {
+                    basePath += @"\" + owner;
+                }
+
+                string[] filePaths = Directory.GetFiles(basePath, "*", SearchOption.AllDirectories);
+
+
+                foreach (var filename in filePaths)
+                {
+                    FileObject tmp = CreateFileObject(filename);
+                    if (tmp.Hash.Equals(hash))
+                    {
+                        ret = tmp;
+                        break;
+                    }
+
+                }
+            }
+            catch (Exception)
+            {
+
+                ret = null;
+            }
+            return ret;
+        }
+
+
         public List<FileObject> SearchFilesMatching(string pattern)
         {
             List<FileObject> ret = new List<FileObject>();
