@@ -11,6 +11,8 @@ namespace uy.edu.ort.obligatorio.Commons
 {
     public class Connection
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private TcpClient tcpClient;
         private NetworkStream networkStream;
         
@@ -47,6 +49,8 @@ namespace uy.edu.ort.obligatorio.Commons
             try
             {
                 Console.WriteLine("[{0}] New connection!", DateTime.Now);
+                log.Info("Setup  New connection!");
+
                 networkStream = tcpClient.GetStream();
                 StreamReader = new StreamReader(networkStream, Encoding.UTF8);
                 StreamWriter = new StreamWriter(networkStream, Encoding.UTF8);
@@ -70,18 +74,27 @@ namespace uy.edu.ort.obligatorio.Commons
                 catch (Exception e)
                 {
                     notEnd = EventHandler.OnFatalError(this);
-                    Console.WriteLine("Se rompio la conexion del login: " + this.Name);
-                    Console.WriteLine(e.StackTrace);
-                    Console.WriteLine(e.Message);
+
+                    Console.WriteLine("Se rompio la conexion de: " + this.Name);
+                    log.Error("Error mientras se cerraba la conexion", e);
+                 //   Console.WriteLine(e.StackTrace);
+                    Console.WriteLine("Error: "+e.Message);
                     notEnd = false;
                     CloseConn();
                 }
             }
+            try
+            {
+                CloseConn();
+            }
+            catch { }
             Console.WriteLine("termino");
+            log.Info("Termian Receive Data!");
         }
 
         public void CloseConn() // Close connection.
         {
+            log.Info("Cerrando connection!");
             try
             {
                 StreamReader.Close();
@@ -89,9 +102,11 @@ namespace uy.edu.ort.obligatorio.Commons
                 networkStream.Close();
                 tcpClient.Close();
                 Console.WriteLine("[{0}] End of connection!", DateTime.Now);
+                log.Info("End of connection!");
             }
             catch (Exception e) {
-                Console.WriteLine(e.StackTrace);
+                log.Error("Error mientras se cerraba la conexion", e);
+              //  Console.WriteLine(e.StackTrace);
                 Console.WriteLine(e.Message);
             }
             notEnd = false;

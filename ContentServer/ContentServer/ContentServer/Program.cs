@@ -7,27 +7,18 @@ using System.Net.Sockets;
 using System.Threading;
 using System.IO;
 using Comunicacion;
+using uy.edu.ort.obligatorio.Commons;
+using log4net;
+using System.Reflection;
 
 namespace uy.edu.ort.obligatorio.ContentServer
 {
-
-    /*
-        base.shared.dir.path=c:/shared
-listen.ip=ANY
-
-server.ip=192.168.0.242
-server.port=2001
-server.name=rodrigo-nb
-
-dns.ip=127.0.0.1
-dns.port=2000
-         
-        */
 
 
     public class Program
     {
         DNSConnection dns;
+        private ILog log;
 
         static void Main(string[] args)
         {
@@ -49,31 +40,41 @@ dns.port=2000
 
         public bool running = true;
         public TcpListener server;
-
+        public bool DEBUG = true;
         public Program()
         {
+            log4net.Config.XmlConfigurator.Configure(new FileInfo("log4net.config"));
+            log4net.GlobalContext.Properties["serverName"] = Settings.GetInstance().GetProperty("server.name", "rodrigo-nb");
+            log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
             Console.Title = "Servidor De Contenidos";
             Console.WriteLine("----- Servidor De Contenidos -----");
             UsersContactsPersistenceHandler.GetInstance().LoadContacts();
+            log.Info("contactos cargados");
             Console.WriteLine("contactos cargados");
-
-            Console.WriteLine("[{0}] Connecting Dns...", DateTime.Now);
-            dns = new DNSConnection();
-            dns.SetupConn();
-            Console.WriteLine("[{0}] DNS connection ready...", DateTime.Now);
-
+            if (!DEBUG)
+            {
+                Console.WriteLine("[{0}] Connecting Dns...", DateTime.Now);
+                dns = new DNSConnection();
+                dns.SetupConn();
+                Console.WriteLine("[{0}] DNS connection ready...", DateTime.Now);
+            }
+            else
+            {
+                Console.WriteLine("[{0}] Modo DEBUG Sin conezion al Dns...", DateTime.Now);
+            }
             Console.WriteLine("[{0}] Starting server...", DateTime.Now);
 
             string listenAddressStr = Settings.GetInstance().GetProperty("listen.ip","ANY");
 
-            IPAddress ip = "ANY".Equals(listenAddressStr) ? IPAddress.Any : IPAddress.Parse(listenAddressStr);//IPAddress.Parse("192.168.0.242");//127.0.0.1");
+            IPAddress ip = "ANY".Equals(listenAddressStr) ? IPAddress.Any : IPAddress.Parse(listenAddressStr);
             int port =  int.Parse(Settings.GetInstance().GetProperty("server.port","2001"));
 
 
             server = new TcpListener(ip, port);
             server.Start();
             Console.WriteLine("[{0}] Server is running properly!", DateTime.Now);
-
+            log.Info("Server is running properly!");
             Listen();
         }
 
@@ -83,7 +84,7 @@ dns.port=2000
             while (running)
             {
                 TcpClient tcpClient = server.AcceptTcpClient();  // Accept incoming connection.
-                Connection client = new Connection(tcpClient);     // Handle in another thread.
+                Connection client = new Connection(tcpClient, new ReceiveEventHandler());     // Handle in another thread.
             }
         }
 
@@ -93,6 +94,7 @@ dns.port=2000
 
     public class DNSConnection
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public string DNSServer { get { return Settings.GetInstance().GetProperty("dns.ip", "127.0.0.1"); } }// return "192.168.0.201"; } }
         public int DNSPort { get { return int.Parse(Settings.GetInstance().GetProperty("dns.port","2000")); } }
@@ -110,7 +112,7 @@ dns.port=2000
             Settings.GetInstance().GetProperty("dns.port","2000")
             */
 
-            Connection client = new Connection(new TcpClient(DNSServer, DNSPort));
+            Connection client = new Connection(new TcpClient(DNSServer, DNSPort), new ReceiveEventHandler());
            
             string payload =            Settings.GetInstance().GetProperty("server.name","rodrigo-nb")
                                 + ":" + Settings.GetInstance().GetProperty("server.ip","127.0.0.1")
@@ -128,10 +130,11 @@ dns.port=2000
             foreach (var item in data.GetBytes())
             {
                 Console.WriteLine("line " + cont++ + "   --->" + ConversionUtil.GetString(item));
+                log.Info("Enviando linea " + cont++ + "   --->" + ConversionUtil.GetString(item));
                 client.WriteToStream(item);
             }
 
-            Console.WriteLine("mande");
+            log.Info("End Register Server");
         
         }
        
