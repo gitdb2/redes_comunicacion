@@ -77,7 +77,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                     sb.Append(payLoadSplitted[1]).Append("|");
                     sb.Append(login).Append("|");
                     sb.Append(contactAdded).Append("@1").Append("|");
-                    sb.Append(payLoadSplitted[3]);
+                    sb.Append(payLoadSplitted[4]);
                     dato.Payload.Message = sb.ToString();
                 }
             }

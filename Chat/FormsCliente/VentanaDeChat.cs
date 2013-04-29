@@ -12,6 +12,7 @@ using System.IO;
 using System.Net.Sockets;
 using System.Threading;
 using System.Net;
+using ClientImplementation;
 
 namespace Chat
 {
@@ -19,6 +20,8 @@ namespace Chat
     {
         private string ChateandoCon;
         private string NombreUsuario;
+        private string ChatID;
+        private ClientHandler clientHandler;
 
         private const string patronFecha = "yyyy-MM-dd HH:mm";
 
@@ -27,6 +30,8 @@ namespace Chat
             InitializeComponent();
             this.ChateandoCon = contacto;
             this.NombreUsuario = nombreUsuario;
+            this.ChatID =  "chat-" + NombreUsuario + "=>" + ChateandoCon;
+            this.clientHandler = clientHandler = ClientHandler.GetInstance();
             MostrarMensajeInicial(contacto);
         }
 

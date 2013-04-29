@@ -82,7 +82,8 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         {
             lock (this)
             {
-                clientsContactsMap[client].Add(contactToAdd);
+                if (!clientsContactsMap[client].Contains(contactToAdd))
+                    clientsContactsMap[client].Add(contactToAdd);
             }
         }
 
@@ -90,7 +91,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         {
             lock (this)
             {
-                clientsContactsMap[login] = clientContactList;            
+                clientsContactsMap[login] = clientContactList;         
             }
         }
     }

@@ -143,5 +143,6 @@ namespace Chat
             clientHandler.ContactListResponse -= contactListResponse;
             clientHandler.UpdateContactStatusResponse -= updateContactStatusResponse;
         }
+
     }
 }
