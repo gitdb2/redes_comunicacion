@@ -92,10 +92,50 @@ namespace uy.edu.ort.obligatorio.ContentServer
                     break;
             }
         }
-
-        private void CommandSearchFiles(Connection Connection, Data dato)
+        public const string PIPE_SEPARATOR = "|";
+        private void CommandSearchFiles(Connection connection, Data dato)
         {//REQ07
-            
+
+           // login + "|" + hashQuery + "|" + pattern;
+
+
+            string[] payload = dato.Payload.Message.Split(new string[] { PIPE_SEPARATOR }, StringSplitOptions.None);
+            string login        = payload[0];
+            string queryHash    = payload[1];
+            string pattern      = payload[2];
+            List<FileObject> results = FileOperationsSingleton.GetInstance().SearchFilesMatching(pattern);
+
+            StringBuilder message = new StringBuilder();
+            string destination = login + PIPE_SEPARATOR + queryHash + PIPE_SEPARATOR + Settings.GetInstance().GetProperty("server.name", "DEFAULT_SERVER");
+
+            bool first = true;
+            foreach (var item in results)
+            {
+               if (first)
+                {
+                    first = false;
+                }
+                else
+                {
+                    message.Append(PIPE_SEPARATOR);
+                }
+                message.Append(item.ToNetworkString());
+            }
+
+            string tmp = message.ToString();
+
+            Data retDato = new Data()
+            {
+                Command = Command.RES,
+                OpCode = OpCodeConstants.RES_SEARCH_FILES,
+                Payload = new MultiplePayload() { Message = tmp, Destination = destination }
+            };
+
+            foreach (var item in retDato.GetBytes())
+            {
+                Console.WriteLine("Envio :{0}", ConversionUtil.GetString(item));
+                connection.WriteToStream(item);
+            }
         }
 
         private void CommandCreateNewUser(Connection Connection, Data dato)

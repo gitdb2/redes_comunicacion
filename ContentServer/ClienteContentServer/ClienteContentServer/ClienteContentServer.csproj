@@ -11,7 +11,8 @@
     <RootNamespace>ClienteContentServer</RootNamespace>
     <AssemblyName>ClienteContentServer</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -34,6 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\..\..\Lib-Comunicacion\Comunicacion\Comunicacion\lib\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -47,10 +51,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\DNS\ServidorDns\Commons\Commons.csproj">
+      <Project>{A4983E71-5669-45E3-A3C8-C428E056EF62}</Project>
+      <Name>Commons</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Lib-Comunicacion\Comunicacion\Comunicacion\Comunicacion.csproj">
       <Project>{B4B3F489-2339-4AB7-ADDA-F17F6C15671D}</Project>
       <Name>Comunicacion</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

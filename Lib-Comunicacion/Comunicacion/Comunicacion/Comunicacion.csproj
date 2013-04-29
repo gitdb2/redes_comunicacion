@@ -55,6 +55,7 @@
     <Compile Include="Command.cs" />
     <Compile Include="ConversionUtil.cs" />
     <Compile Include="Data.cs" />
+    <Compile Include="FileObject.cs" />
     <Compile Include="MultiplePayload.cs" />
     <Compile Include="Payload.cs" />
     <Compile Include="Properties.cs" />

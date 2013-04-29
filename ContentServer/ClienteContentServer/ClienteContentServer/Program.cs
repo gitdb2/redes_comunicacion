@@ -6,6 +6,8 @@ using System.Threading;
 using System.Net.Sockets;
 using System.IO;
 using Comunicacion;
+using uy.edu.ort.obligatorio.Commons;
+
 
 namespace ClienteContentServer
 {
@@ -14,6 +16,7 @@ namespace ClienteContentServer
         {
             static void Main(string[] args)
             {
+                Console.Title = "Cliente d servidor de contenidos";
                 Program p = new Program();
                 p.connect();
                 Console.ReadLine();
@@ -56,16 +59,25 @@ namespace ClienteContentServer
             {
                 client = new TcpClient(Server, Port);  // Connect to the server.
                 netStream = client.GetStream();
-
-
+  
                 br = new StreamReader(netStream, Encoding.UTF8);
                 bw = new StreamWriter(netStream, Encoding.UTF8);
+                //--------------------------------------------------------------
 
 
+
+                string login = "rodrigo";
+                string pattern = "*";
+                string timestamp = ""+DateTime.Now;
+
+                String hashQuery = StringUtils.CalculateMD5Hash(String.Format("{0}|{1}|{2}", login, pattern, timestamp));
+
+                string dataToSend = login + "|" + hashQuery + "|"+pattern;
 
                 Data data = new Data() { Command = Command.REQ, 
-                                         OpCode = 3, 
-                                         Payload = new Payload("rodrigo") };
+                                         OpCode = OpCodeConstants.REQ_SEARCH_FILES,
+                                         Payload = new Payload(dataToSend)
+                };
                 int cont = 0;
                 foreach (var item in data.GetBytes())
                 {
@@ -82,6 +94,7 @@ namespace ClienteContentServer
 
                 Console.WriteLine("termino");
 
+                Console.ReadLine();
 
                 CloseConn();
             }
