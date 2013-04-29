@@ -76,7 +76,7 @@ namespace uy.edu.ort.obligatorio.ContentServer
 
             if (!contacts.ContainsKey(login))
             {
-
+                //ok si el directorio se cra o si ya existe
                 bool ok = CreateDiskSharedSpace(login);
 
                 if (ok)
@@ -107,7 +107,7 @@ namespace uy.edu.ort.obligatorio.ContentServer
                 }
 
             }
-            return false;
+            return true;
         }
 
         public List<string> GetContacts(string login)

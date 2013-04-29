@@ -34,6 +34,7 @@ namespace ClientImplementation
         public void Connect(string login)
         {
             connection.Name = login;
+           
         }
 
         public void LoginClient(string login)

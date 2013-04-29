@@ -33,6 +33,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
 
         private void HandleRES(Connection connection, Data dato)
         {
+            Console.WriteLine("[{0}] connection owner: {1} ;  The data: {2} ", DateTime.Now, connection.Name, dato.ToString());
             switch (dato.OpCode)
             {
 
@@ -46,14 +47,14 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                     break;
 
                 default:
-                    Console.WriteLine("[{0}] connection owner: {1} ;  The data: {2} ", DateTime.Now, connection.Name, dato.ToString());
+                   
                     break;
             }
         }
 
-        private void CommandRESUserCreated(Connection clientConnection, Data dato)
+        private void CommandRESUserCreated(Connection connection, Data dato)
         {
-            throw new NotImplementedException();
+            Console.WriteLine("[{0}] connection owner: {1} ;  The data: {2} ", DateTime.Now, connection.Name, dato.ToString());
         }
 
         private void CommandRESContactList(Connection clientConnection, Data entryData)
@@ -84,6 +85,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
 
         private void HandleREQ(Connection clientConnection, Data dato)
         {
+            Console.WriteLine("[{0}] connection owner: {1} ;  The data: {2} ", DateTime.Now, clientConnection.Name, dato.ToString());
             switch (dato.OpCode)
             {
             
@@ -98,7 +100,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                     break;
                
                 default:
-                    Console.WriteLine("[{0}] connection owner: {1} ;  The data: {2} ", DateTime.Now, clientConnection.Name, dato.ToString());
+                    
                     break;
             }
         }

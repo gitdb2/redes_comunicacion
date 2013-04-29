@@ -81,7 +81,7 @@ namespace Comunicacion
             System.IO.StreamWriter file = new System.IO.StreamWriter(filename);
 
             foreach (String prop in list.Keys.ToArray())
-                if (!String.IsNullOrWhiteSpace(list[prop]))
+              //  if (!String.IsNullOrWhiteSpace(list[prop]))
                     file.WriteLine(prop + "=" + list[prop]);
 
             file.Close();
