@@ -53,16 +53,32 @@ namespace uy.edu.ort.obligatorio.ContentServer
             return Settings.GetInstance().GetProperty("base.shared.dir.path", @"c:\shared");
         }
 
+        /// <summary>
+        /// pedir un archivo por hash al servidor
+        /// </summary>
+        /// <param name="hash"></param>
+        /// <returns></returns>
         public FileInfo GetFile(string hash)
         {
             return GetFile(hash, "");
         }
 
+        /// <summary>
+        /// pedir un archivo de un usuario por hash
+        /// </summary>
+        /// <param name="hash"></param>
+        /// <param name="owner"></param>
+        /// <returns></returns>
         public FileInfo GetFile(string hash, string owner)
         {
             FileInfo ret = null;
+            FileObject fo = SearchFilesByHash(hash, owner);
 
-
+            if (fo != null)
+            {
+                ret = new FileInfo(fo.FullName);
+            }
+            
             return ret;
 
         }
@@ -103,7 +119,11 @@ namespace uy.edu.ort.obligatorio.ContentServer
             return ret;
         }
 
-
+        /// <summary>
+        /// busqueda de archivos que macheen el patron
+        /// </summary>
+        /// <param name="pattern"></param>
+        /// <returns></returns>
         public List<FileObject> SearchFilesMatching(string pattern)
         {
             List<FileObject> ret = new List<FileObject>();
@@ -132,7 +152,8 @@ namespace uy.edu.ort.obligatorio.ContentServer
                        Name= fi.Name, 
                        Hash=BitConverter.ToString(md5.ComputeHash(stream)).Replace("-", "").ToLower(), 
                        Size= fi.Length, 
-                       Owner=fi.Directory.Name
+                       Owner=fi.Directory.Name, 
+                       FullName = fi.FullName
                    };
                  }
             }

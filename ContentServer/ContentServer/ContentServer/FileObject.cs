@@ -12,9 +12,11 @@ namespace uy.edu.ort.obligatorio.ContentServer
         public long Size { get; set; }
         public string Owner { get; set; }
 
+        public string FullName { get; set; }
+
         public override string ToString()
         {
-            return String.Format("name:{0}, hash:{1}, size: {2}, owner:{4}", Name, Hash,  Size, Owner);
+            return String.Format("name:{0}, hash:{1}, size: {2}, owner:{3}, fullName:{4}", Name, Hash, Size, Owner, FullName);
         }
     }
 }
