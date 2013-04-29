@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Comunicacion;
+using System.IO;
 
 namespace uy.edu.ort.obligatorio.ContentServer
 {
@@ -11,10 +12,10 @@ namespace uy.edu.ort.obligatorio.ContentServer
 
         const string CONTACT_SEPARATOR = ",";
         private static UsersContactsPersistenceHandler instance = new UsersContactsPersistenceHandler();
-      
+
         private Properties contacts = new Properties("contactos.txt");
 
-        private UsersContactsPersistenceHandler() 
+        private UsersContactsPersistenceHandler()
         {
         }
 
@@ -22,66 +23,149 @@ namespace uy.edu.ort.obligatorio.ContentServer
         {
             return instance;
         }
-
+        /*
         public bool RegisterLoginServer(string login, string serverName)
         {
+            lock (contacts)
+            {
+                if (!contacts.ContainsKey(login))
+                {
+                    contacts.Set(login, serverName);
+                    return true;
+                }
+                return false;
+            }
+        }
+        */
+        public bool IsLoginRegistered(string login)
+        {
+            lock (contacts)
+            {
+                return contacts.ContainsKey(login);
+            }
+        }
+
+        public void SaveContacts()
+        {
+            lock (contacts)
+            {
+                contacts.Save();
+            }
+        }
+
+
+        public int Count
+        {
+            get
+            {
+                lock (contacts)
+                { return contacts.Count; }
+            }
+        }
+
+        public bool RegisterNewUser(string login)
+        {
+            lock (contacts)
+            {
+                return AddNewUser(login);
+            }
+        }
+        //solo se permite ageagar un usuario nuevo a la vez, crea el area compartida y lo da de alta en la lista de contactos con 0 contactos y salva el archivo
+        private bool AddNewUser(string login)
+        {
+
             if (!contacts.ContainsKey(login))
             {
-                contacts.Set(login, serverName);
-                return true;
+                //ok si el directorio se cra o si ya existe
+                bool ok = CreateDiskSharedSpace(login);
+
+                if (ok)
+                {
+                    contacts.Set(login, "");
+                    contacts.Save();
+                }
+                return ok;
             }
             return false;
         }
 
-        public bool IsLoginRegistered(string login)
-        {
-            return contacts.ContainsKey(login);
-        }
 
-        public void SaveUsers()
+        private bool CreateDiskSharedSpace(string login)
         {
-            contacts.Save();
-        }
+            string dir = Settings.GetInstance().GetProperty("base.shared.dir.path", @"c:/shared") + "/" + login;
+            if (!Directory.Exists(dir))
+            {
+                try
+                {
+                    Directory.CreateDirectory(dir);
+                    return true;
+                }
+                catch (Exception)
+                {
 
-      
+                    return false;
+                }
+
+            }
+            return true;
+        }
 
         public List<string> GetContacts(string login)
         {
-            if (IsLoginRegistered(login))
+            lock (contacts)
+            {
+                return GetContactsInternal(login);
+            }
+        }
+        private List<string> GetContactsInternal(string login)
+        {
+            if (contacts.ContainsKey(login))
             {
                 string contactStr = contacts.Get(login);
                 return new List<string>(contactStr.Split(new string[] { CONTACT_SEPARATOR }, StringSplitOptions.RemoveEmptyEntries));
             }
+            else
+            {
+                AddNewUser(login);
+            }
             return new List<string>();
         }
 
-        /// <summary>
-        /// si el login no existe 
-        /// </summary>
-        /// <param name="login"></param>
-        /// <param name="contact"></param>
-        /// <returns></returns>
+    
         public bool AddContact(string login, string contact)
         {
-           bool ret = false;
+            lock (contacts)
+            {
+                bool ret = false;
 
-           if (IsLoginRegistered(login))
-           {
-               List<string> someContacts = GetContacts(login);
-               ret = true;
-               if (!someContacts.Contains(contact))
-               {
-                   someContacts.Add(contact);
-               }
-           }
+                if (!contacts.ContainsKey(login))
+                {
+                    AddNewUser(login);
 
-           return ret;
+                }
+
+                List<string> someContacts = GetContactsInternal(login);
+                
+                if (!someContacts.Contains(contact))
+                {
+                    someContacts.Add(contact);
+                    string newContactList = String.Join(CONTACT_SEPARATOR, someContacts);
+                    contacts.Set(login, newContactList);
+                    contacts.Save();
+                    ret = true;
+                }
+
+               return ret;
+            }
         }
 
         public void LoadContacts()
         {
-            contacts.Reload();
-            Console.WriteLine("Contacts :\r\n{0}", contacts.ToString());
+            lock (contacts)
+            {
+                contacts.Reload();
+                Console.WriteLine("Contacts :\r\n{0}", contacts.ToString());
+            }
         }
     }
 }

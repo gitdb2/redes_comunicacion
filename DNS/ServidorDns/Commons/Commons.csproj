@@ -8,7 +8,7 @@
     <ProjectGuid>{A4983E71-5669-45E3-A3C8-C428E056EF62}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Commons</RootNamespace>
+    <RootNamespace>uy.edu.ort.obligatorio.Commons</RootNamespace>
     <AssemblyName>Commons</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -43,6 +43,7 @@
     <Compile Include="Connection.cs" />
     <Compile Include="DataProccessor.cs" />
     <Compile Include="IReceiveEvent.cs" />
+    <Compile Include="OpCodeConstants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UtilContactList.cs" />
   </ItemGroup>

@@ -15,3 +15,6 @@ C:\Users\mauricio\redes_comunicacion\DNS\ServidorDns\ServidorDns\bin\Debug\Comun
 C:\Users\mauricio\redes_comunicacion\DNS\ServidorDns\ServidorDns\bin\Debug\Commons.pdb
 C:\Users\mauricio\redes_comunicacion\DNS\ServidorDns\ServidorDns\obj\x86\Debug\ServidorDns.exe
 C:\Users\mauricio\redes_comunicacion\DNS\ServidorDns\ServidorDns\obj\x86\Debug\ServidorDns.pdb
+F:\ORT\REDES\Obligatorio\DNS\ServidorDns\ServidorDns\bin\Debug\users.txt
+F:\ORT\REDES\Obligatorio\DNS\ServidorDns\ServidorDns\bin\Debug\Commons.dll
+F:\ORT\REDES\Obligatorio\DNS\ServidorDns\ServidorDns\bin\Debug\Commons.pdb

@@ -53,6 +53,11 @@ namespace Comunicacion
             return ret;
         }
 
+        public override string ToString()
+        {
+            return "command:[ "+Command + "]; opcode:[ " + OpCode + "]; payload:[ " + Payload.ToString() + "]";
+        }
+
     }
 
 

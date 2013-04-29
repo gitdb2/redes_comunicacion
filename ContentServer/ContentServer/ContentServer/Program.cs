@@ -11,7 +11,18 @@ using Comunicacion;
 namespace uy.edu.ort.obligatorio.ContentServer
 {
 
+    /*
+        base.shared.dir.path=c:/shared
+listen.ip=ANY
 
+server.ip=192.168.0.242
+server.port=2001
+server.name=rodrigo-nb
+
+dns.ip=127.0.0.1
+dns.port=2000
+         
+        */
 
 
     public class Program
@@ -21,17 +32,21 @@ namespace uy.edu.ort.obligatorio.ContentServer
         static void Main(string[] args)
         {
             Program p = new Program();
-
-            //DNSConnection p = new DNSConnection();
-            //p.connect();
-
             Console.WriteLine();
             Console.WriteLine("Enter para terminar.");
             Console.ReadLine();
         }
 
-        public IPAddress ip = IPAddress.Any;//IPAddress.Parse("192.168.0.242");//127.0.0.1");
-        public int port = 2001;
+
+        /*
+           Settings.GetInstance().GetProperty("listen.ip","ANY")
+           Settings.GetInstance().GetProperty("server.ip","127.0.0.1")
+           Settings.GetInstance().GetProperty("server.port","2001")
+           Settings.GetInstance().GetProperty("server.name","rodrigo-nb")
+           Settings.GetInstance().GetProperty("dns.ip","127.0.0.1")
+           Settings.GetInstance().GetProperty("dns.port","2000")
+           */
+
         public bool running = true;
         public TcpListener server;
 
@@ -49,12 +64,15 @@ namespace uy.edu.ort.obligatorio.ContentServer
 
             Console.WriteLine("[{0}] Starting server...", DateTime.Now);
 
+            string listenAddressStr = Settings.GetInstance().GetProperty("listen.ip","ANY");
 
+            IPAddress ip = "ANY".Equals(listenAddressStr) ? IPAddress.Any : IPAddress.Parse(listenAddressStr);//IPAddress.Parse("192.168.0.242");//127.0.0.1");
+            int port =  int.Parse(Settings.GetInstance().GetProperty("server.port","2001"));
 
 
             server = new TcpListener(ip, port);
             server.Start();
-            Console.WriteLine("[{0}] Server is running properly???", DateTime.Now);
+            Console.WriteLine("[{0}] Server is running properly!", DateTime.Now);
 
             Listen();
         }
@@ -75,46 +93,36 @@ namespace uy.edu.ort.obligatorio.ContentServer
 
     public class DNSConnection
     {
-    
 
-        //Thread tcpThread;      // Receiver
-
-
-
-        public string Server { get { return "127.0.0.1"; } }// return "192.168.0.201"; } }
-        public int Port { get { return 2000; } }
+        public string DNSServer { get { return Settings.GetInstance().GetProperty("dns.ip", "127.0.0.1"); } }// return "192.168.0.201"; } }
+        public int DNSPort { get { return int.Parse(Settings.GetInstance().GetProperty("dns.port","2000")); } }
       
-        //void connect()
-        //{
-
-        //    tcpThread = new Thread(new ThreadStart(SetupConn));
-        //    tcpThread.Start();
-
-        //}
-
-
-        //TcpClient client;
-        //NetworkStream netStream;
-
-        //StreamReader br;
-        //StreamWriter bw;
+     
 
         public void SetupConn()  // Setup connection and login
         {
-          //  client = new TcpClient(Server, Port);  // Connect to the server.
+            /*
+            Settings.GetInstance().GetProperty("listen.ip","ANY")
+            Settings.GetInstance().GetProperty("server.ip","127.0.0.1")
+            Settings.GetInstance().GetProperty("server.port","2001")
+            Settings.GetInstance().GetProperty("server.name","rodrigo-nb")
+            Settings.GetInstance().GetProperty("dns.ip","127.0.0.1")
+            Settings.GetInstance().GetProperty("dns.port","2000")
+            */
 
-
-            Connection client = new Connection(new TcpClient(Server, Port));
+            Connection client = new Connection(new TcpClient(DNSServer, DNSPort));
            
-
+            string payload =            Settings.GetInstance().GetProperty("server.name","rodrigo-nb")
+                                + ":" + Settings.GetInstance().GetProperty("server.ip","127.0.0.1")
+                                + ":" + Settings.GetInstance().GetProperty("server.port", "2001")
+                                + ":" + UsersContactsPersistenceHandler.GetInstance().Count;
+                                
             Data data = new Data()
             {
                 Command = Command.REQ,
                 OpCode = 3,
-                Payload = new Payload("127.0.0.1:2001")
+                Payload = new Payload(payload)
             };
-
-            
 
             int cont = 0;
             foreach (var item in data.GetBytes())
@@ -124,15 +132,7 @@ namespace uy.edu.ort.obligatorio.ContentServer
             }
 
             Console.WriteLine("mande");
-
-            //Data data2 = DataProccessor.GetInstance().LoadObject(br);
-
-            //Console.WriteLine("line " + cont++ + "   --->" + ConversionUtil.GetString(data2.GetBytes()[0]));
-
-            //Console.WriteLine("termino");
-
-
-         //   CloseConn();
+        
         }
        
    

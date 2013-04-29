@@ -31,30 +31,30 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             }
         }
 
-        private void HandleRES(Connection clientConnection, Data dato)
+        private void HandleRES(Connection connection, Data dato)
         {
+            Console.WriteLine("[{0}] connection owner: {1} ;  The data: {2} ", DateTime.Now, connection.Name, dato.ToString());
             switch (dato.OpCode)
             {
-                case 0:
+
+                case OpCodeConstants.REQ_LOGIN:
                     break;
-                case 1:
+                case OpCodeConstants.RES_CONTACT_LIST:
+                    CommandRESContactList(connection, dato);
                     break;
-                case 2:
-                    CommandRESContactList(clientConnection, dato);
+                case OpCodeConstants.RES_CREATE_USER:
+                    CommandRESUserCreated(connection, dato);
                     break;
-                case 3:
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    break;
-                case 99:
-                    break;
+
                 default:
+                   
                     break;
             }
+        }
+
+        private void CommandRESUserCreated(Connection connection, Data dato)
+        {
+            Console.WriteLine("[{0}] connection owner: {1} ;  The data: {2} ", DateTime.Now, connection.Name, dato.ToString());
         }
 
         private void CommandRESContactList(Connection clientConnection, Data entryData)
@@ -71,7 +71,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             Connection loginConnection = SingletonClientConnection.GetInstance().GetClient(login);
             if (loginConnection != null)
             {
-                Data outData = new Data() { Command = Command.RES, OpCode = 2, Payload = new Payload(UtilContactList.StringFromContactList(tmpContactList, entryData.Payload.Message)) };
+                Data outData = new Data() { Command = Command.RES, OpCode = OpCodeConstants.RES_CONTACT_LIST, Payload = new Payload(UtilContactList.StringFromContactList(tmpContactList, entryData.Payload.Message)) };
                 foreach (var item in outData.GetBytes())
                 {
                     loginConnection.WriteToStream(item);
@@ -79,33 +79,26 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             }
             else
             {
-                Console.WriteLine(" Tengo que descartar respuesta para {0} que no tiene Conexion", login);
+                Console.WriteLine("Tengo que descartar respuesta para {0} que no tiene Conexion", login);
             }
         }
 
         private void HandleREQ(Connection clientConnection, Data dato)
         {
+            Console.WriteLine("[{0}] connection owner: {1} ;  The data: {2} ", DateTime.Now, clientConnection.Name, dato.ToString());
             switch (dato.OpCode)
             {
-                case 0:
-                    break;
-                case 1: //viene el comando login
+                case OpCodeConstants.REQ_LOGIN: //viene el comando login
                     CommandREQLogin(clientConnection, dato);
                     break;
-                case 2: //un login pide su lista de contactos
+                case OpCodeConstants.REQ_CONTACT_LIST: //un login pide su lista de contactos
                     CommandREQContactList(clientConnection, dato);
                     break;
-                case 3: //un servidor se conecta y registra en el dns
+                case OpCodeConstants.REQ_SERVER_CONNECT: //un servidor se conecta y registra en el dns
                     CommandREQServerConnect(clientConnection, dato);
-                    break;
-                case 4:
                     break;
                 case 5: //un login hace una busqueda de contactos
                     CommandREQFindContacts(clientConnection, dato);
-                    break;
-                case 6:
-                    break;
-                case 99:
                     break;
                 default:
                     break;
@@ -120,11 +113,18 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             //TODO
         }
 
-        private void CommandREQServerConnect(Connection clientConnection, Data dato)
+        private void CommandREQServerConnect(Connection newConnection, Data dato)
         {
-            string[] tmp = dato.Payload.Message.Split(':');
-            string serverName = tmp[0];
-            int serverPort = int.Parse(tmp[1]);
+            string[] tmp = dato.Payload.Message.Split(':');//viene name: ip : port : user count
+            string serverName   = tmp[0];
+            string serverIp     = tmp[1];
+            int serverPort      = int.Parse(tmp[2]);
+            int userCount       = int.Parse(tmp[3]);
+
+            newConnection.Ip        = serverIp;
+            newConnection.Name      = serverName;
+            newConnection.Port      = serverPort;
+            newConnection.UserCount = userCount;
 
             SingletonServerConnection ssc = SingletonServerConnection.GetInstance();
             Connection oldConnection = ssc.GetServer(serverName);
@@ -133,10 +133,10 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 ssc.RemoveServer(serverName);
                 oldConnection.CloseConn();
             }
+          
+            ssc.AddServer(serverName, newConnection);
 
-            ssc.AddServer(serverName, serverPort, clientConnection);
-
-            SendMessage(clientConnection, Command.RES, 3, new Payload("SUCCESS"));
+            SendMessage(newConnection, Command.RES, OpCodeConstants.REQ_SERVER_CONNECT, new Payload("SUCCESS"));
         }
 
         private void SendMessage(Connection connection, Command command, int opCode, Payload payload)
@@ -170,17 +170,28 @@ namespace uy.edu.ort.obligatorio.ServidorDns
 
             if (!UsersPersistenceHandler.GetInstance().IsLoginRegistered(login))
             {
-                string serverName = FindAGoodServer();
-                bool ok = AddUserToServer(login, serverName);
-                if (ok)
+                try
                 {
-                    //aumenta el contador de usuarios por servidor, luego que el server agreaga el usuario
-                    ret = UsersPersistenceHandler.GetInstance().RegisterLoginServer(login, serverName);
+                    string serverName = FindAGoodServer();
+                    //agrega el usuario y el server al registro de usuario-server
+                    bool ok = UsersPersistenceHandler.GetInstance().RegisterLoginServer(login, serverName);
+                    if (ok)
+                    {
+                        //aumenta el contador de usuarios por servidor, luego que el server agreaga el usuario
+                        //ret = UsersPersistenceHandler.GetInstance().RegisterLoginServer(login, serverName);
+                        AddUserToServer(login, serverName);
+                    }
+                    else
+                    {
+                        ret = false;
+                    }
                 }
-                else
+                catch (Exception e)
                 {
+                    Console.WriteLine("Error : {0}", e.Message);
                     ret = false;
                 }
+                
             }
 
             if (ret)//si esta registrado
@@ -195,11 +206,11 @@ namespace uy.edu.ort.obligatorio.ServidorDns
 
                 scc.AddClient(login, clientConnection);
 
-                SendMessage(clientConnection, Command.RES, 1, new Payload("SUCCESS"));
+                SendMessage(clientConnection, Command.RES, OpCodeConstants.REQ_LOGIN, new Payload("SUCCESS"));
             }
             else
             {
-                SendMessage(clientConnection, Command.RES, 2, new Payload("ERROR REGISTRO"));
+                SendMessage(clientConnection, Command.RES, OpCodeConstants.REQ_LOGIN, new Payload("ERROR REGISTRO"));
                 clientConnection.CloseConn();
             }
         }
@@ -212,12 +223,35 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         /// <returns></returns>
         private bool AddUserToServer(string login, string serverName)
         {
+            
+            try
+            {
+                int count = SingletonServerConnection.GetInstance().IncUserCount(serverName);
+                if (count > 0)
+                {
+                    //si se agrego en el dns, entonces pido al server que lo agregue, pero no espero confirmacion., las operaciones de un usuario sobe el server van a chequear que exista el usuario, y si no existe, lo va a crear.
+                    SendMessage(SingletonServerConnection.GetInstance().GetServer(serverName), Command.REQ, 
+                                                        OpCodeConstants.REQ_CREATE_USER, new Payload(login));
+                    Console.WriteLine("El server {0} queda con {1} usuarios registrados", serverName, count);
+                }
+                else
+                {
+                    throw new Exception("No se encontro el sevidor en la lista de Online");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error al agregar usuario al servidor: {0}", e.Message);
+                
+            }
+            
             return true;
         }
 
         private string FindAGoodServer()
         {
-            return "127.0.0.1";
+            return SingletonServerConnection.GetInstance().FindBestServerForNewUser();
+           
         }
     }
 }

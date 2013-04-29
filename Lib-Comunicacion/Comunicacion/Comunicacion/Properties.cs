@@ -26,6 +26,11 @@ namespace Comunicacion
             return config.Get(key);
         }
 
+        public String GetProperty(String key, String defval)
+        {
+            return config.Get(key, defval);
+        }
+
 
     }
 
@@ -76,7 +81,7 @@ namespace Comunicacion
             System.IO.StreamWriter file = new System.IO.StreamWriter(filename);
 
             foreach (String prop in list.Keys.ToArray())
-                if (!String.IsNullOrWhiteSpace(list[prop]))
+              //  if (!String.IsNullOrWhiteSpace(list[prop]))
                     file.WriteLine(prop + "=" + list[prop]);
 
             file.Close();
@@ -127,6 +132,8 @@ namespace Comunicacion
                 }
             }
         }
+
+        public int Count { get { return list.Count; } }
 
         public override string ToString()
         {

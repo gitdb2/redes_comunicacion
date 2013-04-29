@@ -92,7 +92,10 @@ namespace Comunicacion
             Message += text;
         }
 
-
+        public override string ToString()
+        {
+            return "Destination:[ " + Destination + "]; message:["+ Message + "]";
+        }
 
     }
 }

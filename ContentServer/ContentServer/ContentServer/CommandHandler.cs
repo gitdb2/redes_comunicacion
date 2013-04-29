@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Comunicacion;
+using uy.edu.ort.obligatorio.Commons;
 
 namespace uy.edu.ort.obligatorio.ContentServer
 {
@@ -32,6 +33,8 @@ namespace uy.edu.ort.obligatorio.ContentServer
 
         private void HandleRES(Connection Connection, Data dato)
         {
+            Console.WriteLine("[{0}] connection owner: {1} ;  The data: {2} ", DateTime.Now, "USAR CONNECTION DE COMMONS", dato.ToString());
+          
             switch (dato.OpCode)
             {
                 case 0:
@@ -52,35 +55,46 @@ namespace uy.edu.ort.obligatorio.ContentServer
                 case 99:
                     break;
                 default:
-                    Console.WriteLine("default RES    --->" + ConversionUtil.GetString(dato.GetBytes()[0]));
-
+                    
                     break;
             }
         }
 
         private void HandleREQ(Connection Connection, Data dato)
         {
+            Console.WriteLine("[{0}] connection owner: {1} ;  The data: {2} ", DateTime.Now, "USAR CONNECTION DE COMMONS", dato.ToString());
+                   
             switch (dato.OpCode)
             {
-                case 0:
-                    break;
-                case 2: //viene el obtener lista de contactos
+               
+                case OpCodeConstants.REQ_CONTACT_LIST: //viene el obtener lista de contactos
                     CommandGetContactList(Connection, dato);
                     break;
-                case 3:
+                case OpCodeConstants.REQ_CREATE_USER:
+                    CommandCreateNewUser(Connection, dato);
                     break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                case 6:
-                    break;
-                case 99:
-                    break;
+                  
                 default:
-                    Console.WriteLine("default REQ    --->" + ConversionUtil.GetString(dato.GetBytes()[0]));
+                    
                    
                     break;
+            }
+        }
+
+        private void CommandCreateNewUser(Connection Connection, Data dato)
+        {
+            string login = dato.Payload.Message;
+            bool ok = UsersContactsPersistenceHandler.GetInstance().RegisterNewUser(login);
+
+
+            Data retDato = new Data() { Command = Command.RES, 
+                                        OpCode = OpCodeConstants.RES_CREATE_USER,
+                                        Payload = new MultiplePayload() { Message = (ok? "SUCCESS" : "ERROR"), Destination = login }
+            };
+            foreach (var item in retDato.GetBytes())
+            {
+                Console.WriteLine("Envio :{0}", ConversionUtil.GetString(item));
+                Connection.WriteToStream(item);
             }
         }
 
@@ -105,7 +119,7 @@ namespace uy.edu.ort.obligatorio.ContentServer
                 }
                 message.Append(item).Append(STATUS_DELIMITER).Append("0");
             }
-            Data retDato = new Data() { Command = Command.RES, OpCode = 2, Payload = new MultiplePayload() { Message = message.ToString(), Destination=login } };
+            Data retDato = new Data() { Command = Command.RES, OpCode = OpCodeConstants.RES_CONTACT_LIST, Payload = new MultiplePayload() { Message = message.ToString(), Destination = login } };
             foreach (var item in retDato.GetBytes())
 	        {
                 Console.WriteLine("Envio :{0}", ConversionUtil.GetString(item));

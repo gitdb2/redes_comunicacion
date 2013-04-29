@@ -17,8 +17,13 @@ namespace uy.edu.ort.obligatorio.Commons
         public StreamReader StreamReader { get; set; }
         public StreamWriter StreamWriter { get; set; }
 
-        public int Port { get; set; }
+       
         public string Name { get; set; }
+
+        public string Ip { get; set; }
+        public int Port { get; set; }
+        public int UserCount { get; set; }
+
         public IReceiveEvent EventHandler { get; set; }
 
         public Connection(TcpClient c, IReceiveEvent ire)
