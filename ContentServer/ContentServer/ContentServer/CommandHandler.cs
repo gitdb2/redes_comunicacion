@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Comunicacion;
 using uy.edu.ort.obligatorio.Commons;
+using System.IO;
 
 
 namespace uy.edu.ort.obligatorio.ContentServer
@@ -79,7 +80,9 @@ namespace uy.edu.ort.obligatorio.ContentServer
                     CommandCreateNewUser(Connection, dato);
                     log.Debug("procesé REQ Crear USUARIO");
                     break;
-                  
+
+
+                    
                 default:
                     
                    

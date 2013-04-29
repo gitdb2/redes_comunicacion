@@ -78,7 +78,7 @@ namespace uy.edu.ort.obligatorio.ContentServer
             if (!contacts.ContainsKey(login))
             {
                 //ok si el directorio se cra o si ya existe
-                bool ok = CreateDiskSharedSpace(login);
+                bool ok = FileOperationsSingleton.GetInstance().CreateDiskSharedSpace(login);
 
                 if (ok)
                 {
@@ -91,25 +91,7 @@ namespace uy.edu.ort.obligatorio.ContentServer
         }
 
 
-        private bool CreateDiskSharedSpace(string login)
-        {
-            string dir = Settings.GetInstance().GetProperty("base.shared.dir.path", @"c:/shared") + "/" + login;
-            if (!Directory.Exists(dir))
-            {
-                try
-                {
-                    Directory.CreateDirectory(dir);
-                    return true;
-                }
-                catch (Exception)
-                {
-
-                    return false;
-                }
-
-            }
-            return true;
-        }
+       
 
         public List<string> GetContacts(string login)
         {
