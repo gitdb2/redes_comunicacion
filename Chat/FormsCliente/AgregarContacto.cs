@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using Dominio;
 using ClientImplementation;
+using uy.edu.ort.obligatorio.Commons;
 
 namespace Chat
 {
@@ -15,6 +16,8 @@ namespace Chat
     {
         public string Login { get; set; }
         private ClientHandler clientHandler;
+        private ClientHandler.FindContactsEventHandler findContactsEventHandler;
+        private ClientHandler.AddContactEventHandler addContactsResponse;
 
         //lista de contactos temporal en la que se acumulan todas las llegadas de RES02
         //una vez que llego la ultima porcion de la lista se refresca el form y se vacia esta lista
@@ -24,7 +27,10 @@ namespace Chat
         {
             InitializeComponent();
             clientHandler = ClientHandler.GetInstance();
-            clientHandler.FindContactResponse += new ClientHandler.FindContactsEventHandler(EventFindContactsResponse);
+            findContactsEventHandler = new ClientHandler.FindContactsEventHandler(EventFindContactsResponse);
+            addContactsResponse = new ClientHandler.AddContactEventHandler(EventAddContactResponse);
+            clientHandler.FindContactResponse += findContactsEventHandler;
+            clientHandler.AddContactResponse += addContactsResponse;
         }
 
         private void btnBuscar_Click(object sender, EventArgs e)
@@ -36,7 +42,7 @@ namespace Chat
             }
         }
 
-        void EventFindContactsResponse(object sender, ContactListEventArgs e)
+        private void EventFindContactsResponse(object sender, ContactListEventArgs e)
         {
             this.BeginInvoke((Action)(delegate
             {
@@ -75,14 +81,43 @@ namespace Chat
             //agregar el contacto
             if (FormUtils.HayFilaElegida(listaContactos))
             {
-                Usuario contacto = (Usuario) listaContactos.SelectedItems[0].Tag;
-                MessageBox.Show("Agregado el contacto " + contacto.Nombre);
+                KeyValuePair<string, bool> contactSelected = (KeyValuePair<string, bool>)listaContactos.SelectedItems[0].Tag;
+                clientHandler.AddContact(Login, contactSelected.Key);
             }
+        }
+
+        private void EventAddContactResponse(object sender, SimpleEventArgs e)
+        {
+            this.BeginInvoke((Action)(delegate
+            {
+                string opResult = e.Message.Split('|')[4];
+                string message;
+                MessageBoxIcon icon;
+
+                if (opResult.Equals(MessageConstants.MESSAGE_SUCCESS))
+                {
+                    message = "Contacto agregado con exito";
+                    icon = MessageBoxIcon.Information;
+                }
+                else
+                {
+                    message = "Ocurrio un error al agregar el contacto";
+                    icon = MessageBoxIcon.Error;
+                }
+                MessageBox.Show(message, "Alta de Contacto", MessageBoxButtons.OK, icon);
+            }));
         }
 
         private void btnCerrar_Click(object sender, EventArgs e)
         {
             this.Dispose();
         }
+
+        private void AgregarContacto_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            clientHandler.FindContactResponse -= findContactsEventHandler;
+            clientHandler.AddContactResponse -= addContactsResponse;
+        }
+
     }
 }

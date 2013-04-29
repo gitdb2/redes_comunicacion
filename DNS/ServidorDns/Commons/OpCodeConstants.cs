@@ -21,5 +21,8 @@ namespace uy.edu.ort.obligatorio.Commons
 
         public const int REQ_FIND_CONTACT = 5;
         public const int RES_FIND_CONTACT = REQ_FIND_CONTACT;
+
+        public const int REQ_ADD_CONTACT = 6;
+        public const int RES_ADD_CONTACT = REQ_ADD_CONTACT;
     }
 }

@@ -114,6 +114,7 @@
             this.Name = "AgregarContacto";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Agregar Contacto";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AgregarContacto_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

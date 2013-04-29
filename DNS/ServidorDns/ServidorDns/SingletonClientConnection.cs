@@ -77,5 +77,21 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 return tmpKeyList.FindAll(delegate(string s) { return regex.IsMatch(s); });
             }
         }
+
+        public void AddContactToClient(string client, string contactToAdd)
+        {
+            lock (this)
+            {
+                clientsContactsMap[client].Add(contactToAdd);
+            }
+        }
+
+        public void AddContactToClient(string login, List<string> clientContactList)
+        {
+            lock (this)
+            {
+                clientsContactsMap[login] = clientContactList;            
+            }
+        }
     }
 }

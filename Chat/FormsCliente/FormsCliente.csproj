@@ -128,6 +128,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\DNS\ServidorDns\Commons\Commons.csproj">
+      <Project>{A4983E71-5669-45E3-A3C8-C428E056EF62}</Project>
+      <Name>Commons</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Lib-Comunicacion\Comunicacion\Comunicacion\Comunicacion.csproj">
       <Project>{B4B3F489-2339-4AB7-ADDA-F17F6C15671D}</Project>
       <Name>Comunicacion</Name>

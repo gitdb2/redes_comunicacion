@@ -80,7 +80,6 @@ namespace uy.edu.ort.obligatorio.Commons
             return result.ToString();
         }
 
-
         public static string StringFromContactList(Dictionary<string, bool> contactList)
         {
             StringBuilder res = new StringBuilder();
@@ -94,5 +93,6 @@ namespace uy.edu.ort.obligatorio.Commons
             }
             return res.ToString();
         }
+
     }
 }

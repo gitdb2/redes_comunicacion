@@ -46,9 +46,18 @@ namespace ClientImplementation
                 case OpCodeConstants.RES_FIND_CONTACT:
                     CommandRESFindContact(clientConnection, dato);
                     break;
+                case OpCodeConstants.RES_ADD_CONTACT:
+                    CommandRESAddContact(clientConnection, dato);
+                    break;
                 default:
                     break;
             }
+        }
+
+        private void CommandRESAddContact(Connection clientConnection, Data dato)
+        {
+            //la respuesta viene en el formato n|m|loginDestino|contactoAgregado@estado|mensaje
+            ClientHandler.GetInstance().OnAddContactResponse(new SimpleEventArgs() { Message = dato.Payload.Message });
         }
 
         private void CommandRESFindContact(Connection clientConnection, Data dato)
