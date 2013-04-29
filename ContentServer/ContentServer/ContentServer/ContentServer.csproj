@@ -62,7 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="contactos.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
