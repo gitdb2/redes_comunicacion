@@ -25,6 +25,12 @@ namespace uy.edu.ort.obligatorio.Commons
         {
             return ExtractStringAtPos(payload, POS_LOGIN);
         }
+
+        public static bool IsLastPart(string payload)
+        {
+            string[] payloadSplitted = payload.Split(EXTERNAL_SEPARATOR);
+            return payloadSplitted[0].Equals(payloadSplitted[1]);
+        }
         
         public static Dictionary<string, bool> ContactListFromString(string payload)
         {

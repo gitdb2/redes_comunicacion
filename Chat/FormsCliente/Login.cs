@@ -51,7 +51,7 @@ namespace Chat
         {
             this.BeginInvoke((Action)(delegate
             {
-                VentanaPrincipalCliente vp = new VentanaPrincipalCliente() { };
+                VentanaPrincipalCliente vp = new VentanaPrincipalCliente() { Login = txtBoxLogin.Text };
                 vp.ShowDialog();
             }));
         }

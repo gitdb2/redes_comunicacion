@@ -37,7 +37,6 @@
             this.menuAccionesOpcionSubirArchivo = new System.Windows.Forms.ToolStripMenuItem();
             this.listaContactos = new System.Windows.Forms.ListView();
             this.columnUsuario = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnServidor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnEstado = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -49,7 +48,7 @@
             this.menuPrincipalAcciones});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(348, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(243, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuPrincipal";
             // 
@@ -103,14 +102,13 @@
             // 
             this.listaContactos.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnUsuario,
-            this.columnServidor,
             this.columnEstado});
             this.listaContactos.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listaContactos.FullRowSelect = true;
             this.listaContactos.Location = new System.Drawing.Point(0, 24);
             this.listaContactos.MultiSelect = false;
             this.listaContactos.Name = "listaContactos";
-            this.listaContactos.Size = new System.Drawing.Size(348, 303);
+            this.listaContactos.Size = new System.Drawing.Size(243, 303);
             this.listaContactos.TabIndex = 1;
             this.listaContactos.UseCompatibleStateImageBehavior = false;
             this.listaContactos.View = System.Windows.Forms.View.Details;
@@ -121,11 +119,6 @@
             this.columnUsuario.Text = "Nombre";
             this.columnUsuario.Width = 74;
             // 
-            // columnServidor
-            // 
-            this.columnServidor.Text = "Servidor";
-            this.columnServidor.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // columnEstado
             // 
             this.columnEstado.Text = "Estado";
@@ -135,7 +128,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(348, 327);
+            this.ClientSize = new System.Drawing.Size(243, 327);
             this.Controls.Add(this.listaContactos);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -143,7 +136,8 @@
             this.MaximizeBox = false;
             this.Name = "VentanaPrincipalCliente";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Ventana Principal Cliente";
+            this.Text = "Ventana Principal";
+            this.Load += new System.EventHandler(this.VentanaPrincipalCliente_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -162,7 +156,6 @@
         private System.Windows.Forms.ToolStripMenuItem menuAccionesOpcionSubirArchivo;
         private System.Windows.Forms.ListView listaContactos;
         private System.Windows.Forms.ColumnHeader columnUsuario;
-        private System.Windows.Forms.ColumnHeader columnServidor;
         private System.Windows.Forms.ColumnHeader columnEstado;
     }
 }

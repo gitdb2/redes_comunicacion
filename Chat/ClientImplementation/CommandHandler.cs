@@ -66,13 +66,15 @@ namespace ClientImplementation
             } 
             else 
             {
-                ClientHandler.GetInstance().OnLoginFailed(new LoginErrorEventArgs(dato.Payload.Message));
+                ClientHandler.GetInstance().OnLoginFailed(new LoginErrorEventArgs() { ErrorMessage = dato.Payload.Message });
             }
         }
 
         private void CommandRESContactList(Connection clientConnection, Data dato)
         {
-            throw new NotImplementedException();
+            Dictionary<string, bool> contactList = UtilContactList.ContactListFromString(dato.Payload.Message);
+            bool isLastPart = UtilContactList.IsLastPart(dato.Payload.Message);
+            ClientHandler.GetInstance().OnContactListResponse(new ContactListEventArgs() { ContactList = contactList, IsLastPart = isLastPart });
         }
 
         private void HandleREQ(Connection clientConnection,Data dato)
@@ -81,11 +83,9 @@ namespace ClientImplementation
             {
                 case 0:
                     break;
-                case 1: //el cliente se quiere loguear
-                    CommandREQLogin(clientConnection, dato);
+                case 1: 
                     break;
-                case 2: //el cliente pide su lista de contactos
-                    CommandREQContactList(clientConnection, dato);
+                case 2:
                     break;
                 case 3: //mensaje de chat
                     CommandREQChatMessage(clientConnection, dato);
@@ -104,16 +104,6 @@ namespace ClientImplementation
         private void CommandREQChatMessage(Connection clientConnection, Data dato)
         {
             throw new NotImplementedException();
-        }
-
-        private void CommandREQContactList(Connection clientConnection, Data dato)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void CommandREQLogin(Connection clientConnection, Data dato)
-        {
-
         }
 
     }

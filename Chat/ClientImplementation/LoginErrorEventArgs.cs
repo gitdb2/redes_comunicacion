@@ -9,10 +9,5 @@ namespace ClientImplementation
     {
         public string ErrorMessage { get; set; }
 
-        public LoginErrorEventArgs(string error)
-        {
-            this.ErrorMessage = error;
-        }
-
     }
 }
