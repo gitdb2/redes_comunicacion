@@ -42,7 +42,7 @@ namespace Chat
                     foreach (KeyValuePair<string, bool> contacto in tmpContactList)
                     {
                         ListViewItem lvi = new ListViewItem(contacto.Key);
-                        lvi.Tag = contacto.Key;
+                        lvi.Tag = contacto;
                         SetearEstadoContacto(lvi, contacto);
                         listaContactos.Items.Add(lvi);
                     }
@@ -69,16 +69,15 @@ namespace Chat
 
         private void listaContactos_DoubleClick(object sender, EventArgs e)
         {
-            ListViewItem seleccion = listaContactos.SelectedItems[0];
-            Usuario usuario = (Usuario) seleccion.Tag;
-            if (usuario.EstaConectado)
+            KeyValuePair<string, bool> contactSelected = (KeyValuePair<string, bool>)listaContactos.SelectedItems[0].Tag;
+            if (contactSelected.Value)
             {
-                VentanaDeChat vt = new VentanaDeChat(usuario, this.Login);
+                VentanaDeChat vt = new VentanaDeChat(contactSelected.Key, this.Login);
                 vt.Show();
             }
             else 
             {
-                MessageBox.Show("No es posible chatear con " + usuario.Nombre + ", esta desconectado." ,
+                MessageBox.Show("No es posible chatear con " + contactSelected.Value + ", esta desconectado.",
                     "Contacto Desconectado", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }

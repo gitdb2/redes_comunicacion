@@ -17,17 +17,17 @@ namespace Chat
 {
     public partial class VentanaDeChat : Form
     {
-        private Usuario ChateandoCon;
+        private string ChateandoCon;
         private string NombreUsuario;
 
         private const string patronFecha = "yyyy-MM-dd HH:mm";
 
-        public VentanaDeChat(Usuario contacto, string nombreUsuario)
+        public VentanaDeChat(string contacto, string nombreUsuario)
         {
             InitializeComponent();
             this.ChateandoCon = contacto;
             this.NombreUsuario = nombreUsuario;
-            MostrarMensajeInicial(contacto.Nombre);
+            MostrarMensajeInicial(contacto);
         }
 
         private void MostrarMensajeInicial(string nombreUsuario)
