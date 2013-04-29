@@ -17,6 +17,10 @@ namespace Chat
         public string Login { get; set; }
         private ClientHandler clientHandler;
 
+        //lista de contactos temporal en la que se acumulan todas las llegadas de RES02
+        //una vez que llego la ultima porcion de la lista se refresca el form y se vacia esta lista
+        private Dictionary<string, bool> tmpContactList = new Dictionary<string,bool>();
+
         public VentanaPrincipalCliente()
         {
             InitializeComponent();
@@ -28,15 +32,25 @@ namespace Chat
         {
             this.BeginInvoke((Action)(delegate
             {
-                listaContactos.Items.Clear();
-                foreach (KeyValuePair<string, bool> contacto in e.ContactList)
+                //agrego los contactos a la lista acumulada de contactos
+                e.ContactList.ToList().ForEach(x => tmpContactList.Add(x.Key, x.Value));
+                
+                //cuando me mandaron la ultima porcion de la lista de contactos refresco el form
+                if (e.IsLastPart) 
                 {
-                    ListViewItem lvi = new ListViewItem(contacto.Key);
-                    lvi.Tag = contacto.Key;
-                    SetearEstadoContacto(lvi, contacto);
-                    listaContactos.Items.Add(lvi);
+                    listaContactos.Items.Clear();
+                    foreach (KeyValuePair<string, bool> contacto in tmpContactList)
+                    {
+                        ListViewItem lvi = new ListViewItem(contacto.Key);
+                        lvi.Tag = contacto.Key;
+                        SetearEstadoContacto(lvi, contacto);
+                        listaContactos.Items.Add(lvi);
+                    }
+                    FormUtils.AjustarTamanoColumnas(listaContactos);
+
+                    //reseteo la lista de contactos temporal
+                    tmpContactList.Clear();
                 }
-                FormUtils.AjustarTamanoColumnas(listaContactos);
             }));
         }
 

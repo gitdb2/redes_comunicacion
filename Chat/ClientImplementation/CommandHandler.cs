@@ -73,7 +73,8 @@ namespace ClientImplementation
         private void CommandRESContactList(Connection clientConnection, Data dato)
         {
             Dictionary<string, bool> contactList = UtilContactList.ContactListFromString(dato.Payload.Message);
-            ClientHandler.GetInstance().OnContactListResponse(new ContactListEventArgs() { ContactList = contactList });
+            bool isLastPart = UtilContactList.IsLastPart(dato.Payload.Message);
+            ClientHandler.GetInstance().OnContactListResponse(new ContactListEventArgs() { ContactList = contactList, IsLastPart = isLastPart });
         }
 
         private void HandleREQ(Connection clientConnection,Data dato)

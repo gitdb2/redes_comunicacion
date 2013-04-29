@@ -10,5 +10,9 @@ namespace ClientImplementation
 
         public Dictionary<string, bool> ContactList { get; set; }
 
+        //la lista de contactos puede venir separada en varios RES
+        //esta variable esta en true cuando es el ultimo
+        public bool IsLastPart { get; set; }
+
     }
 }
