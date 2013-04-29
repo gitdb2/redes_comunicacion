@@ -10,6 +10,8 @@ namespace uy.edu.ort.obligatorio.ServidorDns
 {
     public class CommandHandler
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private static CommandHandler instance = new CommandHandler();
 
         private CommandHandler() { }
@@ -126,9 +128,10 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 oldConnection.CloseConn();
             }
 
-          
+           
             ssc.AddServer(serverName, newConnection);
-
+            log.InfoFormat("Agregado nuevo servidor: {0}:{2} , name:{1}, userCount:{3}", 
+                newConnection.Ip,  newConnection.Name, newConnection.Port, newConnection.UserCount);
             SendMessage(newConnection, Command.RES, OpCodeConstants.REQ_SERVER_CONNECT, new Payload("SUCCESS"));
         }
 

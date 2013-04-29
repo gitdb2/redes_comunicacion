@@ -21,3 +21,4 @@ F:\ORT\REDES\Obligatorio\DNS\ServidorDns\ServidorDns\bin\Debug\Commons.pdb
 F:\ORT\REDES\Obligatorio\DNS\ServidorDns\ServidorDns\bin\Debug\ServidorDns.exe.config
 F:\ORT\REDES\Obligatorio\DNS\ServidorDns\ServidorDns\bin\Debug\lib\log4net.dll
 F:\ORT\REDES\Obligatorio\DNS\ServidorDns\ServidorDns\bin\Debug\log4net.dll
+F:\ORT\REDES\Obligatorio\DNS\ServidorDns\ServidorDns\bin\Debug\log4net.config
