@@ -10,6 +10,8 @@ namespace uy.edu.ort.obligatorio.ContentServer
 {
     public class CommandHandler
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private static CommandHandler instance = new CommandHandler();
 
         private CommandHandler() { }
@@ -34,8 +36,8 @@ namespace uy.edu.ort.obligatorio.ContentServer
 
         private void HandleRES(Connection Connection, Data dato)
         {
-            Console.WriteLine("[{0}] connection owner: {1} ;  The data: {2} ", DateTime.Now, "USAR CONNECTION DE COMMONS", dato.ToString());
-          
+            Console.WriteLine("[{0}] connection owner: {1} ;  The data: {2} ", DateTime.Now, Connection.Name, dato.ToString());
+            log.DebugFormat(" connection owner: {0} ;  The data: {1} ", Connection.Name, dato.ToString());
             switch (dato.OpCode)
             {
                 case 0:
@@ -63,16 +65,19 @@ namespace uy.edu.ort.obligatorio.ContentServer
 
         private void HandleREQ(Connection Connection, Data dato)
         {
-            Console.WriteLine("[{0}] connection owner: {1} ;  The data: {2} ", DateTime.Now, "USAR CONNECTION DE COMMONS", dato.ToString());
+            Console.WriteLine("[{0}] connection owner: {1} ;  The data: {2} ", DateTime.Now, Connection.Name, dato.ToString());
+            log.DebugFormat(" connection owner: {0} ;  The data: {1} ", Connection.Name, dato.ToString());
                    
             switch (dato.OpCode)
             {
                
                 case OpCodeConstants.REQ_CONTACT_LIST: //viene el obtener lista de contactos
                     CommandGetContactList(Connection, dato);
+                    log.Debug("procesé REQ LISTA DE CONTACTOS");
                     break;
                 case OpCodeConstants.REQ_CREATE_USER:
                     CommandCreateNewUser(Connection, dato);
+                    log.Debug("procesé REQ Crear USUARIO");
                     break;
                   
                 default:

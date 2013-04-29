@@ -85,6 +85,7 @@ namespace uy.edu.ort.obligatorio.ContentServer
             {
                 TcpClient tcpClient = server.AcceptTcpClient();  // Accept incoming connection.
                 Connection client = new Connection(tcpClient, new ReceiveEventHandler());     // Handle in another thread.
+                
             }
         }
 
@@ -112,8 +113,9 @@ namespace uy.edu.ort.obligatorio.ContentServer
             Settings.GetInstance().GetProperty("dns.port","2000")
             */
 
-            Connection client = new Connection(new TcpClient(DNSServer, DNSPort), new ReceiveEventHandler());
+            Connection client = new Connection("DNS", new TcpClient(DNSServer, DNSPort), new ReceiveEventHandler());
            
+
             string payload =            Settings.GetInstance().GetProperty("server.name","rodrigo-nb")
                                 + ":" + Settings.GetInstance().GetProperty("server.ip","127.0.0.1")
                                 + ":" + Settings.GetInstance().GetProperty("server.port", "2001")

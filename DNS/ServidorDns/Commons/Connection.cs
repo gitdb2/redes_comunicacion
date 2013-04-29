@@ -28,8 +28,13 @@ namespace uy.edu.ort.obligatorio.Commons
 
         public IReceiveEvent EventHandler { get; set; }
 
-        public Connection(TcpClient c, IReceiveEvent ire)
+        public Connection(TcpClient c, IReceiveEvent ire):this("Unknown", c, ire)
+        {           
+        }
+
+        public Connection(string name, TcpClient c, IReceiveEvent ire)
         {
+            Name = name;
             tcpClient = c;
             EventHandler = ire;
             (new Thread(new ThreadStart(SetupConn))).Start();

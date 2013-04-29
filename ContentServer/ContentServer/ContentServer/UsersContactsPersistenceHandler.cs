@@ -9,6 +9,7 @@ namespace uy.edu.ort.obligatorio.ContentServer
 {
     public class UsersContactsPersistenceHandler
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         const string CONTACT_SEPARATOR = ",";
         private static UsersContactsPersistenceHandler instance = new UsersContactsPersistenceHandler();
