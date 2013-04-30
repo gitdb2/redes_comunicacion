@@ -38,6 +38,8 @@ namespace Chat
             InitializeComponent();
             clientHandler = ClientHandler.GetInstance();
 
+            this.lblConnectedUser.Text = clientHandler.Login;
+
             contactListResponse = new ClientHandler.ContactListEventHandler(EventContactListResponse);
             updateContactStatusResponse = new ClientHandler.UpdateContactStatusEventHandler(EventUpdateContactStatusResponse);
             chatMessageReceived = new ClientHandler.ChatMessageReceivedEventHandler(EventChatMessageReceived);

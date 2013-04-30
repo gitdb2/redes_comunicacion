@@ -38,7 +38,12 @@
             this.listaContactos = new System.Windows.Forms.ListView();
             this.columnUsuario = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnEstado = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.statusStripConnectedAs = new System.Windows.Forms.StatusStrip();
+            this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblConnectedUser = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
+            this.statusStripConnectedAs.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -124,11 +129,40 @@
             this.columnEstado.Text = "Estado";
             this.columnEstado.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // statusStripConnectedAs
+            // 
+            this.statusStripConnectedAs.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lblStatus,
+            this.toolStripStatusLabel,
+            this.lblConnectedUser});
+            this.statusStripConnectedAs.Location = new System.Drawing.Point(0, 305);
+            this.statusStripConnectedAs.Name = "statusStripConnectedAs";
+            this.statusStripConnectedAs.Size = new System.Drawing.Size(243, 22);
+            this.statusStripConnectedAs.TabIndex = 2;
+            this.statusStripConnectedAs.Text = "statusStrip1";
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(102, 17);
+            this.lblStatus.Text = "Conectado como:";
+            // 
+            // toolStripStatusLabel
+            // 
+            this.toolStripStatusLabel.Name = "toolStripStatusLabel";
+            this.toolStripStatusLabel.Size = new System.Drawing.Size(0, 17);
+            // 
+            // lblConnectedUser
+            // 
+            this.lblConnectedUser.Name = "lblConnectedUser";
+            this.lblConnectedUser.Size = new System.Drawing.Size(0, 17);
+            // 
             // VentanaPrincipalCliente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(243, 327);
+            this.Controls.Add(this.statusStripConnectedAs);
             this.Controls.Add(this.listaContactos);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -141,6 +175,8 @@
             this.Load += new System.EventHandler(this.VentanaPrincipalCliente_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.statusStripConnectedAs.ResumeLayout(false);
+            this.statusStripConnectedAs.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -158,5 +194,9 @@
         private System.Windows.Forms.ListView listaContactos;
         private System.Windows.Forms.ColumnHeader columnUsuario;
         private System.Windows.Forms.ColumnHeader columnEstado;
+        private System.Windows.Forms.StatusStrip statusStripConnectedAs;
+        private System.Windows.Forms.ToolStripStatusLabel lblStatus;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel;
+        private System.Windows.Forms.ToolStripStatusLabel lblConnectedUser;
     }
 }
