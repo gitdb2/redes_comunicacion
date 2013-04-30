@@ -4,11 +4,15 @@ using System.Linq;
 using System.Text;
 using Comunicacion;
 using uy.edu.ort.obligatorio.Commons;
+using System.IO;
+
 
 namespace uy.edu.ort.obligatorio.ContentServer
 {
     public class CommandHandler
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private static CommandHandler instance = new CommandHandler();
 
         private CommandHandler() { }
@@ -33,8 +37,8 @@ namespace uy.edu.ort.obligatorio.ContentServer
 
         private void HandleRES(Connection Connection, Data dato)
         {
-            Console.WriteLine("[{0}] connection owner: {1} ;  The data: {2} ", DateTime.Now, "USAR CONNECTION DE COMMONS", dato.ToString());
-          
+            Console.WriteLine("[{0}] connection owner: {1} ;  The data: {2} ", DateTime.Now, Connection.Name, dato.ToString());
+            log.DebugFormat(" connection owner: {0} ;  The data: {1} ", Connection.Name, dato.ToString());
             switch (dato.OpCode)
             {
                 case 0:
@@ -61,21 +65,74 @@ namespace uy.edu.ort.obligatorio.ContentServer
 
         private void HandleREQ(Connection Connection, Data dato)
         {
-            Console.WriteLine("[{0}] connection owner: {1} ;  The data: {2} ", DateTime.Now, "USAR CONNECTION DE COMMONS", dato.ToString());
+            Console.WriteLine("[{0}] connection owner: {1} ;  The data: {2} ", DateTime.Now, Connection.Name, dato.ToString());
+            log.DebugFormat(" connection owner: {0} ;  The data: {1} ", Connection.Name, dato.ToString());
                    
             switch (dato.OpCode)
             {
                 case OpCodeConstants.REQ_CONTACT_LIST: //viene el obtener lista de contactos
                     CommandGetContactList(Connection, dato);
+                    log.Debug("procesé REQ LISTA DE CONTACTOS");
                     break;
                 case OpCodeConstants.REQ_CREATE_USER:
                     CommandCreateNewUser(Connection, dato);
+                    log.Debug("procesé REQ Crear USUARIO");
                     break;
+                case OpCodeConstants.REQ_SEARCH_FILES:
+                    CommandSearchFiles(Connection, dato);
+                    log.Debug("procesé REQ Buscar Archivos");
+                    break;
+
                 case OpCodeConstants.REQ_ADD_CONTACT:
                     CommandAddContact(Connection, dato);
                     break;
                 default:
                     break;
+            }
+        }
+        public const string PIPE_SEPARATOR = "|";
+        private void CommandSearchFiles(Connection connection, Data dato)
+        {//REQ07
+
+           // login + "|" + hashQuery + "|" + pattern;
+
+
+            string[] payload = dato.Payload.Message.Split(new string[] { PIPE_SEPARATOR }, StringSplitOptions.None);
+            string login        = payload[0];
+            string queryHash    = payload[1];
+            string pattern      = payload[2];
+            List<FileObject> results = FileOperationsSingleton.GetInstance().SearchFilesMatching(pattern);
+
+            StringBuilder message = new StringBuilder();
+            string destination = login + PIPE_SEPARATOR + queryHash + PIPE_SEPARATOR + Settings.GetInstance().GetProperty("server.name", "DEFAULT_SERVER");
+
+            bool first = true;
+            foreach (var item in results)
+            {
+               if (first)
+                {
+                    first = false;
+                }
+                else
+                {
+                    message.Append(PIPE_SEPARATOR);
+                }
+                message.Append(item.ToNetworkString());
+            }
+
+            string tmp = message.ToString();
+
+            Data retDato = new Data()
+            {
+                Command = Command.RES,
+                OpCode = OpCodeConstants.RES_SEARCH_FILES,
+                Payload = new MultiplePayload() { Message = tmp, Destination = destination }
+            };
+
+            foreach (var item in retDato.GetBytes())
+            {
+                Console.WriteLine("Envio :{0}", ConversionUtil.GetString(item));
+                connection.WriteToStream(item);
             }
         }
 

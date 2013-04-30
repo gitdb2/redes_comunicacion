@@ -5,11 +5,16 @@ using System.Text;
 using System.Net;
 using System.Net.Sockets;
 using uy.edu.ort.obligatorio.Commons;
+using log4net;
+using System.IO;
+using System.Reflection;
+using Comunicacion;
 
 namespace uy.edu.ort.obligatorio.ServidorDns
 {
     class Program
     {
+        private ILog log;
         static void Main(string[] args)
         {
             Program p = new Program();
@@ -18,15 +23,22 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             Console.ReadLine();
         }
 
-        //public IPAddress ip = Dns.Resolve().AddressList[0];
-        //public IPAddress ip = Dns.GetHostEntry("localhost").AddressList[0];
-        public IPAddress ip = IPAddress.Any;
-        public int port = 2000;
+
+ 
         public bool running = true;
         public TcpListener server;
 
         public Program()
         {
+            log4net.Config.XmlConfigurator.Configure(new FileInfo("log4net.config"));
+            log4net.GlobalContext.Properties["serverName"] = "DNS";
+            log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        
+            string listenAddressStr = Settings.GetInstance().GetProperty("listen.ip","ANY");
+            IPAddress ip = "ANY".Equals(listenAddressStr) ? IPAddress.Any : IPAddress.Parse(listenAddressStr);
+            int port =  int.Parse(Settings.GetInstance().GetProperty("listen.port","2000"));
+
             Console.Title = "Servidor DNS y CHAT";
             Console.WriteLine("----- DNS y CHAT Server -----");
             UsersPersistenceHandler.GetInstance().LoadUsers();
@@ -35,6 +47,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             server = new TcpListener(ip, port);
             server.Start();
             Console.WriteLine("[{0}] Server is running properly!", DateTime.Now);
+            log.Info("Server is running properly!");
 
             Listen();
         }
