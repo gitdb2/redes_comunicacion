@@ -399,10 +399,14 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         {
             if (clientConnection.IsServer)
             {
+                log.InfoFormat("Desconectando el servidor {0}", clientConnection.Name);
+                Console.WriteLine("Desconectando el servidor {0}", clientConnection.Name);
                 SingletonServerConnection.GetInstance().RemoveServer(clientConnection.Name);
             }
             else
             {
+                log.InfoFormat("Desconectando el cliente {0}", clientConnection.Name);
+                Console.WriteLine("Desconectando el cliente {0}", clientConnection.Name);
                 NotifyUserChangedStatus(clientConnection.Name, MessageConstants.STATUS_OFFLINE);
                 SingletonClientConnection.GetInstance().RemoveClient(clientConnection.Name);
             }
