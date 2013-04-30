@@ -48,6 +48,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandHandler.cs" />
+    <Compile Include="TransfersCommandHandler.cs" />
+    <Compile Include="ReceiveTransfersEventHandler.cs" />
     <Compile Include="FileOperationsSingleton.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

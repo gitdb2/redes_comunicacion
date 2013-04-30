@@ -162,11 +162,62 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 case OpCodeConstants.REQ_ADD_CONTACT: //un login quiere agregar un contacto nuevo
                     CommandREQADDContact(clientConnection, dato);
                     break;
+
+                case OpCodeConstants.REQ_GET_SERVERS: //Obtiene la lista de servidores online
+                     CommandREQGetServers(clientConnection, dato);
+                     break;
                 case OpCodeConstants.REQ_SEND_CHAT_MSG: //un login le envia un mensaje de chat a otro
                     CommandREQSendChatMessage(clientConnection, dato);
+
                     break;
                 default:
                     break;
+            }
+        }
+
+
+        const string PIPE_SEPARATOR = "|";
+
+        private void CommandREQGetServers(Connection connection, Data dato)
+        {
+
+            string login = dato.Payload.Message.Split('|')[0];
+
+            List<ServerInfo> servers = SingletonServerConnection.GetInstance().GetServersWithUsers();
+            StringBuilder message = new StringBuilder();
+
+
+            if (servers.Count == 0)
+            {
+                message.Append("ERROR").Append(PIPE_SEPARATOR).Append("No hay Servidores en linea");
+            }
+            else
+            {
+                bool first = true;
+                foreach (var item in servers)
+                {
+                    if (first)
+                    {
+                        first = false;
+                    }
+                    else
+                    {
+                        message.Append(PIPE_SEPARATOR);
+                    }
+                    message.Append(item.ToNetworkString());
+                }
+            }
+
+
+            Data outData = new Data()
+            {
+                Command = Command.RES,
+                OpCode = OpCodeConstants.RES_GET_SERVERS,
+                Payload = new MultiplePayload() { Message = message.ToString(), Destination = login }
+            };
+            foreach (var item in outData.GetBytes())
+            {
+                connection.WriteToStream(item);
             }
         }
 
@@ -194,6 +245,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 SendMessage(clientFromConnection, Command.RES, OpCodeConstants.RES_SEND_CHAT_MSG, new Payload() { Message = messageError });
             }
             
+
         }
 
         private void CommandREQADDContact(Connection clientConnection, Data dato)
@@ -256,6 +308,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             int serverPort      = int.Parse(tmp[2]);
             int userCount       = int.Parse(tmp[3]);
 
+            newConnection.IsServer  = true;
             newConnection.Ip        = serverIp;
             newConnection.Name      = serverName;
             newConnection.Port      = serverPort;
@@ -344,8 +397,19 @@ namespace uy.edu.ort.obligatorio.ServidorDns
 
         public void Logout(Connection clientConnection)
         {
-            NotifyUserChangedStatus(clientConnection.Name, MessageConstants.STATUS_OFFLINE);
-            SingletonClientConnection.GetInstance().RemoveClient(clientConnection.Name);
+            if (clientConnection.IsServer)
+            {
+                log.InfoFormat("Desconectando el servidor {0}", clientConnection.Name);
+                Console.WriteLine("Desconectando el servidor {0}", clientConnection.Name);
+                SingletonServerConnection.GetInstance().RemoveServer(clientConnection.Name);
+            }
+            else
+            {
+                log.InfoFormat("Desconectando el cliente {0}", clientConnection.Name);
+                Console.WriteLine("Desconectando el cliente {0}", clientConnection.Name);
+                NotifyUserChangedStatus(clientConnection.Name, MessageConstants.STATUS_OFFLINE);
+                SingletonClientConnection.GetInstance().RemoveClient(clientConnection.Name);
+            }
         }
 
         private void NotifyUserChangedStatus(string user, string newStatus)
