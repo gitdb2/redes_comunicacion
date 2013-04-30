@@ -85,11 +85,12 @@ namespace uy.edu.ort.obligatorio.Commons
                  //   Console.WriteLine(e.StackTrace);
                     Console.WriteLine("Error: "+e.Message);
                     notEnd = false;
-                    CloseConn();
+                   // CloseConn();
                 }
             }
             try
             {
+                log.Info("Cerrando la conexion!");
                 CloseConn();
             }
             catch { }
@@ -116,7 +117,16 @@ namespace uy.edu.ort.obligatorio.Commons
             }
             notEnd = false;
         }
-    
+
+
+        public void WriteToNetworkStream(byte[] buffer, int offset, int size)
+        {
+            lock (this)
+            {
+                networkStream.Write(buffer, offset, size);
+                networkStream.Flush();
+            }
+        }
     }
 
 }

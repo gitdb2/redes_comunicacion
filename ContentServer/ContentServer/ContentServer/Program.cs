@@ -18,6 +18,7 @@ namespace uy.edu.ort.obligatorio.ContentServer
     public class Program
     {
         DNSConnection dns;
+        TransferServer transferServer;
         private ILog log;
 
         static void Main(string[] args)
@@ -40,6 +41,8 @@ namespace uy.edu.ort.obligatorio.ContentServer
 
         public bool running = true;
         public TcpListener server;
+      
+
         public bool DEBUG = bool.Parse(Settings.GetInstance().GetProperty("debug", "false"));
         public Program()
         {
@@ -69,29 +72,71 @@ namespace uy.edu.ort.obligatorio.ContentServer
 
             IPAddress ip = "ANY".Equals(listenAddressStr) ? IPAddress.Any : IPAddress.Parse(listenAddressStr);
             int port =  int.Parse(Settings.GetInstance().GetProperty("server.port","2001"));
+            int portTransfers = int.Parse(Settings.GetInstance().GetProperty("server.transfers.port", "20001"));
+
+
+            transferServer = new TransferServer(ip, portTransfers);
 
 
             server = new TcpListener(ip, port);
             server.Start();
+
             Console.WriteLine("[{0}] Server is running properly!", DateTime.Now);
             log.Info("Server is running properly!");
-            Listen();
+            Listen(port);
+            
         }
 
 
-        void Listen()  // Listen to incoming connections.
+        void Listen(int port)  // Listen to incoming connections.
         {
+            log.InfoFormat("Listen");
             while (running)
             {
                 TcpClient tcpClient = server.AcceptTcpClient();  // Accept incoming connection.
+                log.InfoFormat("nueva conexion de control(:{2}) desde {0}:{1}", ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address, ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Port, port);
+
                 Connection client = new Connection(tcpClient, new ReceiveEventHandler());     // Handle in another thread.
                 
             }
         }
 
+       
     }
 
-   
+    public class TransferServer
+    {
+        ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        public TcpListener serverTransfers;
+        int port;
+        IPAddress ip;
+        bool running = true;
+
+        public TransferServer(IPAddress ip, int port)
+        {
+            this.ip = ip;
+            this.port = port;
+            (new Thread(new ThreadStart(ListenTransfers))).Start();
+        }
+
+     
+        void ListenTransfers()  // Listen to incoming connections.
+        {
+
+            serverTransfers = new TcpListener(ip, port);
+            serverTransfers.Start();
+
+           
+            while (running)
+            {
+                log.InfoFormat("[ListenTransfers] Waiting for new connection");
+                TcpClient tcpClient = serverTransfers.AcceptTcpClient();  // Accept incoming connection.
+                log.InfoFormat("nueva conexion de transferencia(:{2}) desde {0}:{1}", ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address, ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Port, port);
+                Connection client = new Connection(tcpClient, new ReceiveTransfersEventHandler());     // Handle in another thread.
+
+            }
+        }
+    }
 
     public class DNSConnection
     {

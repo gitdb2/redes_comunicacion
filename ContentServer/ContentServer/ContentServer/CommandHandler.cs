@@ -63,33 +63,90 @@ namespace uy.edu.ort.obligatorio.ContentServer
             }
         }
 
-        private void HandleREQ(Connection Connection, Data dato)
+        private void HandleREQ(Connection connection, Data dato)
         {
-            Console.WriteLine("[{0}] connection owner: {1} ;  The data: {2} ", DateTime.Now, Connection.Name, dato.ToString());
-            log.DebugFormat(" connection owner: {0} ;  The data: {1} ", Connection.Name, dato.ToString());
+            Console.WriteLine("[{0}] connection owner: {1} ;  The data: {2} ", DateTime.Now, connection.Name, dato.ToString());
+            log.DebugFormat(" connection owner: {0} ;  The data: {1} ", connection.Name, dato.ToString());
                    
             switch (dato.OpCode)
             {
                 case OpCodeConstants.REQ_CONTACT_LIST: //viene el obtener lista de contactos
-                    CommandGetContactList(Connection, dato);
+                    CommandGetContactList(connection, dato);
                     log.Debug("procesé REQ LISTA DE CONTACTOS");
                     break;
                 case OpCodeConstants.REQ_CREATE_USER:
-                    CommandCreateNewUser(Connection, dato);
+                    CommandCreateNewUser(connection, dato);
                     log.Debug("procesé REQ Crear USUARIO");
                     break;
                 case OpCodeConstants.REQ_SEARCH_FILES:
-                    CommandSearchFiles(Connection, dato);
+                    CommandSearchFiles(connection, dato);
                     log.Debug("procesé REQ Buscar Archivos");
                     break;
 
                 case OpCodeConstants.REQ_ADD_CONTACT:
-                    CommandAddContact(Connection, dato);
+                    CommandAddContact(connection, dato);
+                    log.Debug("procesé REQ Add CONTACTOS");
+                    break;
+
+                case OpCodeConstants.REQ_GET_TRANSFER_INFO: //se ejecuta previo a la bajada de un archivo puntual, en el caso que el cliente no tenga el tamanio del archivo para saber cuando cortar.
+                    CommandGetFile(connection, dato);
+                    log.Debug("procesé REQ GetFile");
                     break;
                 default:
                     break;
             }
         }
+
+        private void CommandGetFile(Connection connection, Data dato)
+        {
+            string[] payload = dato.Payload.Message.Split(new string[] { PIPE_SEPARATOR }, StringSplitOptions.None);
+            string login = payload[0];
+            string owner = payload[1];
+            string hashfile = payload[2];
+
+            FileInfo fi =  FileOperationsSingleton.GetInstance().GetFile(hashfile, login);
+            Data retDato;
+            if (fi == null)
+            {
+                retDato = new Data()
+                {
+                    Command = Command.RES,
+                    OpCode = OpCodeConstants.RES_SEARCH_FILES,
+                    Payload = new Payload() { Message = "ERROR [wrong file or not found]" }
+                };
+            }
+            else
+            {
+
+                string port = Settings.GetInstance().GetProperty("server.transfers.port", "20001");
+                string ip = Settings.GetInstance().GetProperty("server.ip", "127.0.0.1");
+
+                long size = fi.Length;
+
+                string message = login + PIPE_SEPARATOR + owner + PIPE_SEPARATOR + hashfile + PIPE_SEPARATOR + ip + PIPE_SEPARATOR + port+ PIPE_SEPARATOR +size;
+
+                retDato = new Data()
+                {
+                    Command = Command.RES,
+                    OpCode = OpCodeConstants.RES_SEARCH_FILES,
+                    Payload = new Payload() { Message = message }
+                };
+            }
+
+            foreach (var item in retDato.GetBytes())
+            {
+                Console.WriteLine("Envio :{0}", ConversionUtil.GetString(item));
+                connection.WriteToStream(item);
+            }
+
+        }
+
+
+
+
+
+
+
         public const string PIPE_SEPARATOR = "|";
         private void CommandSearchFiles(Connection connection, Data dato)
         {//REQ07
