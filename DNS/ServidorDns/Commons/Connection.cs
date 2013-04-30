@@ -61,7 +61,7 @@ namespace uy.edu.ort.obligatorio.Commons
          
         }
 
-        void SetupConn()  // Setup connection and login or register.
+        void SetupConn()
         {
             try
             {

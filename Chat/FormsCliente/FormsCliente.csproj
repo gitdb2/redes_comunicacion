@@ -124,7 +124,9 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="log4net.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+
     </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

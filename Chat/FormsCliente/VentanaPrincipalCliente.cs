@@ -39,7 +39,7 @@ namespace Chat
             clientHandler = ClientHandler.GetInstance();
 
             this.lblConnectedUser.Text = clientHandler.Login;
-
+            this.Text = "Principal: "+ clientHandler.Login.ToUpper();
             contactListResponse = new ClientHandler.ContactListEventHandler(EventContactListResponse);
             updateContactStatusResponse = new ClientHandler.UpdateContactStatusEventHandler(EventUpdateContactStatusResponse);
             chatMessageReceived = new ClientHandler.ChatMessageReceivedEventHandler(EventChatMessageReceived);

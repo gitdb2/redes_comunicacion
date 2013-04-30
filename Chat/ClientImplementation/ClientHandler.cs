@@ -22,10 +22,8 @@ namespace ClientImplementation
 
         private static ClientHandler instance = new ClientHandler();
 
-        private ClientHandler() 
-        {
-           
-        }
+
+        private ClientHandler() { }
 
         public static ClientHandler GetInstance()
         {
@@ -34,15 +32,12 @@ namespace ClientImplementation
 
         public void Connect(string login)
         {
-         //   connection.Name = login;
-           // TcpClient = new TcpClient(ipDNS, puertoDNS);
-           // connection = new Connection(TcpClient, new ReceiveEventHandler());
             connection = new Connection(login, new TcpClient(ipDNS, puertoDNS), new ReceiveEventHandler());
+            this.Login = login;
         }
 
         public void CloseConnection()
         {
-            log.InfoFormat("CloseConnection: connection == null?= {0}", connection != null);
             if (connection != null)
             {
                 this.connection.CloseConn();

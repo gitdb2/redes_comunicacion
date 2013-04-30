@@ -14,7 +14,7 @@ namespace Chat
     public partial class BuscarArchivo : Form
     {
 
-        private ClientHandler clientHandler;
+   
 
      /*   private ClientHandler.FindFilesEventHandler findFilesEventHandler;
         private ClientHandler.AddContactEventHandler addContactsResponse;

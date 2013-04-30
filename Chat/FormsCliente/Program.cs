@@ -11,7 +11,9 @@ namespace Chat
 {
     static class Program
     {
+
         private static ILog log;
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -20,9 +22,11 @@ namespace Chat
         {
 
             log4net.Config.XmlConfigurator.Configure(new FileInfo("log4net.config"));
-            log4net.GlobalContext.Properties["serverName"] = "client";
-            log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-            log.Info("arranca");
+            log4net.GlobalContext.Properties["serverName"] = "Cliente";
+            log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+            
+            log.Info("Inicio del Cliente");
+
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
