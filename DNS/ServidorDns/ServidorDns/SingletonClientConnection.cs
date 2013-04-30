@@ -36,7 +36,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             {
                 if (login != null)
                 {
-                    return clientsMap.Remove(login);
+                    return clientsMap.Remove(login) && clientsContactsMap.Remove(login);
                 }
                 else 
                 {
@@ -93,6 +93,17 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             {
                 clientsContactsMap[login] = clientContactList;         
             }
+        }
+
+        public List<string> GetContactsOfLogin(string login)
+        {
+            List<string> tmpKeyList = new List<string>();
+            lock (this)
+            { 
+                if (clientsContactsMap.ContainsKey(login))
+                    tmpKeyList.AddRange(clientsContactsMap[login]);
+            }
+            return tmpKeyList;
         }
     }
 }

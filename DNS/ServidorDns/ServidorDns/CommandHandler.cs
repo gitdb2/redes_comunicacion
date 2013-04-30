@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Comunicacion;
-using uy.edu.ort.obligatorio.LibOperations.intefaces;
 using uy.edu.ort.obligatorio.Commons;
 using System.Text.RegularExpressions;
 
@@ -58,34 +57,48 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         private void CommandRESAddContact(Connection connection, Data dato)
         {
             //la respuesta viene en el formato n|m|loginDestino|contactoAgregado@estado|mensaje_success_o_error
-            string[] payLoadSplitted = dato.Payload.Message.Split('|');
+            string[] payLoadSplitted = dato.Payload.Message.Split(ParseConstants.SEPARATOR_PIPE);
             string login = payLoadSplitted[2];
             string contactAddedInfo = payLoadSplitted[3];
             string opStatus = payLoadSplitted[4];
+            string contactAdded = contactAddedInfo.Split(ParseConstants.SEPARATOR_AT)[0];
 
             //si el servidor agrego el contacto, lo agrego a la lista local de contactos
             if (opStatus.Equals(MessageConstants.MESSAGE_SUCCESS))
             {
-                string contactAdded = contactAddedInfo.Split('@')[0];
-
-                //agrego el contacto a la lista de contactos de los clientes local
+                //agrego a los usuarios como contactos mutuamente
                 SingletonClientConnection.GetInstance().AddContactToClient(login, contactAdded);
+                SingletonClientConnection.GetInstance().AddContactToClient(contactAdded, login);
 
                 //si el usuario esta conectado actualizo la trama
                 if (SingletonClientConnection.GetInstance().ClientIsConnected(contactAdded))
                 {
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append(payLoadSplitted[0]).Append("|");
-                    sb.Append(payLoadSplitted[1]).Append("|");
-                    sb.Append(login).Append("|");
-                    sb.Append(contactAdded).Append("@1").Append("|");
-                    sb.Append(payLoadSplitted[4]);
-                    dato.Payload.Message = sb.ToString();
+                    dato.Payload.Message = CreateUserIsConnectedMessage(payLoadSplitted, login, contactAdded);
                 }
             }
 
+            //notifico al login para que actualice su lista de contactos
             Connection loginConnection = SingletonClientConnection.GetInstance().GetClient(login);
             SendMessage(loginConnection, Command.RES, dato.OpCode, dato.Payload);
+
+            //si el contacto que fue agregado esta online tambien lo notifico
+            Connection contactAddedConnection = SingletonClientConnection.GetInstance().GetClient(contactAdded);
+            if (contactAddedConnection != null)
+            {
+                dato.Payload.Message = CreateUserIsConnectedMessage(payLoadSplitted, contactAdded, login);
+                SendMessage(contactAddedConnection, Command.RES, dato.OpCode, dato.Payload);
+            }
+        }
+
+        private string CreateUserIsConnectedMessage(string[] originalPayload, string loginRequester, string contactAdded)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(originalPayload[0]).Append(ParseConstants.SEPARATOR_PIPE);
+            sb.Append(originalPayload[1]).Append(ParseConstants.SEPARATOR_PIPE);
+            sb.Append(loginRequester).Append(ParseConstants.SEPARATOR_PIPE);
+            sb.Append(contactAdded).Append(ParseConstants.SEPARATOR_AT).Append(MessageConstants.STATUS_ONLINE).Append(ParseConstants.SEPARATOR_PIPE);
+            sb.Append(originalPayload[4]);
+            return sb.ToString();
         }
 
         private void CommandRESUserCreated(Connection connection, Data dato)
@@ -120,6 +133,8 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 {
                     loginConnection.WriteToStream(item);
                 }
+                //notifico que el usuario se conecto
+                NotifyUserChangedStatus(login, MessageConstants.STATUS_ONLINE);
             }
             else
             {
@@ -147,13 +162,19 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 case OpCodeConstants.REQ_ADD_CONTACT: //un login quiere agregar un contacto nuevo
                     CommandREQADDContact(clientConnection, dato);
                     break;
+
                 case OpCodeConstants.REQ_GET_SERVERS: //Obtiene la lista de servidores online
-                    CommandREQGetServers(clientConnection, dato);
+                     CommandREQGetServers(clientConnection, dato);
+                     break;
+                case OpCodeConstants.REQ_SEND_CHAT_MSG: //un login le envia un mensaje de chat a otro
+                    CommandREQSendChatMessage(clientConnection, dato);
+
                     break;
                 default:
                     break;
             }
         }
+
 
         const string PIPE_SEPARATOR = "|";
 
@@ -200,9 +221,37 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             }
         }
 
+        private void CommandREQSendChatMessage(Connection clientConnection, Data dato)
+        {
+            string[] payloadSplitted = dato.Payload.Message.Split(ParseConstants.SEPARATOR_PIPE);
+            string clientFrom = payloadSplitted[0];
+            string clientTo = payloadSplitted[1];
+            
+            Connection clientToConnection = SingletonClientConnection.GetInstance().GetClient(clientTo);
+            Connection clientFromConnection = SingletonClientConnection.GetInstance().GetClient(clientFrom);
+
+            if (clientToConnection != null)
+            {
+                //envio el mensaje al destinatario
+                SendMessage(clientToConnection, Command.REQ, dato.OpCode, dato.Payload);
+                //aviso al remitente que envie su mensaje
+                string messageSuccess = clientTo + ParseConstants.SEPARATOR_PIPE + MessageConstants.MESSAGE_SUCCESS;
+                SendMessage(clientFromConnection, Command.RES, OpCodeConstants.RES_SEND_CHAT_MSG, new Payload() { Message = messageSuccess });
+            }
+            else 
+            {
+                //aviso que se perdio la conexion con el destinatario
+                string messageError = clientTo + ParseConstants.SEPARATOR_PIPE + MessageConstants.MESSAGE_ERROR;
+                SendMessage(clientFromConnection, Command.RES, OpCodeConstants.RES_SEND_CHAT_MSG, new Payload() { Message = messageError });
+            }
+            
+
+        }
+
         private void CommandREQADDContact(Connection clientConnection, Data dato)
         {
-            string login = dato.Payload.Message.Split('|')[0];
+            //en la trama viene: login que hace el request|contacto a agregar
+            string login = dato.Payload.Message.Split(ParseConstants.SEPARATOR_PIPE)[0];
             string serverName = UsersPersistenceHandler.GetInstance().GetServerName(login);
             if (serverName != null)
             {
@@ -346,12 +395,40 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             }
         }
 
-        /// <summary>
-        /// Que lo arregle boris
-        /// </summary>
-        /// <param name="login"></param>
-        /// <param name="serverName"></param>
-        /// <returns></returns>
+        public void Logout(Connection clientConnection)
+        {
+            if (clientConnection.IsServer)
+            {
+                SingletonServerConnection.GetInstance().RemoveServer(clientConnection.Name);
+            }
+            else
+            {
+                NotifyUserChangedStatus(clientConnection.Name, MessageConstants.STATUS_OFFLINE);
+                SingletonClientConnection.GetInstance().RemoveClient(clientConnection.Name);
+            }
+        }
+
+        private void NotifyUserChangedStatus(string user, string newStatus)
+        {
+            StringBuilder sb;
+            Connection contactConnection;
+            foreach (string contact in SingletonClientConnection.GetInstance().GetContactsOfLogin(user))
+            {
+                if (SingletonClientConnection.GetInstance().ClientIsConnected(contact))
+                {
+                    sb = new StringBuilder();
+                    sb.Append("01").Append(ParseConstants.SEPARATOR_PIPE);
+                    sb.Append("01").Append(ParseConstants.SEPARATOR_PIPE);
+                    sb.Append(contact).Append(ParseConstants.SEPARATOR_PIPE);
+                    sb.Append(user).Append("@").Append(newStatus).Append(ParseConstants.SEPARATOR_PIPE);
+                    sb.Append(MessageConstants.MESSAGE_SUCCESS);
+
+                    contactConnection = SingletonClientConnection.GetInstance().GetClient(contact);
+                    SendMessage(contactConnection, Command.RES, OpCodeConstants.RES_ADD_CONTACT, new Payload() { Message = sb.ToString() });
+                }
+            }
+        }
+
         private bool AddUserToServer(string login, string serverName)
         {
             

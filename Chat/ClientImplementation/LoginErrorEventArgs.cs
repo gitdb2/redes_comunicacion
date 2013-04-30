@@ -7,6 +7,7 @@ namespace ClientImplementation
 {
     public class LoginErrorEventArgs : EventArgs
     {
+        
         public string ErrorMessage { get; set; }
 
     }

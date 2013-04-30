@@ -19,7 +19,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
 
         public bool OnFatalError(Commons.Connection connection)
         {
-            SingletonClientConnection.GetInstance().RemoveClient(connection.Name);
+            CommandHandler.GetInstance().Logout(connection);
             return false;
         }
 

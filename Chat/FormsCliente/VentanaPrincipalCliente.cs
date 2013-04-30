@@ -9,15 +9,22 @@ using System.Windows.Forms;
 using Dominio;
 using Comunicacion;
 using ClientImplementation;
+using uy.edu.ort.obligatorio.Commons;
 
 namespace Chat
 {
     public partial class VentanaPrincipalCliente : Form
     {
-        public string Login { get; set; }
         private ClientHandler clientHandler;
+
         private ClientHandler.ContactListEventHandler contactListResponse;
         private ClientHandler.UpdateContactStatusEventHandler updateContactStatusResponse;
+        private ClientHandler.ChatMessageReceivedEventHandler chatMessageReceived;
+        private ClientHandler.ChatMessageSentEventHandler chatMessageSent;
+
+        //las ventanas de chat activas, cuando llegue el evento de mensaje le envio el
+        //mensaje a la ventana que corresponda
+        private Dictionary<string, VentanaDeChat> chatWindows = new Dictionary<string, VentanaDeChat>();
 
         //lista de contactos temporal en la que se acumulan todas las llegadas de RES02
         //una vez que llego la ultima porcion de la lista se refresca el form y se vacia esta lista
@@ -30,10 +37,34 @@ namespace Chat
         {
             InitializeComponent();
             clientHandler = ClientHandler.GetInstance();
+
+            this.lblConnectedUser.Text = clientHandler.Login;
+
             contactListResponse = new ClientHandler.ContactListEventHandler(EventContactListResponse);
             updateContactStatusResponse = new ClientHandler.UpdateContactStatusEventHandler(EventUpdateContactStatusResponse);
+            chatMessageReceived = new ClientHandler.ChatMessageReceivedEventHandler(EventChatMessageReceived);
+            chatMessageSent = new ClientHandler.ChatMessageSentEventHandler(EventChatMessageSent);
+
+            clientHandler.ChatMessageReceived += chatMessageReceived;
             clientHandler.ContactListResponse += contactListResponse;
             clientHandler.UpdateContactStatusResponse += updateContactStatusResponse;
+            clientHandler.ChatMessageSent += chatMessageSent;
+        }
+
+        void EventChatMessageSent(object sender, ChatMessageSentEventArgs e)
+        {
+            this.BeginInvoke((Action)(delegate
+            {
+                if (e.MessageStatus.Equals(MessageConstants.MESSAGE_SUCCESS))
+                {
+                    this.chatWindows[e.MessageTo].EnableSendChatButton();
+                }
+                else 
+                {
+                    this.chatWindows[e.MessageTo].NotifyContactDisconnected();
+                    this.chatWindows.Remove(e.MessageTo);
+                }
+            }));
         }
 
         void EventContactListResponse(object sender, ContactListEventArgs e)
@@ -87,6 +118,25 @@ namespace Chat
             }));
         }
 
+        void EventChatMessageReceived(object sender, ChatMessageEventArgs e)
+        {
+            this.BeginInvoke((Action)(delegate
+            {
+                if (this.chatWindows.ContainsKey(e.ClientFrom))
+                {
+                    //ya estaba chateando con ese cliente
+                    chatWindows[e.ClientFrom].WriteMessage(e);
+                }
+                else
+                { 
+                    //una nueva ventana de chat
+                    VentanaDeChat vt = CreateChatWindow(e.ClientFrom);
+                    vt.WriteMessage(e);
+                    vt.Show();
+                }
+            }));
+        }
+
         private void SetearEstadoContacto(ListViewItem lvi, KeyValuePair<string, bool> contacto)
         {
             lvi.UseItemStyleForSubItems = false;
@@ -97,7 +147,8 @@ namespace Chat
 
         private void menuArchivoOpcionSalir_Click(object sender, EventArgs e)
         {
-            this.Dispose();
+            CloseResources();
+            Application.Exit();
         }
 
         private void listaContactos_DoubleClick(object sender, EventArgs e)
@@ -105,19 +156,26 @@ namespace Chat
             KeyValuePair<string, bool> contactSelected = (KeyValuePair<string, bool>)listaContactos.SelectedItems[0].Tag;
             if (contactSelected.Value)
             {
-                VentanaDeChat vt = new VentanaDeChat(contactSelected.Key, this.Login);
+                VentanaDeChat vt = CreateChatWindow(contactSelected.Key);
                 vt.Show();
             }
-            else 
+            else
             {
                 MessageBox.Show("No es posible chatear con " + contactSelected.Key + ", esta desconectado.",
                     "Contacto Desconectado", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
+        private VentanaDeChat CreateChatWindow(string chattingWith)
+        {
+            VentanaDeChat vt = new VentanaDeChat(chattingWith, this);
+            chatWindows.Add(chattingWith, vt);
+            return vt;
+        }
+
         private void menuAccionesOpcionAgregarContacto_Click(object sender, EventArgs e)
         {
-            AgregarContacto ac = new AgregarContacto() { Login = this.Login};
+            AgregarContacto ac = new AgregarContacto() { Login = clientHandler.Login };
             ac.ShowDialog();
         }
 
@@ -135,13 +193,26 @@ namespace Chat
 
         private void VentanaPrincipalCliente_Load(object sender, EventArgs e)
         {
-            clientHandler.GetContactList(Login);
+            clientHandler.GetContactList(clientHandler.Login);
+        }
+
+        public void RemoveChatWindow(string chattingWith)
+        {
+            this.chatWindows.Remove(chattingWith);
         }
 
         private void VentanaPrincipalCliente_FormClosing(object sender, FormClosingEventArgs e)
         {
+            CloseResources();
+        }
+
+        private void CloseResources()
+        {
             clientHandler.ContactListResponse -= contactListResponse;
             clientHandler.UpdateContactStatusResponse -= updateContactStatusResponse;
+            clientHandler.ChatMessageReceived -= chatMessageReceived;
+            clientHandler.ChatMessageSent -= chatMessageSent;
+            clientHandler.CloseConnection();
         }
 
     }

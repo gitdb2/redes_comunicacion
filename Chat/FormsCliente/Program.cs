@@ -15,7 +15,17 @@ namespace Chat
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Login());
+            
+            Login login = new Login();
+            DialogResult res = login.ShowDialog();
+            if (res == DialogResult.OK)
+            {
+                Application.Run(new VentanaPrincipalCliente());
+            }
+            else
+            {
+                Application.Exit();
+            }
         }
     }
 }

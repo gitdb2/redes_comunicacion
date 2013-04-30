@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChatMessageEventArgs.cs" />
+    <Compile Include="ChatMessageSentEventArgs.cs" />
     <Compile Include="ClientHandler.cs" />
     <Compile Include="CommandHandler.cs" />
     <Compile Include="ContactListEventArgs.cs" />

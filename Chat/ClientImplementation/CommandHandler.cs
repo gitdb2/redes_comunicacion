@@ -49,9 +49,19 @@ namespace ClientImplementation
                 case OpCodeConstants.RES_ADD_CONTACT:
                     CommandRESAddContact(clientConnection, dato);
                     break;
+                case OpCodeConstants.RES_SEND_CHAT_MSG:
+                    CommandRESMessageSent(clientConnection, dato);
+                    break;
                 default:
                     break;
             }
+        }
+
+        private void CommandRESMessageSent(Connection clientConnection, Data dato)
+        {
+            //la respuesta viene en el formato loginMessageTo|success o error
+            string[] payloadSplitted = dato.Payload.Message.Split(ParseConstants.SEPARATOR_PIPE);
+            ClientHandler.GetInstance().OnMessageSentResponse(new ChatMessageSentEventArgs() { MessageTo = payloadSplitted[0], MessageStatus = payloadSplitted[1] });
         }
 
         private void CommandRESAddContact(Connection clientConnection, Data dato)
@@ -86,33 +96,31 @@ namespace ClientImplementation
             ClientHandler.GetInstance().OnContactListResponse(new ContactListEventArgs() { ContactList = contactList, IsLastPart = isLastPart });
         }
 
-        private void HandleREQ(Connection clientConnection,Data dato)
+        private void HandleREQ(Connection clientConnection, Data dato)
         {
              switch (dato.OpCode)
             {
-                case 0:
+                case OpCodeConstants.REQ_SEND_CHAT_MSG:
+                    CommandREQSendChatMessage(clientConnection, dato);
                     break;
                 case 1: 
-                    break;
-                case 2:
-                    break;
-                case 3: //mensaje de chat
-                    CommandREQChatMessage(clientConnection, dato);
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                case 6:
                     break;
                 default:
                     break;
             }
         }
 
-        private void CommandREQChatMessage(Connection clientConnection, Data dato)
+        private void CommandREQSendChatMessage(Connection clientConnection, Data dato)
         {
-            throw new NotImplementedException();
+            string[] payloadSplitted = dato.Payload.Message.Split(ParseConstants.SEPARATOR_PIPE);
+            ClientHandler.GetInstance().OnReceivedChatMessage(
+                new ChatMessageEventArgs()
+                {
+                    ClientFrom = payloadSplitted[0],
+                    ClientTo = payloadSplitted[1],
+                    Message = payloadSplitted[2]
+                }
+            );
         }
 
     }

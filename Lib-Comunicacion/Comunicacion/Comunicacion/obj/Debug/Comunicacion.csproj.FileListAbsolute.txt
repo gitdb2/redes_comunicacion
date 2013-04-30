@@ -10,3 +10,5 @@ F:\ORT\REDES\Obligatorio\Lib-Comunicacion\Comunicacion\Comunicacion\obj\Debug\Co
 F:\ORT\REDES\Obligatorio\Lib-Comunicacion\Comunicacion\Comunicacion\bin\Debug\lib\log4net.dll
 F:\ORT\REDES\Obligatorio\Lib-Comunicacion\Comunicacion\Comunicacion\bin\Debug\Comunicacion.dll
 F:\ORT\REDES\Obligatorio\Lib-Comunicacion\Comunicacion\Comunicacion\bin\Debug\Comunicacion.pdb
+C:\Users\mauricio\redes_comunicacion\Lib-Comunicacion\Comunicacion\Comunicacion\bin\Debug\lib\log4net.dll
+C:\Users\mauricio\redes_comunicacion\Lib-Comunicacion\Comunicacion\Comunicacion\bin\Debug\log4net.dll
