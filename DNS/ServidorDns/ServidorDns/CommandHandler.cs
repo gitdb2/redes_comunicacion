@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Comunicacion;
-using uy.edu.ort.obligatorio.LibOperations.intefaces;
 using uy.edu.ort.obligatorio.Commons;
 using System.Text.RegularExpressions;
 
@@ -120,6 +119,10 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 {
                     loginConnection.WriteToStream(item);
                 }
+                
+                //notifico que el usuario se conecto
+                NotifyUserChangedStatus(login, "1");
+
             }
             else
             {
@@ -326,12 +329,33 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             }
         }
 
-        /// <summary>
-        /// Que lo arregle boris
-        /// </summary>
-        /// <param name="login"></param>
-        /// <param name="serverName"></param>
-        /// <returns></returns>
+        public void Logout(Connection clientConnection)
+        {
+            NotifyUserChangedStatus(clientConnection.Name, "0");
+            SingletonClientConnection.GetInstance().RemoveClient(clientConnection.Name);
+        }
+
+        private void NotifyUserChangedStatus(string user, string newStatus)
+        {
+            StringBuilder sb;
+            Connection contactConnection;
+            foreach (string contact in SingletonClientConnection.GetInstance().GetContactsOfLogin(user))
+            {
+                if (SingletonClientConnection.GetInstance().ClientIsConnected(contact))
+                {
+                    sb = new StringBuilder();
+                    sb.Append("01").Append(ParseConstants.SEPARATOR_PIPE);
+                    sb.Append("01").Append(ParseConstants.SEPARATOR_PIPE);
+                    sb.Append(contact).Append(ParseConstants.SEPARATOR_PIPE);
+                    sb.Append(user).Append("@").Append(newStatus).Append(ParseConstants.SEPARATOR_PIPE);
+                    sb.Append(MessageConstants.MESSAGE_SUCCESS);
+
+                    contactConnection = SingletonClientConnection.GetInstance().GetClient(contact);
+                    SendMessage(contactConnection, Command.RES, OpCodeConstants.RES_ADD_CONTACT, new Payload() { Message = sb.ToString() });
+                }
+            }
+        }
+
         private bool AddUserToServer(string login, string serverName)
         {
             

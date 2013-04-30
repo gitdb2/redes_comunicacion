@@ -52,10 +52,8 @@
     <Compile Include="ReceiveEventHandler.cs" />
     <Compile Include="SingletonServerConnection.cs" />
     <Compile Include="UsersPersistenceHandler.cs" />
-    <Compile Include="intefaces\IConnection.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="req\ReqLogin.cs" />
     <Compile Include="SingletonClientConnection.cs" />
   </ItemGroup>
   <ItemGroup>
