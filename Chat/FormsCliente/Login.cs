@@ -9,12 +9,14 @@ using System.Windows.Forms;
 using FormsCliente;
 using Comunicacion;
 using ClientImplementation;
+using System.Threading;
 
 namespace Chat
 {
     public partial class Login : Form
     {
         private ClientHandler clientHandler;
+        private bool connected;
 
         public Login()
         {
@@ -28,17 +30,36 @@ namespace Chat
         {
             if (FormUtils.TxtBoxTieneDatos(txtBoxLogin))
             {
-                this.btnOK.Enabled = false;
-                try 
+                if (!connected)
                 {
-                    //intento establecer la conexion con el dns
-                    clientHandler.Connect(txtBoxLogin.Text);
-                    //envio el request de login
-                    clientHandler.LoginClient(txtBoxLogin.Text);
+                    try
+                    {
+                        //intento establecer la conexion con el dns
+                        this.btnOK.Enabled = false;
+                        clientHandler.Connect(txtBoxLogin.Text);
+                        connected = true;
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("No se pudo conectar al servidor", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        this.btnOK.Enabled = true;
+                        this.connected = false;
+                    }
                 }
-                catch (Exception exc)
+                if (connected) 
                 {
-                    MessageBox.Show("Mensaje detallado " + exc.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    try
+                    {
+                        //Thread.Sleep(1000);
+
+                        //envio el request de login
+                        clientHandler.LoginClient(txtBoxLogin.Text);
+                    }
+                    catch (Exception exc)
+                    {
+                        MessageBox.Show("Error: " + exc.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        this.btnOK.Enabled = true;
+                    }
                 }
             }
             else 

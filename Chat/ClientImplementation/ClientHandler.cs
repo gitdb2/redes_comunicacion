@@ -21,11 +21,7 @@ namespace ClientImplementation
 
         private static ClientHandler instance = new ClientHandler();
 
-        private ClientHandler() 
-        {
-            TcpClient = new TcpClient(ipDNS, puertoDNS);
-            connection = new Connection(TcpClient, new ReceiveEventHandler());
-        }
+        private ClientHandler() { }
 
         public static ClientHandler GetInstance()
         {
@@ -34,13 +30,16 @@ namespace ClientImplementation
 
         public void Connect(string login)
         {
+            this.Login = login;
+            TcpClient = new TcpClient(ipDNS, puertoDNS);
+            connection = new Connection(TcpClient, new ReceiveEventHandler());
             connection.Name = login;
-           
         }
 
         public void CloseConnection()
         {
-            this.connection.CloseConn();
+            if (connection != null)
+                this.connection.CloseConn();
         }
 
         public void LoginClient(string login)

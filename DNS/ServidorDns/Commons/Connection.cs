@@ -18,7 +18,6 @@ namespace uy.edu.ort.obligatorio.Commons
         
         public StreamReader StreamReader { get; set; }
         public StreamWriter StreamWriter { get; set; }
-
        
         public string Name { get; set; }
 
@@ -49,7 +48,7 @@ namespace uy.edu.ort.obligatorio.Commons
             }
         }
 
-        void SetupConn()  // Setup connection and login or register.
+        void SetupConn()
         {
             try
             {
