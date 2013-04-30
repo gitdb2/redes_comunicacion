@@ -145,9 +145,38 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 case OpCodeConstants.REQ_ADD_CONTACT: //un login quiere agregar un contacto nuevo
                     CommandREQADDContact(clientConnection, dato);
                     break;
+                case OpCodeConstants.REQ_SEND_CHAT_MSG: //un login le envia un mensaje de chat a otro
+                    CommandREQSendChatMessage(clientConnection, dato);
+                    break;
                 default:
                     break;
             }
+        }
+
+        private void CommandREQSendChatMessage(Connection clientConnection, Data dato)
+        {
+            string[] payloadSplitted = dato.Payload.Message.Split(ParseConstants.SEPARATOR_PIPE);
+            string clientFrom = payloadSplitted[0];
+            string clientTo = payloadSplitted[1];
+            
+            Connection clientToConnection = SingletonClientConnection.GetInstance().GetClient(clientTo);
+            Connection clientFromConnection = SingletonClientConnection.GetInstance().GetClient(clientFrom);
+
+            if (clientToConnection != null)
+            {
+                //envio el mensaje al destinatario
+                SendMessage(clientToConnection, Command.REQ, dato.OpCode, dato.Payload);
+                //aviso al remitente que envie su mensaje
+                string messageSuccess = clientTo + ParseConstants.SEPARATOR_PIPE + MessageConstants.MESSAGE_SUCCESS;
+                SendMessage(clientFromConnection, Command.RES, OpCodeConstants.RES_SEND_CHAT_MSG, new Payload() { Message = messageSuccess });
+            }
+            else 
+            {
+                //aviso que se perdio la conexion con el destinatario
+                string messageError = clientTo + ParseConstants.SEPARATOR_PIPE + MessageConstants.MESSAGE_ERROR;
+                SendMessage(clientFromConnection, Command.RES, OpCodeConstants.RES_SEND_CHAT_MSG, new Payload() { Message = messageError });
+            }
+            
         }
 
         private void CommandREQADDContact(Connection clientConnection, Data dato)

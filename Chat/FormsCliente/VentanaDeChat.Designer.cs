@@ -72,10 +72,11 @@
             this.Controls.Add(this.txtBoxMensaje);
             this.Controls.Add(this.txtBoxChat);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.MinimizeBox = false;
+            this.MaximizeBox = false;
             this.Name = "VentanaDeChat";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Ventana De Chat";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.VentanaDeChat_FormClosing);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtBoxMensaje_KeyPress);
             this.ResumeLayout(false);
             this.PerformLayout();

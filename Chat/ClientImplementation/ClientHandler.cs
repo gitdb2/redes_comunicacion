@@ -62,6 +62,15 @@ namespace ClientImplementation
             SendMessage(Command.REQ, OpCodeConstants.REQ_ADD_CONTACT, new Payload(Login + "|" + contactToAdd));
         }
 
+        public void SendChatMessage(string clientFrom, string clientTo, string message)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(clientFrom).Append(ParseConstants.SEPARATOR_PIPE);
+            sb.Append(clientTo).Append(ParseConstants.SEPARATOR_PIPE);
+            sb.Append(message);
+            SendMessage(Command.REQ, OpCodeConstants.REQ_SEND_CHAT_MSG, new Payload(sb.ToString()));
+        }
+
         public event EventHandler LoginOK;
 
         public void OnLoginOK()
@@ -128,6 +137,26 @@ namespace ClientImplementation
         public delegate void UpdateContactStatusEventHandler(object sender, SimpleEventArgs e);
 
         public event UpdateContactStatusEventHandler UpdateContactStatusResponse;
+
+        public delegate void ChatMessageReceivedEventHandler(object sender, ChatMessageEventArgs e);
+
+        public event ChatMessageReceivedEventHandler ChatMessageReceived;
+
+        public void OnReceivedChatMessage(ChatMessageEventArgs chatMessageEventArgs)
+        {
+            if (ChatMessageReceived != null)
+                ChatMessageReceived(this, chatMessageEventArgs);
+        }
+
+        public delegate void ChatMessageSentEventHandler(object sender, ChatMessageSentEventArgs e);
+
+        public event ChatMessageSentEventHandler ChatMessageSent;
+
+        public void OnMessageSentResponse(ChatMessageSentEventArgs chatMessageSentEventArgs)
+        {
+            if (ChatMessageSent != null)
+                ChatMessageSent(this, chatMessageSentEventArgs);
+        }
 
     }
 }

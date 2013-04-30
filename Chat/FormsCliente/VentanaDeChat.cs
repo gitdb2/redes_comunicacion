@@ -18,26 +18,34 @@ namespace Chat
 {
     public partial class VentanaDeChat : Form
     {
-        private string ChateandoCon;
-        private string NombreUsuario;
-        private string ChatID;
+        private string ChattingWith;
         private ClientHandler clientHandler;
+        private VentanaPrincipalCliente mainWindow;
 
-        private const string patronFecha = "yyyy-MM-dd HH:mm";
+        private const string patronFecha = "yyyy-MM-dd HH:mm:ss";
 
-        public VentanaDeChat(string contacto, string nombreUsuario)
+        public VentanaDeChat(string contacto,  VentanaPrincipalCliente mainWindow)
         {
             InitializeComponent();
-            this.ChateandoCon = contacto;
-            this.NombreUsuario = nombreUsuario;
-            this.ChatID =  "chat-" + NombreUsuario + "=>" + ChateandoCon;
-            this.clientHandler = clientHandler = ClientHandler.GetInstance();
-            MostrarMensajeInicial(contacto);
+            this.ChattingWith = contacto;
+            this.mainWindow = mainWindow;
+            this.clientHandler = ClientHandler.GetInstance();
+            SetupChatWindow(contacto);
         }
 
-        private void MostrarMensajeInicial(string nombreUsuario)
+        public void WriteMessage(ChatMessageEventArgs e) 
         {
-            txtBoxChat.AppendText("(" + DateTime.Now.ToString(patronFecha) + ") Estas chateando con: " + nombreUsuario + "\r\n");
+            StringBuilder sb = new StringBuilder();
+            sb.Append("(").Append(DateTime.Now.ToString(patronFecha)).Append(") ");
+            sb.Append(e.ClientFrom).Append(": ");
+            sb.Append(e.Message).Append("\r\n");
+            txtBoxChat.AppendText(sb.ToString());
+        }
+
+        private void SetupChatWindow(string nombreUsuario)
+        {
+            this.Text = mainWindow.Login + " Chateando Con " + nombreUsuario;
+            txtBoxChat.AppendText("(" + DateTime.Now.ToString(patronFecha) + ") Estas Chateando Con: " + nombreUsuario + "\r\n");
         }
 
         private void btnEnviarMensaje_Click(object sender, EventArgs e)
@@ -46,17 +54,19 @@ namespace Chat
             txtBoxMensaje.Focus();
         }
 
-        private void ActualizarVentanaDeChat(string strMessage)
-        {
-            txtBoxChat.AppendText("(" + DateTime.Now.ToString(patronFecha) + ") NombreUsuario: " + strMessage + "\r\n");
-        }
-
         private void EnviarMensaje()
         {
             if (txtBoxMensaje.Lines.Length >= 1)
             {
-                //enviar mensajes
-                ActualizarVentanaDeChat(txtBoxMensaje.Text);
+                //envio el mensaje al destinatario
+                clientHandler.SendChatMessage(mainWindow.Login, ChattingWith, txtBoxMensaje.Text);
+
+                //imprimo el mensaje enviado en la ventana
+                WriteMessage(new ChatMessageEventArgs() { ClientFrom = "Tu", Message = txtBoxMensaje.Text });
+
+                //bloqueo el boton de enviar hasta que llegue el ok del mensaje enviado
+                //se habilita en el evento que recibe dicha notificacion
+                this.btnEnviarMensaje.Enabled = false;
 
                 txtBoxMensaje.Lines = null;
             }
@@ -70,6 +80,24 @@ namespace Chat
             {
                 EnviarMensaje();
             }
+        }
+
+        public void EnableSendChatButton()
+        {
+            this.btnEnviarMensaje.Enabled = true;
+        }
+
+        public void NotifyContactDisconnected()
+        {
+            MessageBox.Show("No es posible continuar chateando con " + ChattingWith + ", ya que perdio su conexion con el servidor.",
+            "Contacto Desconectado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            this.btnEnviarMensaje.Enabled = false;
+            this.txtBoxMensaje.Enabled = false;
+        }
+
+        private void VentanaDeChat_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            mainWindow.RemoveChatWindow(this.ChattingWith);
         }
 
     }
