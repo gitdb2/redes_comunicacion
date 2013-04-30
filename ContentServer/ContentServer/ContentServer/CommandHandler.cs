@@ -82,7 +82,6 @@ namespace uy.edu.ort.obligatorio.ContentServer
                     CommandSearchFiles(Connection, dato);
                     log.Debug("procesé REQ Buscar Archivos");
                     break;
-
                 case OpCodeConstants.REQ_ADD_CONTACT:
                     CommandAddContact(Connection, dato);
                     break;
@@ -141,8 +140,9 @@ namespace uy.edu.ort.obligatorio.ContentServer
             string[] payloadSplitted = dato.Payload.Message.Split('|');
             string login = payloadSplitted[0];
             string contactToAdd = payloadSplitted[1];
-            
-            bool ok = UsersContactsPersistenceHandler.GetInstance().AddContact(login, contactToAdd);
+
+            bool ok = UsersContactsPersistenceHandler.GetInstance().AddContact(login, contactToAdd)
+                      && UsersContactsPersistenceHandler.GetInstance().AddContact(contactToAdd, login);
 
             string statusMessage = ok ? "SUCCESS" : "ERROR";
             string message = contactToAdd + STATUS_DELIMITER + "0" + CONTACT_DELIMITER + statusMessage;

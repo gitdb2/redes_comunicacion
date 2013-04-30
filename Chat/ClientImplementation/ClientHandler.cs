@@ -60,7 +60,7 @@ namespace ClientImplementation
 
         public void AddContact(string Login, string contactToAdd)
         {
-            SendMessage(Command.REQ, OpCodeConstants.REQ_ADD_CONTACT, new Payload(Login + "|" + contactToAdd));
+            SendMessage(Command.REQ, OpCodeConstants.REQ_ADD_CONTACT, new Payload(Login + ParseConstants.SEPARATOR_PIPE + contactToAdd));
         }
 
         public void SendChatMessage(string clientFrom, string clientTo, string message)

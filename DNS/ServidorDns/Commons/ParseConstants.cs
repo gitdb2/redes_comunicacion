@@ -10,5 +10,7 @@ namespace uy.edu.ort.obligatorio.Commons
 
         public const char SEPARATOR_PIPE = '|';
 
+        public const char SEPARATOR_AT = '@';
+
     }
 }
