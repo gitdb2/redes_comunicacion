@@ -52,6 +52,9 @@ namespace ClientImplementation
                 case OpCodeConstants.RES_SEND_CHAT_MSG:
                     CommandRESMessageSent(clientConnection, dato);
                     break;
+                case OpCodeConstants.REQ_GET_SERVERS:
+                    CommandRESGetServers(clientConnection, dato);
+                    break;
                 default:
                     break;
             }
@@ -95,6 +98,16 @@ namespace ClientImplementation
             bool isLastPart = UtilContactList.IsLastPart(dato.Payload.Message);
             ClientHandler.GetInstance().OnContactListResponse(new ContactListEventArgs() { ContactList = contactList, IsLastPart = isLastPart });
         }
+
+
+        private void CommandRESGetServers(Connection connection, Data dato)
+        {
+            //Dictionary<string, bool> contactList = UtilContactList.ContactListFromString(dato.Payload.Message);
+            //bool isLastPart = UtilContactList.IsLastPart(dato.Payload.Message);
+            //ClientHandler.GetInstance().OnFindContactResponse(new ContactListEventArgs() { ContactList = contactList, IsLastPart = isLastPart });
+        }
+
+
 
         private void HandleREQ(Connection clientConnection, Data dato)
         {

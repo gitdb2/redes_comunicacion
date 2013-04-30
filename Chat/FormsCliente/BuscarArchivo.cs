@@ -7,11 +7,18 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Dominio;
+using ClientImplementation;
 
 namespace Chat
 {
     public partial class BuscarArchivo : Form
     {
+
+        private ClientHandler clientHandler;
+
+     /*   private ClientHandler.FindFilesEventHandler findFilesEventHandler;
+        private ClientHandler.AddContactEventHandler addContactsResponse;
+        */
         public BuscarArchivo()
         {
             InitializeComponent();
@@ -19,21 +26,25 @@ namespace Chat
 
         private void btnBuscar_Click(object sender, EventArgs e)
         {
-            if (FormUtils.TxtBoxTieneDatos(txtBuscarArchivo))
-            {
-                string patron = txtBuscarArchivo.Text;
-                listaArchivos.Items.Clear();
-                Controlador controlador = new Controlador();
-                List<Archivo> archivosEncontrados = controlador.BuscarArchivos(patron);
-                foreach (Archivo archivo in archivosEncontrados)
-                {
-                    ListViewItem lvi = new ListViewItem(archivo.Nombre);
-                    lvi.Tag = archivo;
-                    lvi.SubItems.Add(archivo.Servidor);
-                    listaArchivos.Items.Add(lvi);
-                }
-                FormUtils.AjustarTamanoColumnas(listaArchivos);
-            }
+
+
+
+
+            //if (FormUtils.TxtBoxTieneDatos(txtBuscarArchivo))
+            //{
+            //    string patron = txtBuscarArchivo.Text;
+            //    listaArchivos.Items.Clear();
+            //    Controlador controlador = new Controlador();
+            //    List<Archivo> archivosEncontrados = controlador.BuscarArchivos(patron);
+            //    foreach (Archivo archivo in archivosEncontrados)
+            //    {
+            //        ListViewItem lvi = new ListViewItem(archivo.Nombre);
+            //        lvi.Tag = archivo;
+            //        lvi.SubItems.Add(archivo.Servidor);
+            //        listaArchivos.Items.Add(lvi);
+            //    }
+            //    FormUtils.AjustarTamanoColumnas(listaArchivos);
+            //}
         }
 
         private void btnCerrar_Click(object sender, EventArgs e)

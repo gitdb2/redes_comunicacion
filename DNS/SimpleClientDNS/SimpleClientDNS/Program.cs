@@ -51,7 +51,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             br = new StreamReader(netStream, Encoding.UTF8);
             bw = new StreamWriter(netStream, Encoding.UTF8);
 
-
+    
             #region Pruebas1
             if(false){
             Data data = new Data() { Command = Command.REQ, OpCode = 1, Payload = new Payload(login) };

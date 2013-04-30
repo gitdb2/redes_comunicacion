@@ -14,6 +14,8 @@ namespace uy.edu.ort.obligatorio.Commons
         public string Destination { get; private set; }
         public string Payload { get; private set; }
 
+        public bool IsLastpart(){return PartsCurrent == PartsTotal;}
+
         public const string DELIMITER = "|";
 
         private MultiplePayloadFrameDecoded() { }

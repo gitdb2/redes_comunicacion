@@ -146,7 +146,7 @@ namespace Comunicacion
         {
             StringBuilder res = new StringBuilder();
             foreach (String prop in list.Keys.ToArray())
-                if (!String.IsNullOrWhiteSpace(list[prop]))
+              //  if (!String.IsNullOrWhiteSpace(list[prop]))
                     res.Append(prop + "=" + list[prop] + "\r\n");
             return res.ToString();
         }

@@ -1,2 +1,4 @@
-﻿rodrigo=contacto1,contacto2
+﻿rodrigo=mauricio,contacto1,contacto2
 mauricio=rodrigo,contacto3
+rodtrab=
+alfajor=

@@ -19,13 +19,17 @@ namespace uy.edu.ort.obligatorio.Commons
         public StreamReader StreamReader { get; set; }
         public StreamWriter StreamWriter { get; set; }
 
-       
+        Semaphore semWrite ;//= new Semaphore(0, 1);
+        Semaphore semRead ;//= new Semaphore(0, 1);
+
         public string Name { get; set; }
 
         public string Ip { get; set; }
         public int Port { get; set; }
         public int UserCount { get; set; }
         public bool IsServer{ get; set; }
+
+  
 
         public IReceiveEvent EventHandler { get; set; }
 
@@ -35,20 +39,26 @@ namespace uy.edu.ort.obligatorio.Commons
 
         public Connection(string name, TcpClient c, IReceiveEvent ire)
         {
+
             IsServer = false;
             Name = name;
             tcpClient = c;
             EventHandler = ire;
+            semWrite = new Semaphore(0, 1);
+            semRead = new Semaphore(0, 1);
             (new Thread(new ThreadStart(SetupConn))).Start();
         }
 
         public void WriteToStream(char[] data)
         {
-            lock (this)
-            {
+             
+            
+            semWrite.WaitOne(); 
                 StreamWriter.Write(data);
                 StreamWriter.Flush();
-            }
+            semWrite.Release();
+           
+         
         }
 
         void SetupConn()  // Setup connection and login or register.
@@ -56,11 +66,15 @@ namespace uy.edu.ort.obligatorio.Commons
             try
             {
                 Console.WriteLine("[{0}] New connection!", DateTime.Now);
-                log.Info("Setup  New connection!");
+              
 
+                
                 networkStream = tcpClient.GetStream();
                 StreamReader = new StreamReader(networkStream, Encoding.UTF8);
                 StreamWriter = new StreamWriter(networkStream, Encoding.UTF8);
+                semWrite.Release();
+                semRead.Release();
+
                 ReceiveData();
             }
             finally { 
@@ -83,11 +97,9 @@ namespace uy.edu.ort.obligatorio.Commons
                     notEnd = EventHandler.OnFatalError(this);
 
                     Console.WriteLine("Se rompio la conexion de: " + this.Name);
-                    log.Error("Error mientras se cerraba la conexion", e);
-                 //   Console.WriteLine(e.StackTrace);
+                    log.Error("Catch excepcion y cerrado de conexion", e);
                     Console.WriteLine("Error: "+e.Message);
                     notEnd = false;
-                   // CloseConn();
                 }
             }
             try
@@ -96,15 +108,15 @@ namespace uy.edu.ort.obligatorio.Commons
                 CloseConn();
             }
             catch { }
-            Console.WriteLine("termino");
             log.Info("Termian Receive Data!");
         }
 
         public void CloseConn() // Close connection.
         {
-            log.Info("Cerrando connection!");
+           
             try
             {
+                notEnd = false;
                 StreamReader.Close();
                 StreamWriter.Close();
                 networkStream.Close();
@@ -123,11 +135,12 @@ namespace uy.edu.ort.obligatorio.Commons
 
         public void WriteToNetworkStream(byte[] buffer, int offset, int size)
         {
-            lock (this)
-            {
+          
+            semWrite.WaitOne();
                 networkStream.Write(buffer, offset, size);
                 networkStream.Flush();
-            }
+            semWrite.Release();
+          
         }
     }
 

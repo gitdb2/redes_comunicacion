@@ -82,8 +82,11 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         {
             lock (this)
             {
-                if (!clientsContactsMap[client].Contains(contactToAdd))
-                    clientsContactsMap[client].Add(contactToAdd);
+                if (clientsContactsMap.ContainsKey(client))
+                {
+                    if (!clientsContactsMap[client].Contains(contactToAdd))
+                        clientsContactsMap[client].Add(contactToAdd);
+                }
             }
         }
 

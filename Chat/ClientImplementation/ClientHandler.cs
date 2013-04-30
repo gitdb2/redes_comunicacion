@@ -12,19 +12,19 @@ namespace ClientImplementation
 {
     public class ClientHandler
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private const int puertoDNS = 2000;
         private const string ipDNS = "localhost";
         private Connection connection;
-        public TcpClient TcpClient { get; set; }
+     //   public TcpClient TcpClient { get; set; }
         public string Login { get; set; }
 
         private static ClientHandler instance = new ClientHandler();
 
         private ClientHandler() 
         {
-            TcpClient = new TcpClient(ipDNS, puertoDNS);
-            connection = new Connection(TcpClient, new ReceiveEventHandler());
+           
         }
 
         public static ClientHandler GetInstance()
@@ -34,13 +34,19 @@ namespace ClientImplementation
 
         public void Connect(string login)
         {
-            connection.Name = login;
-           
+         //   connection.Name = login;
+           // TcpClient = new TcpClient(ipDNS, puertoDNS);
+           // connection = new Connection(TcpClient, new ReceiveEventHandler());
+            connection = new Connection(login, new TcpClient(ipDNS, puertoDNS), new ReceiveEventHandler());
         }
 
         public void CloseConnection()
         {
-            this.connection.CloseConn();
+            log.InfoFormat("CloseConnection: connection == null?= {0}", connection != null);
+            if (connection != null)
+            {
+                this.connection.CloseConn();
+            }
         }
 
         public void LoginClient(string login)
