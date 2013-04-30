@@ -44,7 +44,7 @@ namespace Chat
 
         private void SetupChatWindow(string nombreUsuario)
         {
-            this.Text = mainWindow.Login + " Chateando Con " + nombreUsuario;
+            this.Text = clientHandler.Login +" Chateando Con " + nombreUsuario;
             txtBoxChat.AppendText("(" + DateTime.Now.ToString(patronFecha) + ") Estas Chateando Con: " + nombreUsuario + "\r\n");
         }
 
@@ -59,7 +59,7 @@ namespace Chat
             if (txtBoxMensaje.Lines.Length >= 1)
             {
                 //envio el mensaje al destinatario
-                clientHandler.SendChatMessage(mainWindow.Login, ChattingWith, txtBoxMensaje.Text);
+                clientHandler.SendChatMessage(clientHandler.Login, ChattingWith, txtBoxMensaje.Text);
 
                 //imprimo el mensaje enviado en la ventana
                 WriteMessage(new ChatMessageEventArgs() { ClientFrom = "Tu", Message = txtBoxMensaje.Text });

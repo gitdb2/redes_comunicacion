@@ -51,8 +51,9 @@ namespace Chat
         {
             this.BeginInvoke((Action)(delegate
             {
-                VentanaPrincipalCliente vp = new VentanaPrincipalCliente() { Login = txtBoxLogin.Text };
-                vp.ShowDialog();
+                this.clientHandler.Login = txtBoxLogin.Text;
+                this.DialogResult = DialogResult.OK;
+                this.Close();
             }));
         }
 
@@ -61,6 +62,7 @@ namespace Chat
             this.BeginInvoke((Action)(delegate
             {
                 MessageBox.Show("Mensaje detallado: " + e.ErrorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.DialogResult = DialogResult.Abort;
             }));
         }
 

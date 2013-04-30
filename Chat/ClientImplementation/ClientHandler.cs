@@ -17,6 +17,7 @@ namespace ClientImplementation
         private const string ipDNS = "localhost";
         private Connection connection;
         public TcpClient TcpClient { get; set; }
+        public string Login { get; set; }
 
         private static ClientHandler instance = new ClientHandler();
 

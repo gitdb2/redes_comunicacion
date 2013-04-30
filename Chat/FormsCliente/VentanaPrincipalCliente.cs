@@ -15,7 +15,6 @@ namespace Chat
 {
     public partial class VentanaPrincipalCliente : Form
     {
-        public string Login { get; set; }
         private ClientHandler clientHandler;
 
         private ClientHandler.ContactListEventHandler contactListResponse;
@@ -146,7 +145,8 @@ namespace Chat
 
         private void menuArchivoOpcionSalir_Click(object sender, EventArgs e)
         {
-            this.Dispose();
+            CloseResources();
+            Application.Exit();
         }
 
         private void listaContactos_DoubleClick(object sender, EventArgs e)
@@ -173,7 +173,7 @@ namespace Chat
 
         private void menuAccionesOpcionAgregarContacto_Click(object sender, EventArgs e)
         {
-            AgregarContacto ac = new AgregarContacto() { Login = this.Login};
+            AgregarContacto ac = new AgregarContacto() { Login = clientHandler.Login };
             ac.ShowDialog();
         }
 
@@ -191,20 +191,26 @@ namespace Chat
 
         private void VentanaPrincipalCliente_Load(object sender, EventArgs e)
         {
-            clientHandler.GetContactList(Login);
-        }
-
-        private void VentanaPrincipalCliente_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            clientHandler.ContactListResponse -= contactListResponse;
-            clientHandler.UpdateContactStatusResponse -= updateContactStatusResponse;
-            clientHandler.ChatMessageReceived -= chatMessageReceived;
-            clientHandler.ChatMessageSent -= chatMessageSent;
+            clientHandler.GetContactList(clientHandler.Login);
         }
 
         public void RemoveChatWindow(string chattingWith)
         {
             this.chatWindows.Remove(chattingWith);
+        }
+
+        private void VentanaPrincipalCliente_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            CloseResources();
+        }
+
+        private void CloseResources()
+        {
+            clientHandler.ContactListResponse -= contactListResponse;
+            clientHandler.UpdateContactStatusResponse -= updateContactStatusResponse;
+            clientHandler.ChatMessageReceived -= chatMessageReceived;
+            clientHandler.ChatMessageSent -= chatMessageSent;
+            clientHandler.CloseConnection();
         }
 
     }
