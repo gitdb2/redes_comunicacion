@@ -181,7 +181,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         private void CommandREQGetServers(Connection connection, Data dato)
         {
 
-            string login = dato.Payload.Message.Split('|')[0];
+          //  string login = dato.Payload.Message.Split('|')[0];
 
             List<ServerInfo> servers = SingletonServerConnection.GetInstance().GetServersWithUsers();
             StringBuilder message = new StringBuilder();
@@ -213,7 +213,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             {
                 Command = Command.RES,
                 OpCode = OpCodeConstants.RES_GET_SERVERS,
-                Payload = new MultiplePayload() { Message = message.ToString(), Destination = login }
+                Payload = new MultiplePayload() { Message = message.ToString(), Destination = dato.Payload.Message }
             };
             foreach (var item in outData.GetBytes())
             {

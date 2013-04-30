@@ -96,7 +96,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 Data data = new Data() { 
                     Command = Command.REQ, 
                     OpCode = OpCodeConstants.REQ_GET_SERVERS, 
-                    Payload = new Payload(login) };
+                    Payload = new Payload(login+"@asdadadadasd") };
                 int cont = 0;
                 foreach (var item in data.GetBytes())
                 {

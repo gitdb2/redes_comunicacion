@@ -12,6 +12,7 @@ namespace uy.edu.ort.obligatorio.ContentServer
         public string Hash { get; set; }
         public long Size { get; set; }
         public string Owner { get; set; }
+        public string Server { get; set; }
 
         public string FullName { get; set; }
 

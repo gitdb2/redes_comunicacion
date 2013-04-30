@@ -17,7 +17,6 @@ namespace ClientImplementation
         private const int puertoDNS = 2000;
         private const string ipDNS = "localhost";
         private Connection connection;
-     //   public TcpClient TcpClient { get; set; }
         public string Login { get; set; }
 
         private static ClientHandler instance = new ClientHandler();
@@ -160,5 +159,19 @@ namespace ClientImplementation
                 ChatMessageSent(this, chatMessageSentEventArgs);
         }
 
+        #region Obtencion de servidores para buscar archivos
+        public delegate void ServerListReceivedEventHandler(object sender, GetServersEventArgs e);
+        public event ServerListReceivedEventHandler ServerListReceived;
+        public void OnGetServersResponse(GetServersEventArgs getServersEventArgs)
+        {
+            if (ServerListReceived != null)
+                ServerListReceived(this, getServersEventArgs);
+        }
+
+        public void REQGetServerList(string hashQuery)
+        {
+            SendMessage(Command.REQ, OpCodeConstants.REQ_GET_SERVERS, new Payload() { Message = Login + "@" + hashQuery });
+        }
+        #endregion
     }
 }

@@ -102,9 +102,9 @@ namespace ClientImplementation
 
         private void CommandRESGetServers(Connection connection, Data dato)
         {
-            //Dictionary<string, bool> contactList = UtilContactList.ContactListFromString(dato.Payload.Message);
-            //bool isLastPart = UtilContactList.IsLastPart(dato.Payload.Message);
-            //ClientHandler.GetInstance().OnFindContactResponse(new ContactListEventArgs() { ContactList = contactList, IsLastPart = isLastPart });
+            MultiplePayloadFrameDecoded decoded = MultiplePayloadFrameDecoded.Parse(dato.Payload.Message);
+            ClientHandler.GetInstance().OnGetServersResponse(new GetServersEventArgs() { Response = decoded});
+
         }
 
 
