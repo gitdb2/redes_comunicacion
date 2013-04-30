@@ -6,6 +6,7 @@ using System.Threading;
 using System.Net.Sockets;
 using System.IO;
 using Comunicacion;
+using uy.edu.ort.obligatorio.Commons;
 
 namespace uy.edu.ort.obligatorio.ServidorDns
 {
@@ -50,6 +51,9 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             br = new StreamReader(netStream, Encoding.UTF8);
             bw = new StreamWriter(netStream, Encoding.UTF8);
 
+
+            #region Pruebas1
+            if(false){
             Data data = new Data() { Command = Command.REQ, OpCode = 1, Payload = new Payload(login) };
             int cont = 0;
             foreach (var item in data.GetBytes())
@@ -80,6 +84,40 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             Data data3 = LoadObject(br);
 
             Console.WriteLine("lista de contactos en el cliente " + cont++ + "   --->" + ConversionUtil.GetString(data3.GetBytes()[0]));
+
+            }
+            #endregion
+
+
+            #region pruebas 2
+            if (true)
+            {
+
+                Data data = new Data() { 
+                    Command = Command.REQ, 
+                    OpCode = OpCodeConstants.REQ_GET_SERVERS, 
+                    Payload = new Payload(login) };
+                int cont = 0;
+                foreach (var item in data.GetBytes())
+                {
+                    Console.WriteLine("line " + cont++ + "  Sending --->" + ConversionUtil.GetString(item));
+                    bw.Write(item);
+                    bw.Flush();
+                }
+
+               
+
+                Data data2 = LoadObject(br);
+
+                Console.WriteLine("Llega:{0}", data2.ToString());
+
+                Console.WriteLine(MultiplePayloadFrameDecoded.Parse(data2.Payload.Message).ToString());
+                
+
+            }
+
+            #endregion
+
 
             CloseConn();
         }

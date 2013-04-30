@@ -25,6 +25,7 @@ namespace uy.edu.ort.obligatorio.Commons
         public string Ip { get; set; }
         public int Port { get; set; }
         public int UserCount { get; set; }
+        public bool IsServer{ get; set; }
 
         public IReceiveEvent EventHandler { get; set; }
 
@@ -34,6 +35,7 @@ namespace uy.edu.ort.obligatorio.Commons
 
         public Connection(string name, TcpClient c, IReceiveEvent ire)
         {
+            IsServer = false;
             Name = name;
             tcpClient = c;
             EventHandler = ire;

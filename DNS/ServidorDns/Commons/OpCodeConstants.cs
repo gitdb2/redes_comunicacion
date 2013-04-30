@@ -34,6 +34,9 @@ namespace uy.edu.ort.obligatorio.Commons
         public const int REQ_DOWNLOAD_FILE = 10;
         public const int RES_DOWNLOAD_FILE = REQ_DOWNLOAD_FILE;
 
+        public const int REQ_GET_SERVERS = 11;
+        public const int RES_GET_SERVERS = REQ_GET_SERVERS;
+        
 
     }
 }

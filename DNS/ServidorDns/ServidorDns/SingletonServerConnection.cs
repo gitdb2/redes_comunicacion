@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using uy.edu.ort.obligatorio.Commons;
+using System.Text.RegularExpressions;
 
 namespace uy.edu.ort.obligatorio.ServidorDns
 {
@@ -96,6 +97,23 @@ namespace uy.edu.ort.obligatorio.ServidorDns
              }
              return ret;
            
+        }
+
+
+
+        public List<ServerInfo> GetServersWithUsers()
+        {
+            List<ServerInfo> ret = new List<ServerInfo>();
+            lock (this)
+            {
+                foreach (var item in serversMap.Values)
+                {
+                    if(item.UserCount>0){
+                        ret.Add(new ServerInfo() { Ip = item.Ip, Name = item.Name, Port = item.Port });
+                    }
+                }
+            }
+            return ret;
         }
     }
 }

@@ -147,8 +147,56 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 case OpCodeConstants.REQ_ADD_CONTACT: //un login quiere agregar un contacto nuevo
                     CommandREQADDContact(clientConnection, dato);
                     break;
+                case OpCodeConstants.REQ_GET_SERVERS: //Obtiene la lista de servidores online
+                    CommandREQGetServers(clientConnection, dato);
+                    break;
                 default:
                     break;
+            }
+        }
+
+        const string PIPE_SEPARATOR = "|";
+
+        private void CommandREQGetServers(Connection connection, Data dato)
+        {
+
+            string login = dato.Payload.Message.Split('|')[0];
+
+            List<ServerInfo> servers = SingletonServerConnection.GetInstance().GetServersWithUsers();
+            StringBuilder message = new StringBuilder();
+
+
+            if (servers.Count == 0)
+            {
+                message.Append("ERROR").Append(PIPE_SEPARATOR).Append("No hay Servidores en linea");
+            }
+            else
+            {
+                bool first = true;
+                foreach (var item in servers)
+                {
+                    if (first)
+                    {
+                        first = false;
+                    }
+                    else
+                    {
+                        message.Append(PIPE_SEPARATOR);
+                    }
+                    message.Append(item.ToNetworkString());
+                }
+            }
+
+
+            Data outData = new Data()
+            {
+                Command = Command.RES,
+                OpCode = OpCodeConstants.RES_GET_SERVERS,
+                Payload = new MultiplePayload() { Message = message.ToString(), Destination = login }
+            };
+            foreach (var item in outData.GetBytes())
+            {
+                connection.WriteToStream(item);
             }
         }
 
@@ -211,6 +259,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             int serverPort      = int.Parse(tmp[2]);
             int userCount       = int.Parse(tmp[3]);
 
+            newConnection.IsServer  = true;
             newConnection.Ip        = serverIp;
             newConnection.Name      = serverName;
             newConnection.Port      = serverPort;
