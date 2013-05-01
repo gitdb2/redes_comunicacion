@@ -28,7 +28,6 @@ namespace uy.edu.ort.obligatorio.Commons
         public const int REQ_SEARCH_FILES = 7;
         public const int RES_SEARCH_FILES = REQ_SEARCH_FILES;
 
-
         public const int REQ_GET_TRANSFER_INFO = 8;
         public const int RES_GET_FILE = REQ_GET_TRANSFER_INFO;
 
@@ -40,12 +39,12 @@ namespace uy.edu.ort.obligatorio.Commons
 
         public const int REQ_GET_SERVERS = 11;
         public const int RES_GET_SERVERS = REQ_GET_SERVERS;
-        
 
-    
+        public const int REQ_SERVER_INFO = 12;
+        public const int RES_SERVER_INFO = REQ_SERVER_INFO;
 
-
-
+        public const int REQ_UPLOAD_FILE = 13;
+        public const int RES_UPLOAD_FILE = REQ_UPLOAD_FILE;
 
     }
 }

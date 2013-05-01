@@ -86,7 +86,6 @@ namespace uy.edu.ort.obligatorio.ContentServer
                     CommandAddContact(connection, dato);
                     log.Debug("procesé REQ Add CONTACTOS");
                     break;
-
                 case OpCodeConstants.REQ_GET_TRANSFER_INFO: //se ejecuta previo a la bajada de un archivo puntual, en el caso que el cliente no tenga el tamanio del archivo para saber cuando cortar.
                     CommandGetFile(connection, dato);
                     log.Debug("procesé REQ GetFile");
@@ -116,7 +115,6 @@ namespace uy.edu.ort.obligatorio.ContentServer
             }
             else
             {
-
                 string port = Settings.GetInstance().GetProperty("server.transfers.port", "20001");
                 string ip = Settings.GetInstance().GetProperty("server.ip", "127.0.0.1");
 
@@ -139,12 +137,6 @@ namespace uy.edu.ort.obligatorio.ContentServer
             }
 
         }
-
-
-
-
-
-
 
         public const string PIPE_SEPARATOR = "|";
         const string ARROBA_SEPARATOR = "@";

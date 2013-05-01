@@ -6,18 +6,63 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using uy.edu.ort.obligatorio.Commons;
+using ClientImplementation;
+using System.IO;
 
 namespace Chat
 {
     public partial class SubirArchivo : Form
     {
+        ClientHandler clientHandler;
+        FileUploader fileUploader;
+        FileObject fileToUpload;
+
+        private FileUploader.UpdateProgressBarEventHandler updateProgressBarEventHandler;
+        private ClientHandler.ServerInfoResponseEventHandler serverInfoResponseEventHandler;
+
         public SubirArchivo()
         {
             InitializeComponent();
+            clientHandler = ClientHandler.GetInstance();
+            fileUploader = new FileUploader();
+            updateProgressBarEventHandler = new FileUploader.UpdateProgressBarEventHandler(UpdateProgressBarEvent);
+            serverInfoResponseEventHandler = new ClientHandler.ServerInfoResponseEventHandler(ServerInfoEvent);
+            fileUploader.UpdateProgressBar += updateProgressBarEventHandler;
+            clientHandler.ServerInfoResponse += serverInfoResponseEventHandler;
+        }
+
+        private void UpdateProgressBarEvent(object sender, ProgressBarEventArgs e)
+        {
+            this.BeginInvoke((Action)(delegate
+            {
+                if (e.CurrentAction != null)
+                    this.lblStatus.Text = e.CurrentAction;
+
+                this.progressBar.Value = e.CurrentPercentage;
+
+                if (e.IsCompleted)
+                {
+                    this.progressBar.Value = 100;
+                    this.lblStatus.Text = "Subida Completa!";
+                }
+            }));
+        }
+
+        private void ServerInfoEvent(object sender, ServerInfoEventArgs e)
+        {
+            this.BeginInvoke((Action)(delegate
+            {
+                fileUploader.ServerInfo = e.ServerInfo;
+                fileUploader.FileSelected = fileToUpload;
+                fileUploader.UploadThread();
+            }));
         }
 
         private void btnCerrar_Click(object sender, EventArgs e)
         {
+            fileUploader.UpdateProgressBar -= updateProgressBarEventHandler;
+            clientHandler.ServerInfoResponse -= serverInfoResponseEventHandler;
             this.Dispose();
         }
 
@@ -28,6 +73,12 @@ namespace Chat
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 txtBoxArchivo.Text = ofd.FileName;
+                fileToUpload = new FileObject() {
+                    Owner = ClientHandler.GetInstance().Login,
+                    FullName = ofd.FileName,
+                    Name = ofd.SafeFileName,
+                    Size = new FileInfo(ofd.FileName).Length
+                };
             }
         }
 
@@ -35,7 +86,8 @@ namespace Chat
         {
             if (FormUtils.TxtBoxTieneDatos(txtBoxArchivo))
             {
-                MessageBox.Show("Hay que subir el archivo: " + txtBoxArchivo.Text);
+                this.lblStatus.Text = "Iniciando Subida";
+                clientHandler.GetServerInfo();
             }
         }
 

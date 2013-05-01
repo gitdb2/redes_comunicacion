@@ -71,21 +71,27 @@ namespace uy.edu.ort.obligatorio.ContentServer
             bool ret = true;
             switch (dato.OpCode)
             {
-
-                case OpCodeConstants.REQ_DOWNLOAD_FILE: //se ejecuta previo a la bajada de un archivo puntual, en el caso que el cliente no tenga el tamanio del archivo para saber cuando cortar.
+                case OpCodeConstants.REQ_DOWNLOAD_FILE:
+                    //se ejecuta previo a la bajada de un archivo puntual 
+                    //en el caso que el cliente no tenga el tamanio del archivo para saber cuando cortar.
                     ret = CommandDownloadFile(connection, dato);
                     log.Debug("procesé REQ download");
+                    break;
+                case OpCodeConstants.REQ_UPLOAD_FILE:
+                    //un cliente quiere subir un archivo a su carpeta
+                    ret = CommandClientUploadsFile(connection, dato);
+                    log.Debug("procesé REQ ClientUploadsFile");
                     break;
                 default:
                     break;
             }
             return ret;
         }
+        
         public const string PIPE_SEPARATOR = "|";
         private bool CommandDownloadFile(Connection connection, Data dato)
         {
-
-           // login + "|" + owner + "|"+hashfile;
+            // login + "|" + owner + "|"+hashfile;
             string[] payload = dato.Payload.Message.Split(new string[] { PIPE_SEPARATOR }, StringSplitOptions.None);
             string login = payload[0];
             string owner = payload[1];
@@ -109,7 +115,6 @@ namespace uy.edu.ort.obligatorio.ContentServer
             }
             else
             {
-
                 long size = fi.Length;
 
                 string message = login + PIPE_SEPARATOR + owner + PIPE_SEPARATOR + hashfile + PIPE_SEPARATOR + fi.Name + PIPE_SEPARATOR + size;
@@ -126,11 +131,6 @@ namespace uy.edu.ort.obligatorio.ContentServer
                     connection.WriteToStream(item);
                 }
 
-/* 
-                byte[] buffer = ConversionUtil.GetBytes2("HOLA");
-                connection.WriteToNetworkStream(buffer, 0, buffer.Length);
-*/
-                
                 FileStream fileStream = fi.OpenRead();
                 const int BUFF_SIZE = 1024;
                 byte[] buffer = new byte[BUFF_SIZE];
@@ -147,18 +147,84 @@ namespace uy.edu.ort.obligatorio.ContentServer
                      }else{//no leyo nada de la entrada (cantidad de bytes justa, en la siguiente lectura)
                          done = true;
                      }
-    
 	            }
                 fileStream.Close();
-                
             }
-
             return false; //terminar la conexion
-
-          
         }
 
+        private bool CommandClientUploadsFile(Connection clientConnection, Data dato)
+        {
+            string[] payloadSplitted = dato.Payload.Message.Split(ParseConstants.SEPARATOR_PIPE);
+            string owner = payloadSplitted[0];
+            string fileName = payloadSplitted[1];
+            long fileSize = long.Parse(payloadSplitted[2]);
 
-       
+            SendReadyToReceiveFile(clientConnection);
+            string fullFilePath = GetFileFullPath(fileName, owner);
+
+            const int BUFF_SIZE = 1024;
+            byte[] buffer = new byte[BUFF_SIZE];
+            long bytescount = 0;
+            bool done = false;
+            BinaryWriter writer = new BinaryWriter(File.Open(fullFilePath, FileMode.Create));
+
+            try
+            {
+                while (!done)
+                {
+                    int countRead = clientConnection.ReadFromNetworkStream(ref buffer, 0, BUFF_SIZE);
+                    bytescount += countRead;
+                    if (countRead > 0)
+                    {
+                        if (countRead < BUFF_SIZE)
+                        {
+                            done = true;
+                        }
+                        writer.Write(buffer, 0, countRead);
+                    }
+                    else
+                    {
+                        //no leyo nada de la entrada (cantidad de bytes justa, en la siguiente lectura)
+                        done = true;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            finally
+            {
+                writer.Close();
+            }
+            return done;
+        }
+
+        private string GetFileFullPath(string fileName, string login)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(Settings.GetInstance().GetProperty("base.shared.dir.path", @"c:\shared"));
+            sb.Append(Path.DirectorySeparatorChar);
+            sb.Append(login);
+            sb.Append(Path.DirectorySeparatorChar);
+            sb.Append(fileName);
+            return sb.ToString();
+        }
+
+        private void SendReadyToReceiveFile(Connection clientConnection)
+        {
+            Data retDato = new Data()
+            {
+                Command = Command.RES,
+                OpCode = OpCodeConstants.RES_UPLOAD_FILE,
+                Payload = new Payload() { Message = MessageConstants.MESSAGE_SERVER_READY }
+            };
+            foreach (var item in retDato.GetBytes())
+            {
+                clientConnection.WriteToStream(item);
+            }
+        }
+
     }
 }

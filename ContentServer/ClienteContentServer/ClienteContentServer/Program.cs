@@ -22,32 +22,18 @@ namespace ClienteContentServer
             Console.ReadLine();
         }
 
-
         Thread tcpThread;      // Receiver
 
-
-        //    public string Server { get { return "localhost"; } }  // Address of server. In this case - local IP address.
-        public string Server { get { return "localhost"; } }// return "192.168.0.201"; } }
+        public string Server { get { return "localhost"; } }
         public int Port { get { return 2001; } }
 
 
         // Start connection thread and login or register.
         void connect()
         {
-
             tcpThread = new Thread(new ThreadStart(SetupConn));
             tcpThread.Start();
-
         }
-
-
-
-
-
-
-        // Events
-
-
 
         TcpClient client;
         NetworkStream netStream;
@@ -160,21 +146,12 @@ namespace ClienteContentServer
                 Console.WriteLine("line " + cont++ + "   --->" + ConversionUtil.GetString(data2.GetBytes()[0]));
                 string PIPE_SEPARATOR = "|";
 
-
                 string[] payload = data2.Payload.Message.Split(new string[] { PIPE_SEPARATOR }, StringSplitOptions.None);
                 string login = payload[0];
                 string owner = payload[1];
                 string hashfile = payload[2];
                 string filename = payload[3];
                 long size = long.Parse(payload[4]);
-
-                /*
-                                    byte[] buffer = new byte[100];
-                                    int cant = netStream2.Read(buffer, 0, buffer.Length);
-
-                                   string tmp =  ConversionUtil.GetString(buffer, cant);
-                */
-
 
                 const int BUFF_SIZE = 1024;
                 byte[] buffer = new byte[BUFF_SIZE];
@@ -186,9 +163,6 @@ namespace ClienteContentServer
                 int randomNumber = random.Next();
                 string path = @"c:\downloads\" + randomNumber + "_" + filename;
                 BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.Create));
-
-
-
 
                 try
                 {
@@ -209,17 +183,14 @@ namespace ClienteContentServer
                         {//no leyo nada de la entrada (cantidad de bytes justa, en la siguiente lectura)
                             done = true;
                         }
-
                     }
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
-                    
                 }
 
                 writer.Close();
-
 
                 Console.WriteLine("--------> size= " + size);
 
@@ -227,67 +198,53 @@ namespace ClienteContentServer
 
                 CloseConn2();
             }
-
-           
-
-
             #endregion
-
             Console.ReadLine();
-
-
         }
+
         void CloseConn() // Close connection.
         {
-
             br.Dispose();
             bw.Dispose();
             netStream.Close();
             client.Close();
         }
+
         void CloseConn2() // Close connection.
         {
-
-          
-
-
             br2.Dispose();
             bw2.Dispose();
             netStream2.Close();
             client2.Close();
-
         }
+
         public Data LoadObject(StreamReader br)
         {
-
             char[] buffer = new char[10];
             int readQty = br.Read(buffer, 0, 10);//REQ99000050101A
-
 
             if (readQty < 10) throw new Exception("Errror en trama largo fijo");
 
             Command type = (Command)Enum.Parse(typeof(Command), ArrayToString(buffer, 0, 3));
             int opCode = int.Parse(ArrayToString(buffer, 3, 2));
             int payloadLength = int.Parse(ArrayToString(buffer, 5, 5));
-            //int partsTotal          = int.Parse(ArrayToString(buffer, 10, 2));
-            //int partsCurrent        = int.Parse(ArrayToString(buffer, 12, 2));
 
-            Console.WriteLine(type + " " + opCode + " " + payloadLength);//+ " " + partsTotal + " " + partsCurrent);
-
+            Console.WriteLine(type + " " + opCode + " " + payloadLength);
 
             buffer = new char[payloadLength];
             readQty = br.Read(buffer, 0, payloadLength);
             if (readQty < payloadLength) throw new Exception("Errror en trama largo fijo leyendo payload");
 
-
             Data ret = new Data() { Command = type, OpCode = opCode, Payload = new Payload(ArrayToString(buffer, 0, readQty)) };
 
             return ret;
         }
+
         private static string ArrayToString(char[] buffer, int startIndex, int length)
         {
             return new string(buffer).Substring(startIndex, length);
         }
+
     }
 
 

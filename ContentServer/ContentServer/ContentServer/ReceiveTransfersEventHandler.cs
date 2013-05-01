@@ -15,7 +15,6 @@ namespace uy.edu.ort.obligatorio.ContentServer
         {
             Data dato = DataProccessor.GetInstance().LoadObject(connection.StreamReader);
             return TransfersCommandHandler.GetInstance().Handle(connection, dato);
-          
         }
 
         public bool OnFatalError(Connection connection)

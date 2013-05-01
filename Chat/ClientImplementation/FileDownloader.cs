@@ -12,7 +12,6 @@ namespace ClientImplementation
 {
     public class FileDownloader
     {
-
         public string Destination { get; set; }
         public FileObject FileSelected { get; set; }
         public ServerInfo ServerInfo { get; set; }
@@ -79,7 +78,7 @@ namespace ClientImplementation
                     {
                         if (bytescount == size && size == 0)
                         {
-                            percentageDownloaded = 99;
+                            percentageDownloaded = 100;
                             done = true;
                         }
                         else
@@ -163,5 +162,6 @@ namespace ClientImplementation
         {
             (new Thread(new ThreadStart(Download))).Start();
         }
+
     }
 }

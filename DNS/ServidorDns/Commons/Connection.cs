@@ -30,8 +30,6 @@ namespace uy.edu.ort.obligatorio.Commons
         public int UserCount { get; set; }
         public bool IsServer { get; set; }
 
-
-
         public IReceiveEvent EventHandler { get; set; }
 
         public Connection(TcpClient c, IReceiveEvent ire)
@@ -41,7 +39,6 @@ namespace uy.edu.ort.obligatorio.Commons
 
         public Connection(string name, TcpClient c, IReceiveEvent ire)
         {
-
             IsServer = false;
             Name = name;
             tcpClient = c;
@@ -53,14 +50,10 @@ namespace uy.edu.ort.obligatorio.Commons
 
         public void WriteToStream(char[] data)
         {
-
-
             semWrite.WaitOne();
             StreamWriter.Write(data);
             StreamWriter.Flush();
             semWrite.Release();
-
-
         }
 
         void SetupConn()
@@ -68,8 +61,6 @@ namespace uy.edu.ort.obligatorio.Commons
             try
             {
                 Console.WriteLine("[{0}] New connection!", DateTime.Now);
-
-
 
                 networkStream = tcpClient.GetStream();
                 StreamReader = new StreamReader(networkStream, Encoding.UTF8);
@@ -116,7 +107,6 @@ namespace uy.edu.ort.obligatorio.Commons
 
         public void CloseConn() // Close connection.
         {
-
             try
             {
                 notEnd = false;
@@ -136,13 +126,17 @@ namespace uy.edu.ort.obligatorio.Commons
             notEnd = false;
         }
 
-
         public void WriteToNetworkStream(byte[] buffer, int offset, int size)
         {
             semWrite.WaitOne();
             networkStream.Write(buffer, offset, size);
             networkStream.Flush();
             semWrite.Release();
+        }
+
+        public int ReadFromNetworkStream(ref byte[] buffer, int offset, int size)
+        {
+            return networkStream.Read(buffer, offset, size);
         }
 
     }

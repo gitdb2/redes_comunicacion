@@ -162,34 +162,50 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 case OpCodeConstants.REQ_ADD_CONTACT: //un login quiere agregar un contacto nuevo
                     CommandREQADDContact(clientConnection, dato);
                     break;
-
                 case OpCodeConstants.REQ_GET_SERVERS: //Obtiene la lista de servidores online
-                     CommandREQGetServers(clientConnection, dato);
-                     break;
+                    CommandREQGetServers(clientConnection, dato);
+                    break;
                 case OpCodeConstants.REQ_SEND_CHAT_MSG: //un login le envia un mensaje de chat a otro
                     CommandREQSendChatMessage(clientConnection, dato);
-
+                    break;
+                case OpCodeConstants.REQ_SERVER_INFO: //un login pide los datos de su servidor
+                    CommandREQServerInfo(clientConnection, dato);
                     break;
                 default:
                     break;
             }
         }
 
-
-        const string PIPE_SEPARATOR = "|";
+        private void CommandREQServerInfo(Connection clientConnection, Data dato)
+        {
+            //en el payload viene el login que solicita la info
+            string serverName = UsersPersistenceHandler.GetInstance().GetServerName(dato.Payload.Message);
+            Connection serverConnection = SingletonServerConnection.GetInstance().GetServer(serverName);
+            StringBuilder sb = new StringBuilder();
+            if (serverConnection == null)
+            {
+                //el servidor no esta online, respondo con error
+                sb.Append(MessageConstants.MESSAGE_ERROR);          
+            }
+            else
+            {
+                //serverName|serverIp|serverPort|transfersPort
+                sb.Append(serverConnection.Name).Append(ParseConstants.SEPARATOR_PIPE);
+                sb.Append(serverConnection.Ip).Append(ParseConstants.SEPARATOR_PIPE);
+                sb.Append(serverConnection.Port).Append(ParseConstants.SEPARATOR_PIPE);
+                sb.Append(serverConnection.TransferPort);
+            }
+            SendMessage(clientConnection, Command.RES, OpCodeConstants.RES_SERVER_INFO, new Payload(sb.ToString()));
+        }
 
         private void CommandREQGetServers(Connection connection, Data dato)
         {
-
-          //  string login = dato.Payload.Message.Split('|')[0];
-
+            //string login = dato.Payload.Message.Split('|')[0];
             List<ServerInfo> servers = SingletonServerConnection.GetInstance().GetServersWithUsers();
             StringBuilder message = new StringBuilder();
-
-
             if (servers.Count == 0)
             {
-                message.Append("ERROR").Append(PIPE_SEPARATOR).Append("No hay Servidores en linea");
+                message.Append(MessageConstants.MESSAGE_ERROR).Append(ParseConstants.SEPARATOR_PIPE).Append("No hay Servidores en linea");
             }
             else
             {
@@ -202,13 +218,11 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                     }
                     else
                     {
-                        message.Append(PIPE_SEPARATOR);
+                        message.Append(ParseConstants.SEPARATOR_PIPE);
                     }
                     message.Append(item.ToNetworkString());
                 }
             }
-
-
             Data outData = new Data()
             {
                 Command = Command.RES,

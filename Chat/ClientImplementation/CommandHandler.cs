@@ -61,11 +61,34 @@ namespace ClientImplementation
                 case OpCodeConstants.RES_SEARCH_FILES:
                     ret = CommandRESSearchFiles(clientConnection, dato);
                     break;
-                    
+                case OpCodeConstants.RES_SERVER_INFO:
+                    CommandRESServerInfo(clientConnection, dato);
+                    break;
                 default:
                     break;
             }
             return ret;
+        }
+
+        private void CommandRESServerInfo(Connection clientConnection, Data dato)
+        {
+            //la respuesta viene en el formato 
+            //serverName|serverIp|serverPort|transfersPort o ERROR
+            string[] payloadSplitted = dato.Payload.Message.Split(ParseConstants.SEPARATOR_PIPE);
+
+            ServerInfo serverInfo = null;
+
+            if (!payloadSplitted[0].Equals(MessageConstants.MESSAGE_ERROR))
+            {
+                serverInfo = new ServerInfo() { 
+                    Name = payloadSplitted[0]
+                    , Ip = payloadSplitted[1]
+                    , Port = int.Parse(payloadSplitted[2])
+                    , TransfersPort = int.Parse(payloadSplitted[3])
+                };
+            }
+
+            ClientHandler.GetInstance().OnServerInfoResponse(new ServerInfoEventArgs() { ServerInfo = serverInfo });
         }
 
         private void CommandRESMessageSent(Connection clientConnection, Data dato)
@@ -107,7 +130,6 @@ namespace ClientImplementation
             ClientHandler.GetInstance().OnContactListResponse(new ContactListEventArgs() { ContactList = contactList, IsLastPart = isLastPart });
         }
 
-
         private void CommandRESGetServers(Connection connection, Data dato)
         {
             MultiplePayloadFrameDecoded decoded = MultiplePayloadFrameDecoded.Parse(dato.Payload.Message);
@@ -121,8 +143,6 @@ namespace ClientImplementation
             ClientHandler.GetInstance().OnSearchFilesResponse(new SearchFilesEventArgs() { Response = decoded , Connection = connection});
             return !decoded.IsLastpart();
         }
-
-
 
         private bool HandleREQ(Connection clientConnection, Data dato)
         {

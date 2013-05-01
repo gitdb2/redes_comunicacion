@@ -16,5 +16,7 @@ namespace uy.edu.ort.obligatorio.Commons
 
         public const string STATUS_OFFLINE = "0";
 
+        public static string MESSAGE_SERVER_READY = "READY";
+
     }
 }

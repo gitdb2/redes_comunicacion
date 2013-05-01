@@ -21,7 +21,6 @@ namespace ClientImplementation
 
         private static ClientHandler instance = new ClientHandler();
 
-
         private ClientHandler() { }
 
         public static ClientHandler GetInstance()
@@ -70,6 +69,11 @@ namespace ClientImplementation
             sb.Append(clientTo).Append(ParseConstants.SEPARATOR_PIPE);
             sb.Append(message);
             SendMessage(Command.REQ, OpCodeConstants.REQ_SEND_CHAT_MSG, new Payload(sb.ToString()));
+        }
+
+        public void GetServerInfo()
+        {
+            SendMessage(Command.REQ, OpCodeConstants.REQ_SERVER_INFO, new Payload(Login));
         }
 
         public event EventHandler LoginOK;
@@ -123,7 +127,6 @@ namespace ClientImplementation
                 conn.WriteToStream(item);
             }
         }
-
 
         public delegate void AddContactEventHandler(object sender, SimpleEventArgs e);
 
@@ -180,7 +183,6 @@ namespace ClientImplementation
         }
         #endregion
 
-
         #region Obtencion resultados de busqueda de archivos
         public delegate void SearchFilesReceivedDelegate(object sender, SearchFilesEventArgs e);
         public event SearchFilesReceivedDelegate SearchFilesReceivedEvent;
@@ -206,5 +208,16 @@ namespace ClientImplementation
           
         }
         #endregion
+
+        public delegate void ServerInfoResponseEventHandler(object sender, ServerInfoEventArgs e);
+
+        public event ServerInfoResponseEventHandler ServerInfoResponse;
+
+        public void OnServerInfoResponse(ServerInfoEventArgs serverInfoEventArgs)
+        {
+            if (ServerInfoResponse != null)
+                ServerInfoResponse(this, serverInfoEventArgs);
+        }
+
     }
 }

@@ -49,6 +49,7 @@
     <Compile Include="ClientHandler.cs" />
     <Compile Include="CommandHandler.cs" />
     <Compile Include="ContactListEventArgs.cs" />
+    <Compile Include="FileUploader.cs" />
     <Compile Include="GetServersEventArgs.cs" />
     <Compile Include="FileDownloader.cs" />
     <Compile Include="ProgressBarEventArgs.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="LoginErrorEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReceiveEventHandler.cs" />
+    <Compile Include="ServerInfoEventArgs.cs" />
     <Compile Include="SimpleEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
