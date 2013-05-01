@@ -19,47 +19,82 @@ namespace uy.edu.ort.obligatorio.ContentServer
     {
         DNSConnection dns;
         ListeningServer transferServer;
-        ListeningServer commandServer;
+        ListeningServer controlServer;
 
         private ILog log;
 
         static void Main(string[] args)
         {
             Program program = null;
-            try
-            {
-                program = new Program();
-            }
-            catch (Exception e)
-            {
+            //try
+            //{
+            program = new Program();
+            //}
+            //catch (Exception e)
+            //{
 
-                Console.WriteLine("Error:" + e.Message);
-            }
+            //Console.WriteLine("Error:" + e.Message);
+            //}
 
             Console.WriteLine();
             Console.WriteLine("Escriba Q para terminar.");
-            while (!"q".Equals(Console.ReadLine().ToLower())) ;
 
-            if (program != null)
+
+
+            //if (program != null)
+            //{
+
+            if (Program.dnsError)
             {
                 program.Disconnect();
             }
+            else
+            {
+                Console.CancelKeyPress += delegate(object sender, ConsoleCancelEventArgs e)
+                {
+                    e.Cancel = true;
+                    program.Disconnect();
+                };
+                while (Program.running)
+                {
+
+                    Console.WriteLine("duermo");
+                    Thread.Sleep(5000);
+                }
+            }
+
+            Console.WriteLine("exited gracefully, INTRO para terminar");
+            Console.ReadLine();
+            //}
 
         }
 
         public void Disconnect()
         {
+           
+            log.InfoFormat("PROGRAM.disconect");
             dns.EndConnection();
-            //   transferServer.
+            transferServer.EndConnection();
+            controlServer.EndConnection();
+            Program.running = false;
         }
 
+        public void DisconnectServers(string nada){
+           
+            log.InfoFormat("delegado DNS cayo, PROGRAM.DisconnectServers");
+            transferServer.EndConnection();
+            controlServer.EndConnection();
+            Program.running = false;
+         }
 
 
-        public bool running = true;
+        public static bool running = true;
 
+        public static bool dnsError = false;
 
         public bool DEBUG = bool.Parse(Settings.GetInstance().GetProperty("debug", "false"));
 
+        Connection.ConnectionDroppedDelegate dnsCaeDelegado;//delegado = new Connection.ConnectionDroppedDelegate(OneConnectionDroppedEvent);
 
         public Program()
         {
@@ -82,8 +117,8 @@ namespace uy.edu.ort.obligatorio.ContentServer
             int portTransfers = int.Parse(Settings.GetInstance().GetProperty("server.transfers.port", "20001"));
 
 
-            transferServer = new ListeningServer("Transfers", ip, portTransfers);
-            commandServer = new ListeningServer("Control", ip, port);
+            transferServer = new ListeningServer("Transfers", ip, portTransfers, new ReceiveTransfersEventHandler());
+            controlServer = new ListeningServer("Control", ip, port, new ReceiveEventHandler());
 
 
 
@@ -95,8 +130,10 @@ namespace uy.edu.ort.obligatorio.ContentServer
 
             if (!DEBUG)
             {
+
+                dnsCaeDelegado = new Connection.ConnectionDroppedDelegate(DisconnectServers);
                 Console.WriteLine("[{0}] Connecting Dns...", DateTime.Now);
-                dns = new DNSConnection();
+                dns = new DNSConnection(dnsCaeDelegado);
                 try
                 {
                     dns.SetupConn();
@@ -104,7 +141,9 @@ namespace uy.edu.ort.obligatorio.ContentServer
                 catch (System.Net.Sockets.SocketException e)
                 {
                     log.ErrorFormat("No se pudo registrar con el DNS, terminando", e);
-                    throw new Exception("No se pudo registrar con el DNS, terminando", e);
+                    running = false;
+                    dnsError = true;
+                    //  throw new Exception("No se pudo registrar con el DNS, terminando", e);
                 }
                 Console.WriteLine("[{0}] DNS connection ready...", DateTime.Now);
             }
@@ -131,13 +170,17 @@ namespace uy.edu.ort.obligatorio.ContentServer
         Thread thread;
 
         int connectionCounter = 0;
-        List<Connection> openConnections = new List<Connection>();
+        Dictionary<string, Connection> openConnections = new Dictionary<string, Connection>();
 
 
         Connection.ConnectionDroppedDelegate delegado;
 
-        public ListeningServer(string function, IPAddress ip, int port)
+
+        private IReceiveEvent responseHandler;
+       
+        public ListeningServer(string function, IPAddress ip, int port, IReceiveEvent responseHandler)
         {
+            this.responseHandler = responseHandler;
             this.function = function;
             this.ip = ip;
             this.port = port;
@@ -147,14 +190,63 @@ namespace uy.edu.ort.obligatorio.ContentServer
 
         public void EndConnection()
         {
+
+            log.InfoFormat("---->LISTENING SERVER: {0}:{1} ---->EndConnection", function, port);
             running = false;
             server.Stop(); //deja de aceptar conexiones
             Console.WriteLine("VER COMO HACER EL KILL ALL CONNECTIONS");
+            CloseAllConnectionsToThisServer();
         }
 
+        private void CloseAllConnectionsToThisServer()
+        {
+            lock (openConnections)
+            {
+                List <Connection> connections = new List<Connection>(openConnections.Values);
+
+                foreach (var conn in connections)
+                {
+                    bool removed = openConnections.Remove(conn.Name);
+                    log.DebugFormat("--->CloseAllConnectionsToThisServer: {0} eliminada del diccionario? {1}", conn.Name, removed);
+
+                    //if (conn != null)
+                    //{
+                        // anulo El delegado ya que no quiero que lo ejecute cuando se dispare cuando invoca closeConn
+                        conn.OnConnectionDropDelegate = null;
+                        conn.CloseConn();
+                    //}
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// operacion llamada por una Connection que se cerro sesde el otro lado
+        /// </summary>
+        /// <param name="idName"></param>
         public void OneConnectionDroppedEvent(string idName)
         {
-            log.Debug("conexion dropeada: " + idName);
+            log.DebugFormat("---> DELEGADO conexion dropeada: {0}", idName);
+
+            lock (openConnections)
+            {
+                if (openConnections.ContainsKey(idName))
+                {
+                    Connection conn = openConnections[idName];
+                    openConnections.Remove(idName);
+                    log.DebugFormat("--->DELEGADO conexion dropeada: {0} eliminada del diccionario", idName);
+
+                    if (conn != null)
+                    {
+                       // El delegado ya fue eliminado para que no se dispare cuando invoca closeConn
+                        conn.CloseConn();
+                    }
+                }
+                else
+                {
+                    log.DebugFormat("---> DELEGADO conexion dropeada: {0} NO se encuentra en la lista de conexiones abiertas, no se hace nada", idName);
+                }
+            }
         }
 
         void Listen()  // Listen to incoming connections.
@@ -165,18 +257,33 @@ namespace uy.edu.ort.obligatorio.ContentServer
 
             while (running)
             {
+
                 log.InfoFormat("[Listen:{0}] Waiting for new connection", port);
+                TcpClient tcpClient = null;
 
-                TcpClient tcpClient = server.AcceptTcpClient();  // Accept incoming connection.
-                log.InfoFormat("nueva conexion de control(:{2}) desde {0}:{1}", ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address, ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Port, port);
-
-                Connection client = new Connection(connectionCounter.ToString(), tcpClient, new ReceiveEventHandler(), delegado);     // Handle in another thread.
-                lock (openConnections)
+                try
                 {
-                    openConnections.Add(client);
-                    connectionCounter++;
-
+                    tcpClient = server.AcceptTcpClient();  // Accept incoming connection.
                 }
+                catch (SocketException e)// detecto que se efectio un listener.stop
+                {
+
+                    log.ErrorFormat("Excepcion [Listen:{0}], se detiene la escucha", port, e);
+                    running = false;
+                }
+
+                if (running)
+                {
+                    log.InfoFormat("nueva conexion de control(:{2}) desde {0}:{1}", ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address, ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Port, port);
+
+                    Connection conn = new Connection(connectionCounter.ToString(), tcpClient, responseHandler, delegado);     // Handle in another thread.
+                    lock (openConnections)
+                    {
+                        openConnections.Add(conn.Name, conn);
+                        connectionCounter++;
+                    }
+                }
+
 
             }
         }
@@ -190,11 +297,15 @@ namespace uy.edu.ort.obligatorio.ContentServer
         public int DNSPort { get { return int.Parse(Settings.GetInstance().GetProperty("dns.port", "2000")); } }
 
         Connection connection;
+        Connection.ConnectionDroppedDelegate delegado; 
+        public DNSConnection(Connection.ConnectionDroppedDelegate delegado){
+            this.delegado = delegado;
+        }
 
         public void SetupConn()  // Setup connection and login
         {
 
-            connection = new Connection("DNS", new TcpClient(DNSServer, DNSPort), new ReceiveEventHandler());
+            connection = new Connection("DNS", new TcpClient(DNSServer, DNSPort), new ReceiveEventHandler(), delegado);
 
 
             string payload = Settings.GetInstance().GetProperty("server.name", "rodrigo-nb")
@@ -225,7 +336,12 @@ namespace uy.edu.ort.obligatorio.ContentServer
 
         public void EndConnection()
         {
-            connection.CloseConn();
+            log.InfoFormat("---->DNS---->EndConnection connection === null?{0}", connection == null);
+            if (connection != null)
+            {
+               
+                connection.CloseConn();
+            }
         }
     }
 

@@ -35,6 +35,7 @@ namespace uy.edu.ort.obligatorio.Commons
         public IReceiveEvent EventHandler { get; set; }
 
         private ConnectionDroppedDelegate onConnectionDropDelegate = null;
+        public ConnectionDroppedDelegate OnConnectionDropDelegate { get { return onConnectionDropDelegate; } set { onConnectionDropDelegate = value; } }
 
         //delegado para que la conexion avise a alguien cuando cae.
         public delegate void ConnectionDroppedDelegate(String idName);
@@ -152,7 +153,11 @@ namespace uy.edu.ort.obligatorio.Commons
             {
                 if (onConnectionDropDelegate != null)
                 {
-                    onConnectionDropDelegate(Name);
+                    ConnectionDroppedDelegate tmp = onConnectionDropDelegate;
+                    log.InfoFormat("Conexion {0} anula para el delegado y lo invoca", Name);
+                    onConnectionDropDelegate = null;
+                    tmp(Name);
+                    
                 }
                
             }
