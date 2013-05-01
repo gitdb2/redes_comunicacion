@@ -23,10 +23,12 @@ namespace Chat
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private Dictionary<string, ServerInfo> serversToSearch = new Dictionary<string, ServerInfo>();
-        private List<FileObject> searchResult = new List<FileObject>();
+
         private int serversToProccess = 0;
 
-        private Dictionary<string, List<FileObject>> resultsByServer = new Dictionary<string, List<FileObject>>();
+        private Dictionary<string, MultiplePayloadFrameDecoded[]> resultsByServer = new Dictionary<string, MultiplePayloadFrameDecoded[]>();
+        private List<FileObject> searchResult = new List<FileObject>();
+
 
         private string HashQuery { get; set; }
         private SearchStatus searchStatus;
@@ -45,7 +47,7 @@ namespace Chat
             resultsByServer.Clear();
             serversToProccess = 0;
             listaArchivos.Items.Clear();
-            
+
         }
 
         private void RefreshScreen()
@@ -102,40 +104,72 @@ namespace Chat
                     else
                     {
 
-                        string[] infoArr = payload.Payload.Split('|');
+                      
                         lock (resultsByServer)
                         {
                             if (resultsByServer[serverName] == null)
                             {
-                                resultsByServer[serverName] = new List<FileObject>();
-                            }
-
-                        }
-                        foreach (var fileStr in infoArr)
-                        {
-                            if (fileStr.Length > 0)//si tiene resultados
-                            {
-                                FileObject file = FileObject.FromNetworkString(fileStr);
-                                file.Server = serverName;
-
-                                lock (resultsByServer[serverName])
-                                {
-                                    resultsByServer[serverName].Add(file);
-                                }
+                                resultsByServer[serverName] = new MultiplePayloadFrameDecoded[payload.PartsTotal];
                             }
                         }
+
+                        resultsByServer[serverName][payload.PartsCurrent-1] = payload;
+                       // string[] infoArr = payload.Payload.Split('|');
+                        //foreach (var fileStr in infoArr)
+                        //{
+                        //    if (fileStr.Length > 0)//si tiene resultados
+                        //    {
+                        //        FileObject file = FileObject.FromNetworkString(fileStr);
+                        //        file.Server = serverName;
+
+                        //        lock (resultsByServer[serverName])
+                        //        {
+                        //            resultsByServer[serverName].Add(file);
+                        //        }
+                        //    }
+                        //}
 
                         if (payload.IsLastpart())
                         {
                             lock (this)
                             {
                                 serversToProccess--;
+                            }
+                            StringBuilder filesSB = new StringBuilder();
+                            lock (resultsByServer[serverName])
+                            {
+                                foreach (var item in resultsByServer[serverName])
+                                {
+                                    filesSB.Append(item.Payload);
+                                }
+                            }
+                 //           log.DebugFormat("-->la trama entea: {0}", filesSB.ToString());
+                            string[] infoArr = filesSB.ToString().Split('|');
+                            foreach (var fileStr in infoArr)
+                            {
+                                if (fileStr.Length > 0)//si tiene resultados
+                                {
+                                    FileObject file = FileObject.FromNetworkString(fileStr);
+                                    file.Server = serverName;
+
+                                    lock (searchResult)
+                                    {
+                                        searchResult.Add(file);
+                                    }
+                                }
+                            }
+
+
+                            lock (this)
+                            {
                                 if (serversToProccess < 1)
                                 {
                                     log.DebugFormat("Estan todos los resultados de busquedas");
                                     ProcesarResultados();
                                 }
                             }
+                           
+
                         }
                         else
                         {
@@ -154,31 +188,29 @@ namespace Chat
 
         private void ProcesarResultados()
         {
-         
-            foreach (var item in resultsByServer.Keys)
-	        {
-                List<FileObject> lista = resultsByServer[item];
+            listaArchivos.Items.Clear();
+            foreach (var file in searchResult)
+            {
+                // List<FileObject> lista = resultsByServer[item];
 
 
-                listaArchivos.Items.Clear();
-                foreach (var file in lista)
-                {
+              
+               
                     ListViewItem lvi = new ListViewItem(file.Name);
                     lvi.Tag = file;
                     lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, file.Server));//, Color.White, colorEstado, lvi.Font));
                     lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, file.Owner));
                     listaArchivos.Items.Add(lvi);
-                  
-                }
-               
+
+             
 
                 //reseteo la lista de contactos temporal
-               
-	        }
+
+            }
             FormUtils.AjustarTamanoColumnas(listaArchivos);
             btnBuscar.Enabled = true;
 
-          
+
 
         }
 
@@ -222,7 +254,8 @@ namespace Chat
                         {
                             lock (serversToSearch)
                             {
-                                foreach (var serverName in serversToSearch.Keys){
+                                foreach (var serverName in serversToSearch.Keys)
+                                {
                                     resultsByServer.Add(serverName, null);
                                 }
                                 serversToProccess = resultsByServer.Count;
@@ -244,7 +277,7 @@ namespace Chat
                     log.DebugFormat("Descarto un payload de busqueda de servidores: {0}", payload.ToString());
                 }
 
-              
+
             }));
         }
 
@@ -282,7 +315,7 @@ namespace Chat
                 ClearResults();
                 this.pattern = pattern;
                 ClientHandler.GetInstance().REQGetServerList(GenerateHashQuery(pattern));// .FindContact(Login, pattern);
-              
+
             }
 
             //if (FormUtils.TxtBoxTieneDatos(txtBuscarArchivo))
@@ -312,16 +345,17 @@ namespace Chat
             //FileObject fileSelected = (FileObject)listaArchivos.SelectedItems[0].Tag;
             //lo voy a tomar de un diccionario
             //ServerInfo serverInfo = new ServerInfo();
-            
+
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Title = "Descargar Archivo";
             sfd.FileName = "imagen.jpg"; //fileSelected.Name;
-            
+
             if (sfd.ShowDialog() == DialogResult.OK)
             {
                 string destino = @"c:\shared\mauricio\res.iso";
-                FileObject fo = new FileObject() { 
-                    Name = ClientHandler.GetInstance().Login, 
+                FileObject fo = new FileObject()
+                {
+                    Name = ClientHandler.GetInstance().Login,
                     // imagen.png Hash = "f4f1a7a2a9f6284dd0bfa7558fa134da",
                     // exe Hash = "eefc05a7ff11a84d350d561a63014a47",
                     Hash = "e1e8c17baf81af6722feb8987269f22e",
@@ -337,7 +371,7 @@ namespace Chat
                     FileSelected = fo,
                     ServerInfo = si
                 };
-                
+
                 DownloadProgress dp = new DownloadProgress(fd);
                 dp.Show();
 
@@ -349,7 +383,7 @@ namespace Chat
                 //    , FileSelected = fileSelected
                 //    , ServerInfo = serverInfo
                 //};
-                
+
             }
         }
 
@@ -359,7 +393,8 @@ namespace Chat
         private void BuscarArchivo_FormClosing(object sender, FormClosingEventArgs e)
         {
             ClientHandler.GetInstance().ServerListReceivedEvent -= serverListReceivedDelegate;
-            //clientHandler.AddContactResponse -= addContactsResponse;
+            ClientHandler.GetInstance().SearchFilesReceivedEvent -= searchFilesReceivedDelegate;
+            
         }
 
 
