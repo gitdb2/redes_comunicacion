@@ -24,6 +24,8 @@ namespace ClientImplementation
         private StreamReader dwnldStreamReader; 
         private StreamWriter dwnldStreamWriter;
 
+        private bool done = false;
+        private int percentageDownloaded = 0;
 
         public void Download()
         {
@@ -47,12 +49,11 @@ namespace ClientImplementation
 
             const int BUFF_SIZE = 1024;
             byte[] buffer = new byte[BUFF_SIZE];
-
-            bool done = false;
+            
             long bytescount = 0;
             
             BinaryWriter writer = new BinaryWriter(File.Open(Destination, FileMode.Create));
-            NotifyProgress("Descargando ...", 0, done);
+            NotifyProgress("Descargando ...");
 
             try
             {
@@ -76,7 +77,8 @@ namespace ClientImplementation
                     }
                     if (!Cancel)
                     {
-                        NotifyProgress((done ? "Descarga completa!" : "Descargando ..."), (int)(bytescount * 100 / size), done);
+                        percentageDownloaded = (int)(bytescount * 100 / size);
+                        NotifyProgress((done ? "Descarga completa!" : "Descargando ..."));
                     }
                 }
             }
@@ -92,7 +94,7 @@ namespace ClientImplementation
 
         private void SendDownloadRequest()
         {
-            NotifyProgress("Enviando peticion de descarga ...", 0, false);
+            NotifyProgress("Enviando peticion de descarga ...");
 
             StringBuilder sb = new StringBuilder();
             sb.Append(FileSelected.Name).Append(ParseConstants.SEPARATOR_PIPE);
@@ -113,30 +115,30 @@ namespace ClientImplementation
 
         private void SetupConnection()
         {
-            NotifyProgress("Conectando con servidor ...", 0, false);
+            NotifyProgress("Conectando con servidor ...");
             dwnldTcpClient = new TcpClient(ServerInfo.Ip, ServerInfo.TransfersPort);
             dwnldNetStream = dwnldTcpClient.GetStream();
             dwnldStreamReader = new StreamReader(dwnldNetStream, Encoding.UTF8);
             dwnldStreamWriter = new StreamWriter(dwnldNetStream, Encoding.UTF8);
         }
 
-        private void NotifyProgress(string message, int percentage, bool completed)
+        private void NotifyProgress(string message)
         {
             OnDownloadProgressChanged(new ProgressBarEventArgs() {
                 CurrentAction = message,
-                CurrentPercentage = percentage,
-                IsCompleted = completed
+                CurrentPercentage = percentageDownloaded,
+                IsCompleted = done
             });
         }
 
         private void CloseConnection()
         {
-            NotifyProgress("Cerrando conexion ...", 0, false);
+            NotifyProgress("Cerrando conexion ...");
             dwnldStreamReader.Dispose();
             dwnldStreamWriter.Dispose();
             dwnldNetStream.Close();
             dwnldTcpClient.Close();
-            NotifyProgress("Descarga completa!", 0, false);
+            NotifyProgress("Descarga completa!");
         }
 
         public delegate void UpdateProgressBarEventHandler(object sender, ProgressBarEventArgs e);
