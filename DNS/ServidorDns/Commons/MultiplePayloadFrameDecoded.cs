@@ -46,7 +46,8 @@ namespace uy.edu.ort.obligatorio.Commons
         {
             return String.Format(
 
-                @"PartsTotal: [{0}]
+                @"
+                PartsTotal: [{0}]
                 PartsCurrent: [{1}]
                 IsError: [{2}]
                 Destination: [{3}]

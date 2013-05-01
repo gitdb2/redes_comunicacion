@@ -91,7 +91,7 @@ namespace uy.edu.ort.obligatorio.ContentServer
             string owner = payload[1];
             string hashfile = payload[2];
 
-            FileInfo fi = FileOperationsSingleton.GetInstance().GetFile(hashfile, login);
+            FileInfo fi = FileOperationsSingleton.GetInstance().GetFile(hashfile, owner);
             Data retDato;
             if (fi == null)
             {

@@ -112,12 +112,18 @@ namespace ClientImplementation
 
         private void SendMessage(Command command, int opCode, Payload payload)
         {
+            SendMessage(connection, command, opCode, payload);
+        }
+
+        private void SendMessage(Connection conn, Command command, int opCode, Payload payload)
+        {
             Data data = new Data() { Command = command, OpCode = opCode, Payload = payload };
             foreach (var item in data.GetBytes())
             {
-                connection.WriteToStream(item);
+                conn.WriteToStream(item);
             }
         }
+
 
         public delegate void AddContactEventHandler(object sender, SimpleEventArgs e);
 
@@ -160,17 +166,44 @@ namespace ClientImplementation
         }
 
         #region Obtencion de servidores para buscar archivos
-        public delegate void ServerListReceivedEventHandler(object sender, GetServersEventArgs e);
-        public event ServerListReceivedEventHandler ServerListReceived;
+        public delegate void ServerListReceivedDelegate(object sender, GetServersEventArgs e);
+        public event ServerListReceivedDelegate ServerListReceivedEvent;
         public void OnGetServersResponse(GetServersEventArgs getServersEventArgs)
         {
-            if (ServerListReceived != null)
-                ServerListReceived(this, getServersEventArgs);
+            if (ServerListReceivedEvent != null)
+                ServerListReceivedEvent(this, getServersEventArgs);
         }
 
         public void REQGetServerList(string hashQuery)
         {
             SendMessage(Command.REQ, OpCodeConstants.REQ_GET_SERVERS, new Payload() { Message = Login + "@" + hashQuery });
+        }
+        #endregion
+
+
+        #region Obtencion resultados de busqueda de archivos
+        public delegate void SearchFilesReceivedDelegate(object sender, SearchFilesEventArgs e);
+        public event SearchFilesReceivedDelegate SearchFilesReceivedEvent;
+        public void OnSearchFilesResponse(SearchFilesEventArgs searchFilesEventArgs)
+        {
+            if (SearchFilesReceivedEvent != null)
+                SearchFilesReceivedEvent(this, searchFilesEventArgs);
+        }
+        public void REQSearchFiles(ServerInfo server, string pattern, string hashQuery)
+        {
+            log.InfoFormat("REQSearchFiles: {0}, {1}, {2}", server.ToString(), pattern, hashQuery);
+
+            Connection conServer = new Connection(server.Name, new TcpClient(server.Ip, server.Port), new ReceiveEventHandler());
+            /*  string[] payload = dato.Payload.Message.Split(new string[] { PIPE_SEPARATOR }, StringSplitOptions.None);
+              string login = payload[0];
+              string queryHash = payload[1];
+              string pattern = payload[2];
+             *  */
+            SendMessage( conServer, Command.REQ, OpCodeConstants.REQ_SEARCH_FILES, 
+                                    new Payload() {
+                                        Message = Login + "|" + hashQuery + "|" + pattern
+                                    });
+          
         }
         #endregion
     }

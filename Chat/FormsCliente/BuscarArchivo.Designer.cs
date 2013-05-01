@@ -123,7 +123,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Buscar Archivo";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BuscarArchivo_FormClosing);
-            this.Load += new System.EventHandler(this.BuscarArchivo_Load);
+          
             this.ResumeLayout(false);
             this.PerformLayout();
 

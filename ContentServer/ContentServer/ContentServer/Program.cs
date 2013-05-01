@@ -164,12 +164,13 @@ namespace uy.edu.ort.obligatorio.ContentServer
             string payload =            Settings.GetInstance().GetProperty("server.name","rodrigo-nb")
                                 + ":" + Settings.GetInstance().GetProperty("server.ip","127.0.0.1")
                                 + ":" + Settings.GetInstance().GetProperty("server.port", "2001")
+                                + ":" + Settings.GetInstance().GetProperty("server.transfers.port", "20001")
                                 + ":" + UsersContactsPersistenceHandler.GetInstance().Count;
                                 
             Data data = new Data()
             {
                 Command = Command.REQ,
-                OpCode = 3,
+                OpCode = 3,//REQ_SERVER_CONNECT
                 Payload = new Payload(payload)
             };
 

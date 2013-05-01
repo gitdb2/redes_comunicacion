@@ -109,7 +109,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 foreach (var item in serversMap.Values)
                 {
                     if(item.UserCount>0){
-                        ret.Add(new ServerInfo() { Ip = item.Ip, Name = item.Name, Port = item.Port });
+                        ret.Add(new ServerInfo() { Ip = item.Ip, Name = item.Name, Port = item.Port, TransfersPort=item.TransferPort });
                     }
                 }
             }

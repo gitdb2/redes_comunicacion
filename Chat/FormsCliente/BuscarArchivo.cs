@@ -9,31 +9,131 @@ using System.Windows.Forms;
 using Dominio;
 using ClientImplementation;
 using uy.edu.ort.obligatorio.Commons;
+using uy.edu.ort.obligatorio.ContentServer;
 
 namespace Chat
 {
+    public enum SearchStatus { NEW, WAITING_SERVERS, ALL_SERVES, WAITING_RESULTS, ALL_RESULTS, NO_SERVERS, NO_RESULTS }
     public partial class BuscarArchivo : Form
     {
 
-        private string HashQuery {get;set;}
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private ClientHandler.ServerListReceivedEventHandler serverListReceivedEventHandler;
-        
+        private Dictionary<string, ServerInfo> serversToSearch = new Dictionary<string, ServerInfo>();
+        private List<FileObject> searchResult = new List<FileObject>();
 
-        private string GenerateHashQuery(string pattern){
-             HashQuery = StringUtils.CalculateMD5Hash(String.Format("{0}|{1}|{2}", ClientHandler.GetInstance().Login, pattern, "" + DateTime.Now));
-             return HashQuery;
-       }
+
+        private Dictionary<string, List<FileObject>> resultsByServer = new Dictionary<string, List<FileObject>>();
+
+        private string HashQuery { get; set; }
+        private SearchStatus searchStatus;
+
+
+        private string pattern = "";
+
+        private ClientHandler.ServerListReceivedDelegate serverListReceivedDelegate;
+        private ClientHandler.SearchFilesReceivedDelegate searchFilesReceivedDelegate;
+
+        private void ClearResults()
+        {
+            GenerateHashQuery("INIT");
+            serversToSearch.Clear();
+            searchResult.Clear();
+            resultsByServer.Clear();
+        }
+
+        private void RefreshScreen()
+        {
+        }
+
+        private string GenerateHashQuery(string pattern)
+        {
+            HashQuery = StringUtils.CalculateMD5Hash(String.Format("{0}|{1}|{2}", ClientHandler.GetInstance().Login, pattern, "" + DateTime.Now));
+            return HashQuery;
+        }
 
         public BuscarArchivo()
         {
             InitializeComponent();
             GenerateHashQuery("INIT");
+            searchStatus = SearchStatus.NEW;
 
-            serverListReceivedEventHandler = new ClientHandler.ServerListReceivedEventHandler(EventServerListReceivedResponse);
-          
-            ClientHandler.GetInstance().ServerListReceived += serverListReceivedEventHandler;
-           
+            serverListReceivedDelegate = new ClientHandler.ServerListReceivedDelegate(EventServerListReceivedResponse);
+            ClientHandler.GetInstance().ServerListReceivedEvent += serverListReceivedDelegate;
+
+
+            searchFilesReceivedDelegate = new ClientHandler.SearchFilesReceivedDelegate(OnSearchFilesResultReceived);
+            ClientHandler.GetInstance().SearchFilesReceivedEvent += searchFilesReceivedDelegate;
+
+
+        }
+
+
+        private void OnSearchFilesResultReceived(object sender, SearchFilesEventArgs arg)
+        {
+            this.BeginInvoke((Action)(delegate
+            {
+
+                log.DebugFormat("OnSearchFilesResultReceived arg: {0}", arg.Response);
+
+
+                MultiplePayloadFrameDecoded payload = arg.Response;
+                //login + ARROBA_SEPARATOR + queryHash + ARROBA_SEPARATOR + Settings.GetInstance().GetProperty("server.name", "DEFAULT_SERVER");
+                string[] destination = payload.Destination.Split('@');
+                string responseHashQuery = destination[1];
+                string serverName = destination[2];
+
+                if (HashQuery.Equals(responseHashQuery)) //si es para la consulta actual, sino se descarta
+                {
+                    log.DebugFormat("LLegó un payload deresultado de busqueda del server: {0}, con datos{1}",serverName, payload.ToString());
+                    if (payload.IsError)
+                    {
+                        log.Error(payload.Payload);
+                        ClearResults();
+                        MessageBox.Show(payload.Payload);
+                        //searchStatus = SearchStatus.NO_SERVERS;
+                        //ProccessStatus();
+                    }
+                    else
+                    {
+
+                        string[] infoArr = payload.Payload.Split('|');
+                        foreach (var fileStr in infoArr)
+                        {
+                            FileObject file = FileObject.Parse(fileStr);
+                            lock (resultsByServer)
+                            {
+                                serversToSearch.Add(serverInfo.Name, serverInfo);
+                            }
+                        }
+
+                        if (payload.IsLastpart())
+                        {
+                            lock (resultsByServer)
+                            {
+                              
+                                    resultsByServer.Add(serverName, new List<FileObject>());
+                                //}
+                                //foreach (var serverName in serversToSearch.Keys)
+                                //{
+                                //    ClientHandler.GetInstance().REQSearchFiles(serversToSearch[serverName], this.pattern, HashQuery);
+                                //}
+                            }
+
+                        }
+                        else
+                        {
+                            log.DebugFormat("No terminaron de llegar los resultados, set timeout de busqueda");
+                        }
+                    }
+                }
+                else
+                {
+                    log.DebugFormat("Descarto un payload de resultado de busqueda: {0}", payload.ToString());
+                }
+
+            }));
+
         }
 
 
@@ -46,41 +146,116 @@ namespace Chat
 
 
                 MultiplePayloadFrameDecoded payload = arg.Response;
-/*
-                //agrego los contactos a la lista acumulada de contactos
-                e.ContactList.ToList().ForEach(x => tmpContactList.Add(x.Key, x.Value));
 
-                //cuando me mandaron la ultima porcion de la lista de contactos refresco el form
-                if (e.IsLastPart)
+                string[] destination = payload.Destination.Split('@');
+                string responseHashQuery = destination[1];
+                if (HashQuery.Equals(responseHashQuery)) //si es para la consulta actual, sino se descarta
                 {
-                    listaContactos.Items.Clear();
-                    foreach (KeyValuePair<string, bool> contacto in tmpContactList)
+                    log.DebugFormat("LLegó un payload de busqueda de servidores: {0}", payload.ToString());
+                    if (payload.IsError)
                     {
-                        ListViewItem lvi = new ListViewItem(contacto.Key);
-                        lvi.Tag = contacto;
-                        SetearEstadoContacto(lvi, contacto);
-                        listaContactos.Items.Add(lvi);
+                        log.Error(payload.Payload);
+                        ClearResults();
+                        MessageBox.Show(payload.Payload);
+                        //searchStatus = SearchStatus.NO_SERVERS;
+                        //ProccessStatus();
                     }
-                    FormUtils.AjustarTamanoColumnas(listaContactos);
+                    else
+                    {
 
-                    //reseteo la lista de contactos temporal
-                    tmpContactList.Clear();
+                        string[] infoArr = payload.Payload.Split('|');
+                        foreach (var serverStr in infoArr)
+                        {
+                            ServerInfo serverInfo = ServerInfo.Parse(serverStr);
+                            lock (serversToSearch)
+                            {
+                                serversToSearch.Add(serverInfo.Name, serverInfo);
+                            }
+                        }
+
+                        if (payload.IsLastpart())
+                        {
+                            lock (serversToSearch)
+                            {
+                                foreach (var serverName in serversToSearch.Keys){
+                                    resultsByServer.Add(serverName, new List<FileObject>());
+                                }
+                                foreach (var serverName in serversToSearch.Keys)
+                                {
+                                    ClientHandler.GetInstance().REQSearchFiles(serversToSearch[serverName], this.pattern, HashQuery);
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            log.DebugFormat("No terminaron de llegar los servers, set timeout de busqueda");
+                        }
+                    }
                 }
- * */
+                else
+                {
+                    log.DebugFormat("Descarto un payload de busqueda de servidores: {0}", payload.ToString());
+                }
+
+                /*
+                                //agrego los contactos a la lista acumulada de contactos
+                                e.ContactList.ToList().ForEach(x => tmpContactList.Add(x.Key, x.Value));
+
+                                //cuando me mandaron la ultima porcion de la lista de contactos refresco el form
+                                if (e.IsLastPart)
+                                {
+                                    listaContactos.Items.Clear();
+                                    foreach (KeyValuePair<string, bool> contacto in tmpContactList)
+                                    {
+                                        ListViewItem lvi = new ListViewItem(contacto.Key);
+                                        lvi.Tag = contacto;
+                                        SetearEstadoContacto(lvi, contacto);
+                                        listaContactos.Items.Add(lvi);
+                                    }
+                                    FormUtils.AjustarTamanoColumnas(listaContactos);
+
+                                    //reseteo la lista de contactos temporal
+                                    tmpContactList.Clear();
+                                }
+                 * */
             }));
         }
 
-        
+        private void ProccessStatus()
+        {
+            Boolean redraw = true;
+            switch (searchStatus)
+            {
+                case SearchStatus.NO_SERVERS:
+                    lock (serversToSearch)
+                    {
+                        ClearResults();
+                    }
+                    searchStatus = SearchStatus.NEW;
+                    break;
+                default:
+                    break;
+            }
+            if (redraw)
+            {
+                RefreshScreen();
+            }
+        }
+
+
 
         private void btnBuscar_Click(object sender, EventArgs e)
         {
-            
+
 
             string pattern = txtBuscarArchivo.Text;
             if (pattern != null && !pattern.Trim().Equals(""))
             {
                 btnBuscar.Enabled = false;
+                this.pattern = pattern;
                 ClientHandler.GetInstance().REQGetServerList(GenerateHashQuery(pattern));// .FindContact(Login, pattern);
+                searchStatus = SearchStatus.WAITING_SERVERS;
             }
 
             //if (FormUtils.TxtBoxTieneDatos(txtBuscarArchivo))
@@ -118,11 +293,11 @@ namespace Chat
             }
         }
 
-      
+
 
         private void BuscarArchivo_FormClosing(object sender, FormClosingEventArgs e)
         {
-            ClientHandler.GetInstance().ServerListReceived -= serverListReceivedEventHandler;
+            ClientHandler.GetInstance().ServerListReceivedEvent -= serverListReceivedDelegate;
             //clientHandler.AddContactResponse -= addContactsResponse;
         }
 

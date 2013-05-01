@@ -147,6 +147,7 @@ namespace uy.edu.ort.obligatorio.ContentServer
 
 
         public const string PIPE_SEPARATOR = "|";
+        const string ARROBA_SEPARATOR = "@";
         private void CommandSearchFiles(Connection connection, Data dato)
         {//REQ07
 
@@ -160,7 +161,7 @@ namespace uy.edu.ort.obligatorio.ContentServer
             List<FileObject> results = FileOperationsSingleton.GetInstance().SearchFilesMatching(pattern);
 
             StringBuilder message = new StringBuilder();
-            string destination = login + PIPE_SEPARATOR + queryHash + PIPE_SEPARATOR + Settings.GetInstance().GetProperty("server.name", "DEFAULT_SERVER");
+            string destination = login + ARROBA_SEPARATOR + queryHash + ARROBA_SEPARATOR + Settings.GetInstance().GetProperty("server.name", "DEFAULT_SERVER");
 
             bool first = true;
             foreach (var item in results)

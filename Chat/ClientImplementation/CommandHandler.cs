@@ -9,6 +9,8 @@ namespace ClientImplementation
 {
     public class CommandHandler
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private const string MESSAGE_SUCCESS = "SUCCESS";
         private static CommandHandler instance = new CommandHandler();
 
@@ -19,20 +21,21 @@ namespace ClientImplementation
             return instance;
         }
 
-        public void Handle(Connection clientConnection, Data dato)
+        public bool Handle(Connection clientConnection, Data dato)
         {
             if (dato.Command == Command.REQ)
             {
-                HandleREQ(clientConnection, dato);
+                return  HandleREQ(clientConnection, dato);
             }
             else
             {
-                HandleRES(clientConnection, dato);
+               return  HandleRES(clientConnection, dato);
             }
         }
 
-        private void HandleRES(Connection clientConnection, Data dato)
+        private bool HandleRES(Connection clientConnection, Data dato)
         {
+            bool ret = true;
             switch (dato.OpCode)
             {
                 case 0:
@@ -52,12 +55,17 @@ namespace ClientImplementation
                 case OpCodeConstants.RES_SEND_CHAT_MSG:
                     CommandRESMessageSent(clientConnection, dato);
                     break;
-                case OpCodeConstants.REQ_GET_SERVERS:
+                case OpCodeConstants.RES_GET_SERVERS:
                     CommandRESGetServers(clientConnection, dato);
                     break;
+                case OpCodeConstants.RES_SEARCH_FILES:
+                    ret = CommandRESSearchFiles(clientConnection, dato);
+                    break;
+                    
                 default:
                     break;
             }
+            return ret;
         }
 
         private void CommandRESMessageSent(Connection clientConnection, Data dato)
@@ -107,10 +115,18 @@ namespace ClientImplementation
 
         }
 
-
-
-        private void HandleREQ(Connection clientConnection, Data dato)
+        private bool CommandRESSearchFiles(Connection connection, Data dato)
         {
+            MultiplePayloadFrameDecoded decoded = MultiplePayloadFrameDecoded.Parse(dato.Payload.Message);
+            ClientHandler.GetInstance().OnSearchFilesResponse(new SearchFilesEventArgs() { Response = decoded , Connection = connection});
+            return !decoded.IsLastpart();
+        }
+
+
+
+        private bool HandleREQ(Connection clientConnection, Data dato)
+        {
+            bool ret = true;
              switch (dato.OpCode)
             {
                 case OpCodeConstants.REQ_SEND_CHAT_MSG:
@@ -121,6 +137,7 @@ namespace ClientImplementation
                 default:
                     break;
             }
+             return ret;
         }
 
         private void CommandREQSendChatMessage(Connection clientConnection, Data dato)

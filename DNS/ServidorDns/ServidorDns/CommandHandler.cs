@@ -306,13 +306,16 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             string serverName   = tmp[0];
             string serverIp     = tmp[1];
             int serverPort      = int.Parse(tmp[2]);
-            int userCount       = int.Parse(tmp[3]);
+            int serverTxPort    = int.Parse(tmp[3]);
+            int userCount       = int.Parse(tmp[4]);
 
             newConnection.IsServer  = true;
             newConnection.Ip        = serverIp;
             newConnection.Name      = serverName;
             newConnection.Port      = serverPort;
+            newConnection.TransferPort = serverTxPort;
             newConnection.UserCount = userCount;
+          
 
             SingletonServerConnection ssc = SingletonServerConnection.GetInstance();
             Connection oldConnection = ssc.GetServer(serverName);

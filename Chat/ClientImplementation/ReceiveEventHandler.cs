@@ -13,8 +13,8 @@ namespace ClientImplementation
         public bool OnReceiveData(Connection connection)
         {
             Data dato = DataProccessor.GetInstance().LoadObject(connection.StreamReader);
-            CommandHandler.GetInstance().Handle(connection, dato);
-            return true;
+            return CommandHandler.GetInstance().Handle(connection, dato);
+           // return true;
         }
 
         public bool OnFatalError(Connection connection)

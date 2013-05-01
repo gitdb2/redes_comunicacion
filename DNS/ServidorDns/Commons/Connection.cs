@@ -26,6 +26,7 @@ namespace uy.edu.ort.obligatorio.Commons
 
         public string Ip { get; set; }
         public int Port { get; set; }
+        public int TransferPort { get; set; }
         public int UserCount { get; set; }
         public bool IsServer{ get; set; }
 
@@ -142,6 +143,8 @@ namespace uy.edu.ort.obligatorio.Commons
             semWrite.Release();
           
         }
+
+        
     }
 
 }
