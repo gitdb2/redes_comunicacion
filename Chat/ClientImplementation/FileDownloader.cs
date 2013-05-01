@@ -77,7 +77,15 @@ namespace ClientImplementation
                     }
                     if (!Cancel)
                     {
-                        percentageDownloaded = (int)(bytescount * 100 / size);
+                        if (bytescount == size && size == 0)
+                        {
+                            percentageDownloaded = 99;
+                            done = true;
+                        }
+                        else
+                        {
+                            percentageDownloaded = (int)(bytescount * 100 / size);
+                        }
                         NotifyProgress((done ? "Descarga completa!" : "Descargando ..."));
                     }
                 }

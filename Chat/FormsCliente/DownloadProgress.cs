@@ -34,6 +34,7 @@ namespace FormsCliente
 
                 if (e.IsCompleted)
                 {
+                    this.progressBar.Value = 100;
                     this.lblStatus.Text = "Descarga Completa!";
                     this.btnCancelar.Text = "Cerrar";
                 }

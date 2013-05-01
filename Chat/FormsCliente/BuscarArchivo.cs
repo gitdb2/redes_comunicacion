@@ -182,6 +182,7 @@ namespace Chat
             {
                     ListViewItem lvi = new ListViewItem(file.Name);
                     lvi.Tag = file;
+                    lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, ""+file.Size));
                     lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, file.Server));
                     lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, file.Owner));
                     listaArchivos.Items.Add(lvi);

@@ -31,21 +31,21 @@
             this.listaArchivos = new System.Windows.Forms.ListView();
             this.columnNombreArchivo = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnaServidor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnOwner = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnCerrar = new System.Windows.Forms.Button();
             this.btnDescargar = new System.Windows.Forms.Button();
             this.txtBuscarArchivo = new System.Windows.Forms.TextBox();
             this.btnBuscar = new System.Windows.Forms.Button();
-
-            this.columnOwner = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnSize = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // listaArchivos
             // 
             this.listaArchivos.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnNombreArchivo,
+            this.columnSize,
             this.columnaServidor,
             this.columnOwner});
-
             this.listaArchivos.FullRowSelect = true;
             this.listaArchivos.Location = new System.Drawing.Point(16, 52);
             this.listaArchivos.Margin = new System.Windows.Forms.Padding(4);
@@ -64,9 +64,15 @@
             // 
             // columnaServidor
             // 
+            this.columnaServidor.DisplayIndex = 1;
             this.columnaServidor.Text = "Servidor";
             this.columnaServidor.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.columnaServidor.Width = 117;
+            // 
+            // columnOwner
+            // 
+            this.columnOwner.DisplayIndex = 2;
+            this.columnOwner.Text = "Dueño";
             // 
             // btnCerrar
             // 
@@ -110,10 +116,9 @@
             this.btnBuscar.UseVisualStyleBackColor = true;
             this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
-            // columnOwner
+            // columnSize
             // 
-            this.columnOwner.Text = "Dueño";
-
+            this.columnSize.Text = "Tamaño";
             // 
             // BuscarArchivo
             // 
@@ -147,6 +152,7 @@
         private System.Windows.Forms.TextBox txtBuscarArchivo;
         private System.Windows.Forms.Button btnBuscar;
         private System.Windows.Forms.ColumnHeader columnOwner;
+        private System.Windows.Forms.ColumnHeader columnSize;
 
     }
 }
