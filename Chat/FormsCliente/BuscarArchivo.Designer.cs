@@ -37,6 +37,7 @@
             this.txtBuscarArchivo = new System.Windows.Forms.TextBox();
             this.btnBuscar = new System.Windows.Forms.Button();
             this.columnSize = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnMD5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // listaArchivos
@@ -45,7 +46,8 @@
             this.columnNombreArchivo,
             this.columnSize,
             this.columnaServidor,
-            this.columnOwner});
+            this.columnOwner,
+            this.columnMD5});
             this.listaArchivos.FullRowSelect = true;
             this.listaArchivos.Location = new System.Drawing.Point(16, 52);
             this.listaArchivos.Margin = new System.Windows.Forms.Padding(4);
@@ -64,14 +66,12 @@
             // 
             // columnaServidor
             // 
-            this.columnaServidor.DisplayIndex = 1;
             this.columnaServidor.Text = "Servidor";
             this.columnaServidor.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.columnaServidor.Width = 117;
             // 
             // columnOwner
             // 
-            this.columnOwner.DisplayIndex = 2;
             this.columnOwner.Text = "Dueño";
             // 
             // btnCerrar
@@ -120,6 +120,10 @@
             // 
             this.columnSize.Text = "Tamaño";
             // 
+            // columnMD5
+            // 
+            this.columnMD5.Text = "MD5";
+            // 
             // BuscarArchivo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -153,6 +157,7 @@
         private System.Windows.Forms.Button btnBuscar;
         private System.Windows.Forms.ColumnHeader columnOwner;
         private System.Windows.Forms.ColumnHeader columnSize;
+        private System.Windows.Forms.ColumnHeader columnMD5;
 
     }
 }

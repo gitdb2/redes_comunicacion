@@ -185,6 +185,7 @@ namespace Chat
                     lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, ""+file.Size));
                     lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, file.Server));
                     lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, file.Owner));
+                    lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, file.Hash));
                     listaArchivos.Items.Add(lvi);
             }
             FormUtils.AjustarTamanoColumnas(listaArchivos);
