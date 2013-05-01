@@ -142,6 +142,7 @@ namespace Chat
 
         private void ProcesarResults()
         {
+            bool resultsWereFound = false;
             foreach (var item in resultsByServer.Keys)
 	        {
                 List<FileObject> lista = resultsByServer[item];
@@ -153,12 +154,12 @@ namespace Chat
                     lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, file.Server));
                     lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, file.Owner));
                     listaArchivos.Items.Add(lvi);
+                    resultsWereFound = true;
                 }
 	        }
             FormUtils.AjustarTamanoColumnas(listaArchivos);
             btnBuscar.Enabled = true;
-            if (resultsByServer.Count > 0)
-                btnDescargar.Enabled = true;
+            btnDescargar.Enabled = resultsWereFound;
         }
 
         private void EventServerListReceivedResponse(object sender, GetServersEventArgs arg)
@@ -264,31 +265,34 @@ namespace Chat
 
         private void btnDescargar_Click(object sender, EventArgs e)
         {
-            FileObject fileSelected = (FileObject)listaArchivos.SelectedItems[0].Tag;
-
-            if (fileSelected != null)
+            if (FormUtils.HayFilaElegida(listaArchivos))
             {
-                ServerInfo serverInfo = serversToSearch[fileSelected.Server];
-                SaveFileDialog sfd = new SaveFileDialog();
-                sfd.Title = "Descargar Archivo";
-                sfd.FileName = fileSelected.Name;
-
-                if (sfd.ShowDialog() == DialogResult.OK)
+                FileObject fileSelected = (FileObject)listaArchivos.SelectedItems[0].Tag;
+                if (fileSelected != null)
                 {
-                    FileDownloader fd = new FileDownloader()
+                    ServerInfo serverInfo = serversToSearch[fileSelected.Server];
+                    SaveFileDialog sfd = new SaveFileDialog();
+                    sfd.Title = "Descargar Archivo";
+                    sfd.FileName = fileSelected.Name;
+                    sfd.OverwritePrompt = false;
+
+                    if (sfd.ShowDialog() == DialogResult.OK)
                     {
-                        Destination = sfd.FileName,
-                        FileSelected = fileSelected,
-                        ServerInfo = serverInfo
-                    };
+                        FileDownloader fd = new FileDownloader()
+                        {
+                            Destination = sfd.FileName,
+                            FileSelected = fileSelected,
+                            ServerInfo = serverInfo
+                        };
 
-                    DownloadProgress dp = new DownloadProgress(fd);
-                    dp.Show();
+                        //muestro la ventana del progress bar
+                        DownloadProgress dp = new DownloadProgress(fd);
+                        dp.Show();
 
-                    //esto tendria que ser en una nueva ventana que se updatee con delegados
-                    fd.DownloadThread();
+                        //inicio la descarga en otro sred
+                        fd.DownloadThread();
+                    }
                 }
-                
             }
         }
 
