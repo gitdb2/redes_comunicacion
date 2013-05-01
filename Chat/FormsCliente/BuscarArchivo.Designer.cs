@@ -30,13 +30,14 @@
         {
             this.listaArchivos = new System.Windows.Forms.ListView();
             this.columnNombreArchivo = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnSize = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnaServidor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnOwner = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnMD5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnCerrar = new System.Windows.Forms.Button();
             this.btnDescargar = new System.Windows.Forms.Button();
             this.txtBuscarArchivo = new System.Windows.Forms.TextBox();
             this.btnBuscar = new System.Windows.Forms.Button();
-            this.columnSize = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // listaArchivos
@@ -45,7 +46,8 @@
             this.columnNombreArchivo,
             this.columnSize,
             this.columnaServidor,
-            this.columnOwner});
+            this.columnOwner,
+            this.columnMD5});
             this.listaArchivos.FullRowSelect = true;
             this.listaArchivos.Location = new System.Drawing.Point(16, 52);
             this.listaArchivos.Margin = new System.Windows.Forms.Padding(4);
@@ -55,6 +57,8 @@
             this.listaArchivos.TabIndex = 10;
             this.listaArchivos.UseCompatibleStateImageBehavior = false;
             this.listaArchivos.View = System.Windows.Forms.View.Details;
+            this.listaArchivos.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listaArchivos_ColumnClick);
+     
             this.listaArchivos.DoubleClick += new System.EventHandler(this.btnDescargar_Click);
             // 
             // columnNombreArchivo
@@ -62,17 +66,23 @@
             this.columnNombreArchivo.Text = "Nombre Archivo";
             this.columnNombreArchivo.Width = 107;
             // 
+            // columnSize
+            // 
+            this.columnSize.Text = "Tamaño";
+            // 
             // columnaServidor
             // 
-            this.columnaServidor.DisplayIndex = 1;
             this.columnaServidor.Text = "Servidor";
             this.columnaServidor.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.columnaServidor.Width = 117;
             // 
             // columnOwner
             // 
-            this.columnOwner.DisplayIndex = 2;
             this.columnOwner.Text = "Dueño";
+            // 
+            // columnMD5
+            // 
+            this.columnMD5.Text = "MD5";
             // 
             // btnCerrar
             // 
@@ -116,10 +126,6 @@
             this.btnBuscar.UseVisualStyleBackColor = true;
             this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
-            // columnSize
-            // 
-            this.columnSize.Text = "Tamaño";
-            // 
             // BuscarArchivo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -153,6 +159,7 @@
         private System.Windows.Forms.Button btnBuscar;
         private System.Windows.Forms.ColumnHeader columnOwner;
         private System.Windows.Forms.ColumnHeader columnSize;
+        private System.Windows.Forms.ColumnHeader columnMD5;
 
     }
 }

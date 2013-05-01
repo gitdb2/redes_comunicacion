@@ -74,6 +74,7 @@
       <DependentUpon>DownloadProgress.cs</DependentUpon>
     </Compile>
     <Compile Include="FormUtils.cs" />
+    <Compile Include="ListViewColumnSorter.cs" />
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
