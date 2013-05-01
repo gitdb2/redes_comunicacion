@@ -10,14 +10,10 @@ namespace Comunicacion
         const int MAX_COMMAND_LENGTH    = 3;
         const int MAX_OPCODE_LENGTH     = 2;
         const int MAX_LENGTH_LENGTH     = 5;
-       
 
         public Command Command { get;  set; }
         public int OpCode {  get;  set; }
         public Payload Payload {  get;  set; }
-
-
-     
 
         public List<char[]> GetBytes()
         {

@@ -19,14 +19,10 @@ namespace uy.edu.ort.obligatorio.Commons
             return instance;
         }
 
-
-
         public Data LoadObject(StreamReader br)
         {
-
             char[] buffer = new char[10];
             int readQty = br.Read(buffer, 0, 10);//REQ99000050101A
-
 
             if (readQty < 10) throw new Exception("Errror en trama largo fijo");
 
@@ -37,12 +33,10 @@ namespace uy.edu.ort.obligatorio.Commons
             //int partsCurrent        = int.Parse(ArrayToString(buffer, 12, 2));
 
             Console.WriteLine(type + " " + opCode + " " + payloadLength );//+ " " + partsTotal + " " + partsCurrent);
-    
 
             buffer = new char[payloadLength];
             readQty = br.Read(buffer, 0, payloadLength);
             if (readQty < payloadLength) throw new Exception("Errror en trama largo fijo leyendo payload");
-            
  
             Data ret = new Data() { Command = type, OpCode = opCode, Payload = new Payload(ArrayToString(buffer, 0, readQty)) };
 
@@ -53,5 +47,6 @@ namespace uy.edu.ort.obligatorio.Commons
         {
             return new string(buffer).Substring(startIndex, length);
         }
+
     }
 }

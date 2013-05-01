@@ -47,17 +47,35 @@ namespace ClientImplementation
                 OpCode = OpCodeConstants.REQ_UPLOAD_FILE,
                 Payload = new Payload(sb.ToString())
             };
-            foreach (var item in dataRequestDownload.GetBytes())
+
+            try
             {
-                uploadStreamWriter.Write(item);
-                uploadStreamWriter.Flush();
+                foreach (var item in dataRequestDownload.GetBytes())
+                {
+                    uploadStreamWriter.Write(item);
+                    uploadStreamWriter.Flush();
+                }
             }
+            catch
+            {
+                FatalError();
+            }
+
         }
 
         private void UploadFile()
         {
-            Data reqUploadResponse = DataProccessor.GetInstance().LoadObject(uploadStreamReader);
-            if (reqUploadResponse.Payload.Message.Equals(MessageConstants.MESSAGE_SERVER_READY))
+            Data reqUploadResponse = new Data();
+            try
+            {
+                reqUploadResponse = DataProccessor.GetInstance().LoadObject(uploadStreamReader);
+            }
+            catch (Exception)
+            {
+                Cancel = true;
+            }
+
+            if (!Cancel && reqUploadResponse.Payload.Message.Equals(MessageConstants.MESSAGE_SERVER_READY))
             {
                 FileInfo fileInfo = new FileInfo(FileSelected.FullName);
                 FileStream fileStream = fileInfo.OpenRead();
@@ -66,7 +84,6 @@ namespace ClientImplementation
                 byte[] buffer = new byte[BUFF_SIZE];
 
                 long bytesCount = 0;
-
 
                 try
                 {
@@ -106,24 +123,29 @@ namespace ClientImplementation
                 }
                 catch (Exception)
                 {
-                    Cancel = true;
-                    done = false;
-                    OnUploadCancelled(new SimpleEventArgs() { Message = "Ocurrio un error durante la subida del archivo, se cancelo el proceso." });
+                    FatalError();
                 }
                 fileStream.Close();
             }
             else
             {
-                throw new Exception("El servidor no esta disponible para descargas.");
+                FatalError("El servidor no esta disponible para descargas.");
             }
         }
 
         private void SetupConnection()
         {
-            uploadTcpClient = new TcpClient(ServerInfo.Ip, ServerInfo.TransfersPort);
-            uploadNetStream = uploadTcpClient.GetStream();
-            uploadStreamReader = new StreamReader(uploadNetStream, Encoding.UTF8);
-            uploadStreamWriter = new StreamWriter(uploadNetStream, Encoding.UTF8);
+            try
+            {
+                uploadTcpClient = new TcpClient(ServerInfo.Ip, ServerInfo.TransfersPort);
+                uploadNetStream = uploadTcpClient.GetStream();
+                uploadStreamReader = new StreamReader(uploadNetStream, Encoding.UTF8);
+                uploadStreamWriter = new StreamWriter(uploadNetStream, Encoding.UTF8);
+            }
+            catch
+            {
+                Cancel = true;
+            }
         }
 
         public delegate void UploadCancelledEventHandler(object sender, SimpleEventArgs e);
@@ -158,16 +180,37 @@ namespace ClientImplementation
 
         private void CloseConnection()
         {
-            uploadStreamReader.Dispose();
-            uploadStreamWriter.Dispose();
-            uploadNetStream.Close();
-            uploadTcpClient.Close();
+            try
+            {
+                uploadStreamReader.Dispose();
+                uploadStreamWriter.Dispose();
+                uploadNetStream.Close();
+                uploadTcpClient.Close();
+            }
+            catch (Exception)
+            { 
+                //loguear
+            }
         }
 
         public void UploadThread()
         {
             (new Thread(new ThreadStart(Upload))).Start();
         }
-        
+
+        private void FatalError()
+        {
+            Cancel = true;
+            done = false;
+            OnUploadCancelled(new SimpleEventArgs() { Message = "Ocurrio un error durante la subida del archivo, se cancelo el proceso." });
+        }
+
+        private void FatalError(string message)
+        {
+            Cancel = true;
+            done = false;
+            OnUploadCancelled(new SimpleEventArgs() { Message = message });
+        }
+
     }
 }
