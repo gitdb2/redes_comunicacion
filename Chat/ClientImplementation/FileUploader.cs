@@ -61,10 +61,10 @@ namespace ClientImplementation
             {
                 FileInfo fileInfo = new FileInfo(FileSelected.FullName);
                 FileStream fileStream = fileInfo.OpenRead();
-                
+
                 const int BUFF_SIZE = 1024;
                 byte[] buffer = new byte[BUFF_SIZE];
-                
+
                 long bytesCount = 0;
 
                 while (!done && !Cancel)
@@ -100,7 +100,11 @@ namespace ClientImplementation
                     }
                     NotifyProgress(done ? "Subida completa !" : "Subiendo ...");
                 }
-                fileStream.Close();            
+                fileStream.Close();
+            }
+            else
+            {
+                throw new Exception("El servidor no esta disponible para descargas");
             }
         }
 

@@ -90,8 +90,15 @@ namespace Chat
         {
             if (FormUtils.TxtBoxTieneDatos(txtBoxArchivo))
             {
-                this.lblStatus.Text = "Iniciando Subida";
-                clientHandler.GetServerInfo();
+                try
+                {
+                    this.lblStatus.Text = "Iniciando Subida";
+                    clientHandler.GetServerInfo();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Descarga de archivo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
