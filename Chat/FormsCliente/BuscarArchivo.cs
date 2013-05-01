@@ -33,6 +33,7 @@ namespace Chat
 
         private ClientHandler.ServerListReceivedDelegate serverListReceivedDelegate;
         private ClientHandler.SearchFilesReceivedDelegate searchFilesReceivedDelegate;
+        private ListViewColumnSorter lvwColumnSorter;
 
         private void ClearResults()
         {
@@ -42,6 +43,8 @@ namespace Chat
             resultsByServer.Clear();
             serversToProccess = 0;
             listaArchivos.Items.Clear();
+
+          
         }
 
         private void RefreshScreen()
@@ -65,6 +68,8 @@ namespace Chat
 
             searchFilesReceivedDelegate = new ClientHandler.SearchFilesReceivedDelegate(OnSearchFilesResultReceived);
             ClientHandler.GetInstance().SearchFilesReceivedEvent += searchFilesReceivedDelegate;
+            lvwColumnSorter = new ListViewColumnSorter();
+            listaArchivos.ListViewItemSorter = lvwColumnSorter;
         }
 
         private void OnSearchFilesResultReceived(object sender, SearchFilesEventArgs arg)
@@ -332,6 +337,35 @@ namespace Chat
         {
             ClientHandler.GetInstance().ServerListReceivedEvent -= serverListReceivedDelegate;
             ClientHandler.GetInstance().SearchFilesReceivedEvent -= searchFilesReceivedDelegate;
+        }
+
+
+        
+
+
+        private void listaArchivos_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            if (((ColumnClickEventArgs)e).Column == lvwColumnSorter.SortColumn)
+            {
+                // Reverse the current sort direction for this column.
+                if (lvwColumnSorter.Order == SortOrder.Ascending)
+                {
+                    lvwColumnSorter.Order = SortOrder.Descending;
+                }
+                else
+                {
+                    lvwColumnSorter.Order = SortOrder.Ascending;
+                }
+            }
+            else
+            {
+                // Set the column number that is to be sorted; default to ascending.
+                lvwColumnSorter.SortColumn = ((ColumnClickEventArgs)e).Column;
+                lvwColumnSorter.Order = SortOrder.Ascending;
+            }
+
+            // Perform the sort with these new sort options.
+            listaArchivos.Sort();
         }
 
     }

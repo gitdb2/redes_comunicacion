@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using Comunicacion;
 using ClientImplementation;
 using uy.edu.ort.obligatorio.Commons;
+using FormsCliente;
 
 namespace Chat
 {
@@ -20,7 +21,7 @@ namespace Chat
         private ClientHandler.UpdateContactStatusEventHandler updateContactStatusResponse;
         private ClientHandler.ChatMessageReceivedEventHandler chatMessageReceived;
         private ClientHandler.ChatMessageSentEventHandler chatMessageSent;
-
+        private ListViewColumnSorter lvwColumnSorter;
         //las ventanas de chat activas, cuando llegue el evento de mensaje le envio el
         //mensaje a la ventana que corresponda
         private Dictionary<string, VentanaDeChat> chatWindows = new Dictionary<string, VentanaDeChat>();
@@ -48,6 +49,9 @@ namespace Chat
             clientHandler.ContactListResponse += contactListResponse;
             clientHandler.UpdateContactStatusResponse += updateContactStatusResponse;
             clientHandler.ChatMessageSent += chatMessageSent;
+
+            lvwColumnSorter = new ListViewColumnSorter();
+            listaContactos.ListViewItemSorter = lvwColumnSorter;
         }
 
         void EventChatMessageSent(object sender, ChatMessageSentEventArgs e)
@@ -212,6 +216,31 @@ namespace Chat
             clientHandler.ChatMessageReceived -= chatMessageReceived;
             clientHandler.ChatMessageSent -= chatMessageSent;
             clientHandler.CloseConnection();
+        }
+
+        private void listaContactos_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            if (((ColumnClickEventArgs)e).Column == lvwColumnSorter.SortColumn)
+            {
+                // Reverse the current sort direction for this column.
+                if (lvwColumnSorter.Order == SortOrder.Ascending)
+                {
+                    lvwColumnSorter.Order = SortOrder.Descending;
+                }
+                else
+                {
+                    lvwColumnSorter.Order = SortOrder.Ascending;
+                }
+            }
+            else
+            {
+                // Set the column number that is to be sorted; default to ascending.
+                lvwColumnSorter.SortColumn = ((ColumnClickEventArgs)e).Column;
+                lvwColumnSorter.Order = SortOrder.Ascending;
+            }
+
+            // Perform the sort with these new sort options.
+            listaContactos.Sort();
         }
 
     }

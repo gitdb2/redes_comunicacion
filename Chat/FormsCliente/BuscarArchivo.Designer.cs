@@ -30,14 +30,14 @@
         {
             this.listaArchivos = new System.Windows.Forms.ListView();
             this.columnNombreArchivo = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnSize = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnaServidor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnOwner = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnMD5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.btnCerrar = new System.Windows.Forms.Button();
             this.btnDescargar = new System.Windows.Forms.Button();
             this.txtBuscarArchivo = new System.Windows.Forms.TextBox();
             this.btnBuscar = new System.Windows.Forms.Button();
-            this.columnSize = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnMD5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // listaArchivos
@@ -57,12 +57,18 @@
             this.listaArchivos.TabIndex = 10;
             this.listaArchivos.UseCompatibleStateImageBehavior = false;
             this.listaArchivos.View = System.Windows.Forms.View.Details;
+            this.listaArchivos.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listaArchivos_ColumnClick);
+     
             this.listaArchivos.DoubleClick += new System.EventHandler(this.btnDescargar_Click);
             // 
             // columnNombreArchivo
             // 
             this.columnNombreArchivo.Text = "Nombre Archivo";
             this.columnNombreArchivo.Width = 107;
+            // 
+            // columnSize
+            // 
+            this.columnSize.Text = "Tamaño";
             // 
             // columnaServidor
             // 
@@ -73,6 +79,10 @@
             // columnOwner
             // 
             this.columnOwner.Text = "Dueño";
+            // 
+            // columnMD5
+            // 
+            this.columnMD5.Text = "MD5";
             // 
             // btnCerrar
             // 
@@ -115,14 +125,6 @@
             this.btnBuscar.Text = "Buscar";
             this.btnBuscar.UseVisualStyleBackColor = true;
             this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
-            // 
-            // columnSize
-            // 
-            this.columnSize.Text = "Tamaño";
-            // 
-            // columnMD5
-            // 
-            this.columnMD5.Text = "MD5";
             // 
             // BuscarArchivo
             // 
