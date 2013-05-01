@@ -107,6 +107,7 @@
             this.Name = "SubirArchivo";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Subir Archivo";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SubirArchivo_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -30,6 +30,8 @@ namespace Chat
             serverInfoResponseEventHandler = new ClientHandler.ServerInfoResponseEventHandler(ServerInfoEvent);
             fileUploader.UpdateProgressBar += updateProgressBarEventHandler;
             clientHandler.ServerInfoResponse += serverInfoResponseEventHandler;
+
+            this.btnCerrar.Text = "Cancelar";
         }
 
         private void UpdateProgressBarEvent(object sender, ProgressBarEventArgs e)
@@ -45,6 +47,7 @@ namespace Chat
                 {
                     this.progressBar.Value = 100;
                     this.lblStatus.Text = "Subida Completa!";
+                    this.btnCerrar.Text = "Cerrar";
                 }
             }));
         }
@@ -61,6 +64,7 @@ namespace Chat
 
         private void btnCerrar_Click(object sender, EventArgs e)
         {
+            fileUploader.Cancel = true;
             fileUploader.UpdateProgressBar -= updateProgressBarEventHandler;
             clientHandler.ServerInfoResponse -= serverInfoResponseEventHandler;
             this.Dispose();
@@ -89,6 +93,14 @@ namespace Chat
                 this.lblStatus.Text = "Iniciando Subida";
                 clientHandler.GetServerInfo();
             }
+        }
+
+        private void SubirArchivo_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            fileUploader.Cancel = true;
+            fileUploader.UpdateProgressBar -= updateProgressBarEventHandler;
+            clientHandler.ServerInfoResponse -= serverInfoResponseEventHandler;
+            this.Dispose();
         }
 
     }
