@@ -37,7 +37,7 @@ namespace uy.edu.ort.obligatorio.ContentServer
 
         private bool HandleRES(Connection Connection, Data dato)
         {
-            Console.WriteLine("[{0}] connection owner: {1} ;  The data: {2} ", DateTime.Now, Connection.Name, dato.ToString());
+            Console.WriteLine("HandleRES [{0}] connection owner: {1} ;  The data: {2} ", DateTime.Now, Connection.Name, dato.ToString());
             log.DebugFormat(" connection owner: {0} ;  The data: {1} ", Connection.Name, dato.ToString());
             switch (dato.OpCode)
             {
@@ -66,7 +66,7 @@ namespace uy.edu.ort.obligatorio.ContentServer
 
         private bool HandleREQ(Connection connection, Data dato)
         {
-            Console.WriteLine("[{0}] connection owner: {1} ;  The data: {2} ", DateTime.Now, connection.Name, dato.ToString());
+            Console.WriteLine("HandleREQ [{0}] connection owner: {1} ;  The data: {2} ", DateTime.Now, connection.Name, dato.ToString());
             log.DebugFormat(" connection owner: {0} ;  The data: {1} ", connection.Name, dato.ToString());
             bool ret = true;
             switch (dato.OpCode)

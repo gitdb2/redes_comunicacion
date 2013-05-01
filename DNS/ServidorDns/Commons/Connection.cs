@@ -30,23 +30,38 @@ namespace uy.edu.ort.obligatorio.Commons
         public int UserCount { get; set; }
         public bool IsServer { get; set; }
 
+        private Thread threadRead;
+
         public IReceiveEvent EventHandler { get; set; }
 
+        private ConnectionDroppedDelegate onConnectionDropDelegate = null;
+        public ConnectionDroppedDelegate OnConnectionDropDelegate { get { return onConnectionDropDelegate; } set { onConnectionDropDelegate = value; } }
+
+        //delegado para que la conexion avise a alguien cuando cae.
+        public delegate void ConnectionDroppedDelegate(String idName);
+
         public Connection(TcpClient c, IReceiveEvent ire)
-            : this("Unknown", c, ire)
+            : this("Unknown", c, ire, null)
         {
         }
-
         public Connection(string name, TcpClient c, IReceiveEvent ire)
+            : this(name, c, ire, null)
         {
+
+        }
+        public Connection( string name, TcpClient c, IReceiveEvent ire, ConnectionDroppedDelegate dropConDelegate)
+        {
+            onConnectionDropDelegate =  dropConDelegate;
             IsServer = false;
             Name = name;
             tcpClient = c;
             EventHandler = ire;
             semWrite = new Semaphore(0, 1);
             semRead = new Semaphore(0, 1);
-            (new Thread(new ThreadStart(SetupConn))).Start();
+            (threadRead = new Thread(new ThreadStart(SetupConn))).Start();
         }
+
+      
 
         public void WriteToStream(char[] data)
         {
@@ -116,12 +131,27 @@ namespace uy.edu.ort.obligatorio.Commons
                 tcpClient.Close();
                 Console.WriteLine("[{0}] End of connection!", DateTime.Now);
                 log.Info("End of connection!");
+
+              
             }
             catch (Exception e)
             {
                 log.Error("Error mientras se cerraba la conexion", e);
                 //  Console.WriteLine(e.StackTrace);
                 Console.WriteLine(e.Message);
+
+            }
+            finally
+            {
+                if (onConnectionDropDelegate != null)
+                {
+                    ConnectionDroppedDelegate tmp = onConnectionDropDelegate;
+                    log.InfoFormat("Conexion {0} anula para el delegado y lo invoca", Name);
+                    onConnectionDropDelegate = null;
+                    tmp(Name);
+                    
+                }
+               
             }
             notEnd = false;
         }
