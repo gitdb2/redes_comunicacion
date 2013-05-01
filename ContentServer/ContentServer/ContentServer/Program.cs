@@ -25,7 +25,7 @@ namespace uy.edu.ort.obligatorio.ContentServer
 
         static void Main(string[] args)
         {
-            Program program =null;
+            Program program = null;
             try
             {
                 program = new Program();
@@ -33,29 +33,30 @@ namespace uy.edu.ort.obligatorio.ContentServer
             catch (Exception e)
             {
 
-                Console.WriteLine("Error:"+e.Message);
+                Console.WriteLine("Error:" + e.Message);
             }
-            
+
             Console.WriteLine();
             Console.WriteLine("Escriba Q para terminar.");
-            while(!"q".Equals(Console.ReadLine().ToLower()));
+            while (!"q".Equals(Console.ReadLine().ToLower())) ;
 
-            if(program!= null){
+            if (program != null)
+            {
                 program.Disconnect();
             }
-           
+
         }
 
         public void Disconnect()
         {
             dns.EndConnection();
-         //   transferServer.
+            //   transferServer.
         }
 
 
-      
+
         public bool running = true;
-   
+
 
         public bool DEBUG = bool.Parse(Settings.GetInstance().GetProperty("debug", "false"));
 
@@ -71,7 +72,7 @@ namespace uy.edu.ort.obligatorio.ContentServer
             UsersContactsPersistenceHandler.GetInstance().LoadContacts();
             log.Info("contactos cargados");
             Console.WriteLine("contactos cargados");
-            
+
             Console.WriteLine("[{0}] Starting server...", DateTime.Now);
 
             string listenAddressStr = Settings.GetInstance().GetProperty("listen.ip", "ANY");
@@ -83,8 +84,8 @@ namespace uy.edu.ort.obligatorio.ContentServer
 
             transferServer = new ListeningServer("Transfers", ip, portTransfers);
             commandServer = new ListeningServer("Control", ip, port);
-            
-           
+
+
 
             Console.WriteLine("[{0}] Server is running properly!", DateTime.Now);
             log.Info("Server is running properly!");
@@ -115,111 +116,8 @@ namespace uy.edu.ort.obligatorio.ContentServer
 
         }
 
-
-       
     }
 
-/*
-    public class CommandsServer
-    {
-        ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        public TcpListener server;
-        int port;
-        IPAddress ip;
-        bool running = true;
-        Thread thread;
-        Connection.ConnectionDroppedDelegate delegado; 
-
-        public CommandsServer(IPAddress ip, int port)
-        {
-            this.ip = ip;
-            this.port = port;
-
-            delegado = new Connection.ConnectionDroppedDelegate(OneConnectionDroppedEvent);
-           
-            (thread = new Thread(new ThreadStart(Listen))).Start();
-        }
-        public void EndConnection()
-        {
-            running = false;
-            server.Stop(); //deja de aceptar conexiones
-            Console.WriteLine("VER COMO HACER EL KILL ALL CONNECTIONS");
-        }
-    
-        int connectionCounter = 0;
-        List<Connection> openConnections = new List<Connection>();
-      
-
-        public void OneConnectionDroppedEvent(string idName)
-        {
-            log.Debug("conexion dropeada: " + idName);
-        }
-
-        void Listen()  // Listen to incoming connections.
-        {
-            log.InfoFormat("Listen");
-            server = new TcpListener(ip, port);
-            server.Start();
-
-          // ClientHandler.GetInstance().SearchFilesReceivedEvent += searchFilesReceivedDelegate;
-
-
-            while (running)
-            {
-                TcpClient tcpClient = server.AcceptTcpClient();  // Accept incoming connection.
-                log.InfoFormat("nueva conexion de control(:{2}) desde {0}:{1}", ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address, ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Port, port);
-
-                Connection client = new Connection( connectionCounter.ToString(), tcpClient, new ReceiveEventHandler(), delegado);     // Handle in another thread.
-                lock (openConnections)
-                {
-                    openConnections.Add(client);
-                    connectionCounter++;
-                   
-                }
-                
-            }
-        }
-
-      
-    }
-
-
-    public class TransferServer
-    {
-        ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        public TcpListener server;
-        int port;
-        IPAddress ip;
-        bool running = true;
-        Thread thread;
-
-
-        public TransferServer(IPAddress ip, int port)
-        {
-            this.ip = ip;
-            this.port = port;
-            (thread = new Thread(new ThreadStart(Listen))).Start();
-        }
-
-
-        void Listen()  // Listen to incoming connections.
-        {
-
-            server = new TcpListener(ip, port);
-            server.Start();
-
-
-            while (running)
-            {
-                log.InfoFormat("[ListenTransfers] Waiting for new connection");
-                TcpClient tcpClient = server.AcceptTcpClient();  // Accept incoming connection.
-                log.InfoFormat("nueva conexion de transferencia(:{2}) desde {0}:{1}", ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address, ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Port, port);
-                Connection client = new Connection(tcpClient, new ReceiveTransfersEventHandler());     // Handle in another thread.
-
-            }
-        }
-    }
-    */
 
 
     public class ListeningServer
@@ -295,9 +193,9 @@ namespace uy.edu.ort.obligatorio.ContentServer
 
         public void SetupConn()  // Setup connection and login
         {
-         
+
             connection = new Connection("DNS", new TcpClient(DNSServer, DNSPort), new ReceiveEventHandler());
-          
+
 
             string payload = Settings.GetInstance().GetProperty("server.name", "rodrigo-nb")
                                 + ":" + Settings.GetInstance().GetProperty("server.ip", "127.0.0.1")
