@@ -9,7 +9,10 @@ using System.Windows.Forms;
 using Dominio;
 using ClientImplementation;
 using uy.edu.ort.obligatorio.Commons;
-using uy.edu.ort.obligatorio.ContentServer;
+
+using FormsCliente;
+using System.Threading;
+
 
 namespace Chat
 {
@@ -306,16 +309,50 @@ namespace Chat
 
         private void btnDescargar_Click(object sender, EventArgs e)
         {
-            Archivo archivo = (Archivo)listaArchivos.SelectedItems[0].Tag;
+            //FileObject fileSelected = (FileObject)listaArchivos.SelectedItems[0].Tag;
+            //lo voy a tomar de un diccionario
+            //ServerInfo serverInfo = new ServerInfo();
+            
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Title = "Descargar Archivo";
-            sfd.FileName = archivo.Nombre;
+            sfd.FileName = "imagen.jpg"; //fileSelected.Name;
+            
             if (sfd.ShowDialog() == DialogResult.OK)
             {
-                MessageBox.Show("Guardo el archivo en la ruta: " + sfd.FileName);
-                //System.IO.FileStream fs = (System.IO.FileStream)sfd.OpenFile();
+                string destino = @"c:\shared\mauricio\res.iso";
+                FileObject fo = new FileObject() { 
+                    Name = ClientHandler.GetInstance().Login, 
+                    // imagen.png Hash = "f4f1a7a2a9f6284dd0bfa7558fa134da",
+                    // exe Hash = "eefc05a7ff11a84d350d561a63014a47",
+                    Hash = "e1e8c17baf81af6722feb8987269f22e",
+                    Owner = "mauricio",
+                    Server = "server1"
+                };
+
+                ServerInfo si = new ServerInfo() { Ip = "127.0.0.1", Name = "server1", TransfersPort = 20001 };
+
+                FileDownloader fd = new FileDownloader()
+                {
+                    Destination = destino,
+                    FileSelected = fo,
+                    ServerInfo = si
+                };
+                
+                DownloadProgress dp = new DownloadProgress(fd);
+                dp.Show();
+
+                //esto tendria que ser en una nueva ventana que se updatee con delegados
+                fd.DownloadThread();
+
+                //FileDownloader fd = new FileDownloader() { 
+                //    Destination = sfd.FileName
+                //    , FileSelected = fileSelected
+                //    , ServerInfo = serverInfo
+                //};
+                
             }
         }
+
 
 
 
@@ -324,6 +361,7 @@ namespace Chat
             ClientHandler.GetInstance().ServerListReceivedEvent -= serverListReceivedDelegate;
             //clientHandler.AddContactResponse -= addContactsResponse;
         }
+
 
     }
 }

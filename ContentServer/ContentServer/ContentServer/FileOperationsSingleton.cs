@@ -5,6 +5,7 @@ using System.Text;
 using Comunicacion;
 using System.IO;
 using System.Security.Cryptography;
+using uy.edu.ort.obligatorio.Commons;
 
 namespace uy.edu.ort.obligatorio.ContentServer
 {

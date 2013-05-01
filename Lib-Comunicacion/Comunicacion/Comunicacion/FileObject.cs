@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace uy.edu.ort.obligatorio.ContentServer
+namespace uy.edu.ort.obligatorio.Commons
 {
     public class FileObject
     {
@@ -14,7 +14,9 @@ namespace uy.edu.ort.obligatorio.ContentServer
         public string Owner { get; set; }
         public string Server { get; set; }
 
+
         public string FullName { get; set; }
+
 
         public override string ToString()
         {

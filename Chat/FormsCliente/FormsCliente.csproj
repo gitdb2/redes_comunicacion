@@ -67,6 +67,12 @@
     <Compile Include="BuscarArchivo.Designer.cs">
       <DependentUpon>BuscarArchivo.cs</DependentUpon>
     </Compile>
+    <Compile Include="DownloadProgress.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DownloadProgress.Designer.cs">
+      <DependentUpon>DownloadProgress.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormUtils.cs" />
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
@@ -100,6 +106,9 @@
     <EmbeddedResource Include="BuscarArchivo.resx">
       <DependentUpon>BuscarArchivo.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="DownloadProgress.resx">
+      <DependentUpon>DownloadProgress.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
     </EmbeddedResource>
@@ -124,9 +133,7 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="log4net.config">
-
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-
     </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

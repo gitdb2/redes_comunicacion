@@ -26,8 +26,9 @@ namespace uy.edu.ort.obligatorio.Commons
         private const int PARTS = 4;
         public static ServerInfo Parse(string item)
         {
-            if(item ==null){
-                throw new  System.ArgumentNullException();
+            if (item == null)
+            {
+                throw new System.ArgumentNullException();
             }
             string[] payload = item.Split(new string[] { DELIMITER }, StringSplitOptions.None);
             if (payload.Length == PARTS)
@@ -36,7 +37,7 @@ namespace uy.edu.ort.obligatorio.Commons
             }else{
                 throw new System.FormatException("el elemento no tiene exactamente " + PARTS + " partes");
             }
-            
+
         }
     }
 }
