@@ -19,6 +19,7 @@ namespace Chat
         FileObject fileToUpload;
 
         private FileUploader.UpdateProgressBarEventHandler updateProgressBarEventHandler;
+        private FileUploader.UploadCancelledEventHandler uploadCancelledEventHandler;
         private ClientHandler.ServerInfoResponseEventHandler serverInfoResponseEventHandler;
 
         public SubirArchivo()
@@ -27,11 +28,24 @@ namespace Chat
             clientHandler = ClientHandler.GetInstance();
             fileUploader = new FileUploader();
             updateProgressBarEventHandler = new FileUploader.UpdateProgressBarEventHandler(UpdateProgressBarEvent);
+            uploadCancelledEventHandler = new FileUploader.UploadCancelledEventHandler(UploadCancelledEvent);
             serverInfoResponseEventHandler = new ClientHandler.ServerInfoResponseEventHandler(ServerInfoEvent);
             fileUploader.UpdateProgressBar += updateProgressBarEventHandler;
+            fileUploader.UploadCancelled += uploadCancelledEventHandler;
             clientHandler.ServerInfoResponse += serverInfoResponseEventHandler;
 
             this.btnCerrar.Text = "Cancelar";
+        }
+
+        private void UploadCancelledEvent(object sender, SimpleEventArgs e)
+        {
+            this.BeginInvoke((Action)(delegate
+            {
+                MessageBox.Show(e.Message, "Descarga de archivo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.lblStatus.Text = "Ocurrio un error";
+                this.progressBar.Value = 0;
+                this.btnCerrar.Text = "Cerrar";
+            }));
         }
 
         private void UpdateProgressBarEvent(object sender, ProgressBarEventArgs e)

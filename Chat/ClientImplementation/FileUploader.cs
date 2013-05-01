@@ -67,44 +67,54 @@ namespace ClientImplementation
 
                 long bytesCount = 0;
 
-                while (!done && !Cancel)
+
+                try
                 {
-                    int countRead = fileStream.Read(buffer, 0, BUFF_SIZE);
-                    bytesCount += countRead;
-                    if (countRead > 0)
+                    while (!done && !Cancel)
                     {
-                        if (countRead < BUFF_SIZE)
+                        int countRead = fileStream.Read(buffer, 0, BUFF_SIZE);
+                        bytesCount += countRead;
+                        if (countRead > 0)
                         {
-                            percentageUploaded = 100;
-                            done = true;
-                        }
-                        uploadNetStream.Write(buffer, 0, countRead);
-                        uploadNetStream.Flush();
-                    }
-                    else
-                    {
-                        //no leyo nada de la entrada (cantidad de bytes justa, en la siguiente lectura)
-                        done = true;
-                    }
-                    if (!Cancel)
-                    {
-                        if (bytesCount == FileSelected.Size && FileSelected.Size == 0)
-                        {
-                            percentageUploaded = 100;
-                            done = true;
+                            if (countRead < BUFF_SIZE)
+                            {
+                                percentageUploaded = 100;
+                                done = true;
+                            }
+                            uploadNetStream.Write(buffer, 0, countRead);
+                            uploadNetStream.Flush();
                         }
                         else
                         {
-                            percentageUploaded = (int)(bytesCount * 100 / FileSelected.Size);
+                            //no leyo nada de la entrada (cantidad de bytes justa, en la siguiente lectura)
+                            done = true;
                         }
+                        if (!Cancel)
+                        {
+                            if (bytesCount == FileSelected.Size && FileSelected.Size == 0)
+                            {
+                                percentageUploaded = 100;
+                                done = true;
+                            }
+                            else
+                            {
+                                percentageUploaded = (int)(bytesCount * 100 / FileSelected.Size);
+                            }
+                        }
+                        NotifyProgress(done ? "Subida completa !" : "Subiendo ...");
                     }
-                    NotifyProgress(done ? "Subida completa !" : "Subiendo ...");
+                }
+                catch (Exception)
+                {
+                    Cancel = true;
+                    done = false;
+                    OnUploadCancelled(new SimpleEventArgs() { Message = "Ocurrio un error durante la subida del archivo, se cancelo el proceso." });
                 }
                 fileStream.Close();
             }
             else
             {
-                throw new Exception("El servidor no esta disponible para descargas");
+                throw new Exception("El servidor no esta disponible para descargas.");
             }
         }
 
@@ -116,11 +126,21 @@ namespace ClientImplementation
             uploadStreamWriter = new StreamWriter(uploadNetStream, Encoding.UTF8);
         }
 
+        public delegate void UploadCancelledEventHandler(object sender, SimpleEventArgs e);
+
+        public event UploadCancelledEventHandler UploadCancelled;
+
+        public void OnUploadCancelled(SimpleEventArgs args)
+        {
+            if (UploadCancelled != null)
+                UploadCancelled(this, args);
+        }
+
         public delegate void UpdateProgressBarEventHandler(object sender, ProgressBarEventArgs e);
 
         public event UpdateProgressBarEventHandler UpdateProgressBar;
 
-        public void OnDownloadProgressChanged(ProgressBarEventArgs args)
+        public void OnUploadProgressChanged(ProgressBarEventArgs args)
         {
             if (UpdateProgressBar != null)
                 UpdateProgressBar(this, args);
@@ -128,7 +148,7 @@ namespace ClientImplementation
 
         private void NotifyProgress(string message)
         {
-            OnDownloadProgressChanged(new ProgressBarEventArgs()
+            OnUploadProgressChanged(new ProgressBarEventArgs()
             {
                 CurrentAction = message,
                 CurrentPercentage = percentageUploaded,

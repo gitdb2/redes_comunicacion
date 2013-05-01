@@ -88,11 +88,10 @@ namespace uy.edu.ort.obligatorio.ContentServer
             return ret;
         }
         
-        public const string PIPE_SEPARATOR = "|";
         private bool CommandDownloadFile(Connection connection, Data dato)
         {
             // login + "|" + owner + "|"+hashfile;
-            string[] payload = dato.Payload.Message.Split(new string[] { PIPE_SEPARATOR }, StringSplitOptions.None);
+            string[] payload = dato.Payload.Message.Split(ParseConstants.SEPARATOR_PIPE);
             string login = payload[0];
             string owner = payload[1];
             string hashfile = payload[2];
@@ -117,7 +116,7 @@ namespace uy.edu.ort.obligatorio.ContentServer
             {
                 long size = fi.Length;
 
-                string message = login + PIPE_SEPARATOR + owner + PIPE_SEPARATOR + hashfile + PIPE_SEPARATOR + fi.Name + PIPE_SEPARATOR + size;
+                string message = login + ParseConstants.SEPARATOR_PIPE + owner + ParseConstants.SEPARATOR_PIPE + hashfile + ParseConstants.SEPARATOR_PIPE + fi.Name + ParseConstants.SEPARATOR_PIPE + size;
 
                 retDato = new Data()
                 {
