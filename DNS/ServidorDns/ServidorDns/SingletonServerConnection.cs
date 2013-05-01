@@ -25,8 +25,8 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             lock (serversMap)
             {
                 connection.Name = serverName;
-             //   connection.Port = serverPort;
-                serversMap.Add(serverName, connection); 
+                //   connection.Port = serverPort;
+                serversMap.Add(serverName, connection);
             }
         }
 
@@ -57,49 +57,44 @@ namespace uy.edu.ort.obligatorio.ServidorDns
 
         //lockea el mapa para que nadie escriba o remueva mientras se busca el mejor server para el usuario
         public string FindBestServerForNewUser()
-        { 
-            string ret= null;
-
-            lock(serversMap){
-               
+        {
+            string ret = null;
+            lock (serversMap)
+            {
                 if (serversMap.Count != 0)
                 {
-
                     int lower = int.MaxValue;
-                    foreach (var item in  serversMap.Values)
-	                {
+                    foreach (var item in serversMap.Values)
+                    {
                         if (lower > item.UserCount)
                         {
                             ret = item.Name;
                             lower = item.UserCount;
                         }
- 	                }
+                    }
                     return ret;
- 
-                }else{
+                }
+                else
+                {
                     throw new Exception("No hay servidores ONLINE");
                 }
-               
             }
-
         }
 
-        public  int IncUserCount(string serverName)
+        public int IncUserCount(string serverName)
         {
             int ret = -1;
-             lock(serversMap){
-                 if (serversMap.ContainsKey(serverName))
-                 {
-                     serversMap[serverName].UserCount++;
-                     ret = serversMap[serverName].UserCount;
-                 }
-                 else throw new Exception("El server no se encuntra ONLINE");
-             }
-             return ret;
-           
+            lock (serversMap)
+            {
+                if (serversMap.ContainsKey(serverName))
+                {
+                    serversMap[serverName].UserCount++;
+                    ret = serversMap[serverName].UserCount;
+                }
+                else throw new Exception("El server no se encuentra ONLINE");
+            }
+            return ret;
         }
-
-
 
         public List<ServerInfo> GetServersWithUsers()
         {
@@ -108,12 +103,14 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             {
                 foreach (var item in serversMap.Values)
                 {
-                    if(item.UserCount>0){
-                        ret.Add(new ServerInfo() { Ip = item.Ip, Name = item.Name, Port = item.Port });
+                    if (item.UserCount > 0)
+                    {
+                        ret.Add(new ServerInfo() { Ip = item.Ip, Name = item.Name, Port = item.Port, TransfersPort = item.TransferPort });
                     }
                 }
             }
             return ret;
         }
+
     }
 }

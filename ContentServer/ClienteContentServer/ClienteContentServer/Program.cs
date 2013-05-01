@@ -63,7 +63,7 @@ namespace ClienteContentServer
         void SetupConn()  // Setup connection and login
         {
             #region PUERTO_2001
-            if(false)          {
+            if(true)          {
                     client = new TcpClient(Server, Port);  // Connect to the server.
                     netStream = client.GetStream();
 
@@ -71,11 +71,13 @@ namespace ClienteContentServer
                     bw = new StreamWriter(netStream, Encoding.UTF8);
                     //--------------------------------------------------------------
 
-                    string login = "rodrigo";
-                    string pattern = "bajar*";
+                    string login = "mauricio";
+                    string pattern = "vs.iso";
                     string timestamp = "" + DateTime.Now;
 
                     String hashQuery = StringUtils.CalculateMD5Hash(String.Format("{0}|{1}|{2}", login, pattern, timestamp));
+
+                    
 
                     string dataToSend = login + "|" + hashQuery + "|" + pattern;
 
@@ -99,6 +101,15 @@ namespace ClienteContentServer
 
                     Console.WriteLine("line " + cont++ + "   --->" + ConversionUtil.GetString(data2.GetBytes()[0]));
 
+                    //png
+                    //"7aecaa5f325a4fa393f586f638197ac3"
+
+                    //git.exe
+                    //"eefc05a7ff11a84d350d561a63014a47"
+
+                    //iso
+                    //"e1e8c17baf81af6722feb8987269f22e"
+
                     Console.WriteLine("termino");
 
                     CloseConn();
@@ -111,7 +122,7 @@ namespace ClienteContentServer
             //--------------------------------------------------------------
 
             #region puerto 20001
-             if (true)
+             if (false)
              {
                 client2 = new TcpClient("localhost", 20001);  // Connect to the server.
                 netStream2 = client2.GetStream();

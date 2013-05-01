@@ -35,13 +35,15 @@
             this.btnDescargar = new System.Windows.Forms.Button();
             this.txtBuscarArchivo = new System.Windows.Forms.TextBox();
             this.btnBuscar = new System.Windows.Forms.Button();
+            this.columnaDueno = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // listaArchivos
             // 
             this.listaArchivos.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnNombreArchivo,
-            this.columnaServidor});
+            this.columnaServidor,
+            this.columnaDueno});
             this.listaArchivos.FullRowSelect = true;
             this.listaArchivos.Location = new System.Drawing.Point(12, 42);
             this.listaArchivos.MultiSelect = false;
@@ -55,13 +57,13 @@
             // columnNombreArchivo
             // 
             this.columnNombreArchivo.Text = "Nombre Archivo";
-            this.columnNombreArchivo.Width = 145;
+            this.columnNombreArchivo.Width = 107;
             // 
             // columnaServidor
             // 
             this.columnaServidor.Text = "Servidor";
             this.columnaServidor.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.columnaServidor.Width = 136;
+            this.columnaServidor.Width = 117;
             // 
             // btnCerrar
             // 
@@ -100,6 +102,11 @@
             this.btnBuscar.UseVisualStyleBackColor = true;
             this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
+            // columnaDueno
+            // 
+            this.columnaDueno.Text = "Dueno";
+            this.columnaDueno.Width = 111;
+            // 
             // BuscarArchivo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -129,5 +136,6 @@
         private System.Windows.Forms.Button btnDescargar;
         private System.Windows.Forms.TextBox txtBuscarArchivo;
         private System.Windows.Forms.Button btnBuscar;
+        private System.Windows.Forms.ColumnHeader columnaDueno;
     }
 }

@@ -49,6 +49,8 @@
     <Compile Include="ClientHandler.cs" />
     <Compile Include="CommandHandler.cs" />
     <Compile Include="ContactListEventArgs.cs" />
+    <Compile Include="FileDownloader.cs" />
+    <Compile Include="ProgressBarEventArgs.cs" />
     <Compile Include="SearchFilesEventArgs.cs" />
     <Compile Include="LoginErrorEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

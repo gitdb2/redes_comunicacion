@@ -41,7 +41,7 @@ namespace uy.edu.ort.obligatorio.ContentServer
 
         public bool running = true;
         public TcpListener server;
-      
+
 
         public bool DEBUG = bool.Parse(Settings.GetInstance().GetProperty("debug", "false"));
         public Program()
@@ -68,10 +68,10 @@ namespace uy.edu.ort.obligatorio.ContentServer
             }
             Console.WriteLine("[{0}] Starting server...", DateTime.Now);
 
-            string listenAddressStr = Settings.GetInstance().GetProperty("listen.ip","ANY");
+            string listenAddressStr = Settings.GetInstance().GetProperty("listen.ip", "ANY");
 
             IPAddress ip = "ANY".Equals(listenAddressStr) ? IPAddress.Any : IPAddress.Parse(listenAddressStr);
-            int port =  int.Parse(Settings.GetInstance().GetProperty("server.port","2001"));
+            int port = int.Parse(Settings.GetInstance().GetProperty("server.port", "2001"));
             int portTransfers = int.Parse(Settings.GetInstance().GetProperty("server.transfers.port", "20001"));
 
 
@@ -84,7 +84,7 @@ namespace uy.edu.ort.obligatorio.ContentServer
             Console.WriteLine("[{0}] Server is running properly!", DateTime.Now);
             log.Info("Server is running properly!");
             Listen(port);
-            
+
         }
 
 
@@ -97,11 +97,11 @@ namespace uy.edu.ort.obligatorio.ContentServer
                 log.InfoFormat("nueva conexion de control(:{2}) desde {0}:{1}", ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address, ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Port, port);
 
                 Connection client = new Connection(tcpClient, new ReceiveEventHandler());     // Handle in another thread.
-                
+
             }
         }
 
-       
+
     }
 
     public class TransferServer
@@ -119,14 +119,14 @@ namespace uy.edu.ort.obligatorio.ContentServer
             (new Thread(new ThreadStart(ListenTransfers))).Start();
         }
 
-     
+
         void ListenTransfers()  // Listen to incoming connections.
         {
 
             serverTransfers = new TcpListener(ip, port);
             serverTransfers.Start();
 
-           
+
             while (running)
             {
                 log.InfoFormat("[ListenTransfers] Waiting for new connection");
@@ -143,9 +143,9 @@ namespace uy.edu.ort.obligatorio.ContentServer
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public string DNSServer { get { return Settings.GetInstance().GetProperty("dns.ip", "127.0.0.1"); } }// return "192.168.0.201"; } }
-        public int DNSPort { get { return int.Parse(Settings.GetInstance().GetProperty("dns.port","2000")); } }
-      
-     
+        public int DNSPort { get { return int.Parse(Settings.GetInstance().GetProperty("dns.port", "2000")); } }
+
+
 
         public void SetupConn()  // Setup connection and login
         {
@@ -159,13 +159,14 @@ namespace uy.edu.ort.obligatorio.ContentServer
             */
 
             Connection client = new Connection("DNS", new TcpClient(DNSServer, DNSPort), new ReceiveEventHandler());
-           
 
-            string payload =            Settings.GetInstance().GetProperty("server.name","rodrigo-nb")
-                                + ":" + Settings.GetInstance().GetProperty("server.ip","127.0.0.1")
+
+            string payload = Settings.GetInstance().GetProperty("server.name", "rodrigo-nb")
+                                + ":" + Settings.GetInstance().GetProperty("server.ip", "127.0.0.1")
                                 + ":" + Settings.GetInstance().GetProperty("server.port", "2001")
+                                + ":" + Settings.GetInstance().GetProperty("server.transfers.port", "20001")
                                 + ":" + UsersContactsPersistenceHandler.GetInstance().Count;
-                                
+
             Data data = new Data()
             {
                 Command = Command.REQ,
@@ -182,12 +183,12 @@ namespace uy.edu.ort.obligatorio.ContentServer
             }
 
             log.Info("End Register Server");
-        
+
         }
-       
-   
-      
+
+
+
     }
-  
-    
+
+
 }
