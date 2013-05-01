@@ -194,7 +194,7 @@ namespace uy.edu.ort.obligatorio.ContentServer
             log.InfoFormat("---->LISTENING SERVER: {0}:{1} ---->EndConnection", function, port);
             running = false;
             server.Stop(); //deja de aceptar conexiones
-            Console.WriteLine("VER COMO HACER EL KILL ALL CONNECTIONS");
+        ///    Console.WriteLine("VER COMO HACER EL KILL ALL CONNECTIONS");
             CloseAllConnectionsToThisServer();
         }
 
