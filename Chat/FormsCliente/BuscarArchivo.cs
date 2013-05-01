@@ -6,20 +6,16 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Dominio;
 using ClientImplementation;
 using uy.edu.ort.obligatorio.Commons;
-
 using FormsCliente;
 using System.Threading;
-
 
 namespace Chat
 {
     public enum SearchStatus { NEW, WAITING_SERVERS, ALL_SERVES, WAITING_RESULTS, ALL_RESULTS, NO_SERVERS, NO_RESULTS }
     public partial class BuscarArchivo : Form
     {
-
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private Dictionary<string, ServerInfo> serversToSearch = new Dictionary<string, ServerInfo>();
@@ -32,7 +28,6 @@ namespace Chat
 
         private string HashQuery { get; set; }
         private SearchStatus searchStatus;
-
 
         private string pattern = "";
 
@@ -47,7 +42,6 @@ namespace Chat
             resultsByServer.Clear();
             serversToProccess = 0;
             listaArchivos.Items.Clear();
-
         }
 
         private void RefreshScreen()
@@ -69,21 +63,15 @@ namespace Chat
             serverListReceivedDelegate = new ClientHandler.ServerListReceivedDelegate(EventServerListReceivedResponse);
             ClientHandler.GetInstance().ServerListReceivedEvent += serverListReceivedDelegate;
 
-
             searchFilesReceivedDelegate = new ClientHandler.SearchFilesReceivedDelegate(OnSearchFilesResultReceived);
             ClientHandler.GetInstance().SearchFilesReceivedEvent += searchFilesReceivedDelegate;
-
-
         }
-
 
         private void OnSearchFilesResultReceived(object sender, SearchFilesEventArgs arg)
         {
             this.BeginInvoke((Action)(delegate
             {
-
                 log.DebugFormat("OnSearchFilesResultReceived arg: {0}", arg.Response);
-
 
                 MultiplePayloadFrameDecoded payload = arg.Response;
                 //login + ARROBA_SEPARATOR + queryHash + ARROBA_SEPARATOR + Settings.GetInstance().GetProperty("server.name", "DEFAULT_SERVER");
@@ -165,7 +153,7 @@ namespace Chat
                                 if (serversToProccess < 1)
                                 {
                                     log.DebugFormat("Estan todos los resultados de busquedas");
-                                    ProcesarResultados();
+                                    ProcesarResults();
                                 }
                             }
                            
@@ -186,42 +174,27 @@ namespace Chat
 
         }
 
-        private void ProcesarResultados()
+        private void ProcesarResults()
         {
+            bool resultsWereFound = searchResult.Count>0;
             listaArchivos.Items.Clear();
             foreach (var file in searchResult)
             {
-                // List<FileObject> lista = resultsByServer[item];
-
-
-              
-               
                     ListViewItem lvi = new ListViewItem(file.Name);
                     lvi.Tag = file;
-                    lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, file.Server));//, Color.White, colorEstado, lvi.Font));
+                    lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, file.Server));
                     lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, file.Owner));
                     listaArchivos.Items.Add(lvi);
-
-             
-
-                //reseteo la lista de contactos temporal
-
             }
             FormUtils.AjustarTamanoColumnas(listaArchivos);
             btnBuscar.Enabled = true;
-
-
-
+            btnDescargar.Enabled = resultsWereFound;
         }
-
 
         private void EventServerListReceivedResponse(object sender, GetServersEventArgs arg)
         {
             this.BeginInvoke((Action)(delegate
             {
-
-
-
                 MultiplePayloadFrameDecoded payload = arg.Response;
 
                 string[] destination = payload.Destination.Split('@');
@@ -302,101 +275,62 @@ namespace Chat
             }
         }
 
-
-
         private void btnBuscar_Click(object sender, EventArgs e)
         {
-
-
             string pattern = txtBuscarArchivo.Text;
             if (pattern != null && !pattern.Trim().Equals(""))
             {
                 btnBuscar.Enabled = false;
                 ClearResults();
                 this.pattern = pattern;
-                ClientHandler.GetInstance().REQGetServerList(GenerateHashQuery(pattern));// .FindContact(Login, pattern);
-
+                ClientHandler.GetInstance().REQGetServerList(GenerateHashQuery(pattern));
             }
-
-            //if (FormUtils.TxtBoxTieneDatos(txtBuscarArchivo))
-            //{
-            //    string patron = txtBuscarArchivo.Text;
-            //    listaArchivos.Items.Clear();
-            //    Controlador controlador = new Controlador();
-            //    List<Archivo> archivosEncontrados = controlador.BuscarArchivos(patron);
-            //    foreach (Archivo archivo in archivosEncontrados)
-            //    {
-            //        ListViewItem lvi = new ListViewItem(archivo.Nombre);
-            //        lvi.Tag = archivo;
-            //        lvi.SubItems.Add(archivo.Servidor);
-            //        listaArchivos.Items.Add(lvi);
-            //    }
-            //    FormUtils.AjustarTamanoColumnas(listaArchivos);
-            //}
         }
 
         private void btnCerrar_Click(object sender, EventArgs e)
         {
             this.Dispose();
+            ClientHandler.GetInstance().ServerListReceivedEvent -= serverListReceivedDelegate;
         }
 
         private void btnDescargar_Click(object sender, EventArgs e)
         {
-            //FileObject fileSelected = (FileObject)listaArchivos.SelectedItems[0].Tag;
-            //lo voy a tomar de un diccionario
-            //ServerInfo serverInfo = new ServerInfo();
-
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Title = "Descargar Archivo";
-            sfd.FileName = "imagen.jpg"; //fileSelected.Name;
-
-            if (sfd.ShowDialog() == DialogResult.OK)
+            if (FormUtils.HayFilaElegida(listaArchivos))
             {
-                string destino = @"c:\shared\mauricio\res.iso";
-                FileObject fo = new FileObject()
+                FileObject fileSelected = (FileObject)listaArchivos.SelectedItems[0].Tag;
+                if (fileSelected != null)
                 {
-                    Name = ClientHandler.GetInstance().Login,
-                    // imagen.png Hash = "f4f1a7a2a9f6284dd0bfa7558fa134da",
-                    // exe Hash = "eefc05a7ff11a84d350d561a63014a47",
-                    Hash = "e1e8c17baf81af6722feb8987269f22e",
-                    Owner = "mauricio",
-                    Server = "server1"
-                };
+                    ServerInfo serverInfo = serversToSearch[fileSelected.Server];
+                    SaveFileDialog sfd = new SaveFileDialog();
+                    sfd.Title = "Descargar Archivo";
+                    sfd.FileName = fileSelected.Name;
+                    sfd.OverwritePrompt = false;
 
-                ServerInfo si = new ServerInfo() { Ip = "127.0.0.1", Name = "server1", TransfersPort = 20001 };
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        FileDownloader fd = new FileDownloader()
+                        {
+                            Destination = sfd.FileName,
+                            FileSelected = fileSelected,
+                            ServerInfo = serverInfo
+                        };
 
-                FileDownloader fd = new FileDownloader()
-                {
-                    Destination = destino,
-                    FileSelected = fo,
-                    ServerInfo = si
-                };
+                        //muestro la ventana del progress bar
+                        DownloadProgress dp = new DownloadProgress(fd);
+                        dp.Show();
 
-                DownloadProgress dp = new DownloadProgress(fd);
-                dp.Show();
-
-                //esto tendria que ser en una nueva ventana que se updatee con delegados
-                fd.DownloadThread();
-
-                //FileDownloader fd = new FileDownloader() { 
-                //    Destination = sfd.FileName
-                //    , FileSelected = fileSelected
-                //    , ServerInfo = serverInfo
-                //};
-
+                        //inicio la descarga en otro sred
+                        fd.DownloadThread();
+                    }
+                }
             }
         }
-
-
-
 
         private void BuscarArchivo_FormClosing(object sender, FormClosingEventArgs e)
         {
             ClientHandler.GetInstance().ServerListReceivedEvent -= serverListReceivedDelegate;
             ClientHandler.GetInstance().SearchFilesReceivedEvent -= searchFilesReceivedDelegate;
-            
         }
-
 
     }
 }
