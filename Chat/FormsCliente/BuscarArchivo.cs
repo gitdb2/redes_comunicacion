@@ -21,7 +21,7 @@ namespace Chat
 
         private Dictionary<string, ServerInfo> serversToSearch = new Dictionary<string, ServerInfo>();
         private List<FileObject> searchResult = new List<FileObject>();
-
+        private int serversToProccess = 0;
 
         private Dictionary<string, List<FileObject>> resultsByServer = new Dictionary<string, List<FileObject>>();
 
@@ -40,6 +40,9 @@ namespace Chat
             serversToSearch.Clear();
             searchResult.Clear();
             resultsByServer.Clear();
+            serversToProccess = 0;
+            listaArchivos.Items.Clear();
+            
         }
 
         private void RefreshScreen()
@@ -91,35 +94,45 @@ namespace Chat
                         log.Error(payload.Payload);
                         ClearResults();
                         MessageBox.Show(payload.Payload);
-                        //searchStatus = SearchStatus.NO_SERVERS;
-                        //ProccessStatus();
+                    
                     }
                     else
                     {
 
                         string[] infoArr = payload.Payload.Split('|');
+                        lock (resultsByServer)
+                        {
+                            if (resultsByServer[serverName] == null)
+                            {
+                                resultsByServer[serverName] = new List<FileObject>();
+                            }
+
+                        }
                         foreach (var fileStr in infoArr)
                         {
-                            FileObject file = FileObject.Parse(fileStr);
-                            lock (resultsByServer)
+                            if (fileStr.Length > 0)//si tiene resultados
                             {
-                                serversToSearch.Add(serverInfo.Name, serverInfo);
+                                FileObject file = FileObject.FromNetworkString(fileStr);
+                                file.Server = serverName;
+
+                                lock (resultsByServer[serverName])
+                                {
+                                    resultsByServer[serverName].Add(file);
+                                }
                             }
                         }
 
                         if (payload.IsLastpart())
                         {
-                            lock (resultsByServer)
+                            lock (this)
                             {
-                              
-                                    resultsByServer.Add(serverName, new List<FileObject>());
-                                //}
-                                //foreach (var serverName in serversToSearch.Keys)
-                                //{
-                                //    ClientHandler.GetInstance().REQSearchFiles(serversToSearch[serverName], this.pattern, HashQuery);
-                                //}
+                                serversToProccess--;
+                                if (serversToProccess < 1)
+                                {
+                                    log.DebugFormat("Estan todos los resultados de busquedas");
+                                    ProcesarResultados();
+                                }
                             }
-
                         }
                         else
                         {
@@ -136,6 +149,35 @@ namespace Chat
 
         }
 
+        private void ProcesarResultados()
+        {
+         
+            foreach (var item in resultsByServer.Keys)
+	        {
+                List<FileObject> lista = resultsByServer[item];
+
+
+                listaArchivos.Items.Clear();
+                foreach (var file in lista)
+                {
+                    ListViewItem lvi = new ListViewItem(file.Name);
+                    lvi.Tag = file;
+                    lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, file.Server));//, Color.White, colorEstado, lvi.Font));
+                    lvi.SubItems.Add(new ListViewItem.ListViewSubItem(lvi, file.Owner));
+                    listaArchivos.Items.Add(lvi);
+                  
+                }
+               
+
+                //reseteo la lista de contactos temporal
+               
+	        }
+            FormUtils.AjustarTamanoColumnas(listaArchivos);
+            btnBuscar.Enabled = true;
+
+          
+
+        }
 
 
         private void EventServerListReceivedResponse(object sender, GetServersEventArgs arg)
@@ -178,8 +220,9 @@ namespace Chat
                             lock (serversToSearch)
                             {
                                 foreach (var serverName in serversToSearch.Keys){
-                                    resultsByServer.Add(serverName, new List<FileObject>());
+                                    resultsByServer.Add(serverName, null);
                                 }
+                                serversToProccess = resultsByServer.Count;
                                 foreach (var serverName in serversToSearch.Keys)
                                 {
                                     ClientHandler.GetInstance().REQSearchFiles(serversToSearch[serverName], this.pattern, HashQuery);
@@ -198,27 +241,7 @@ namespace Chat
                     log.DebugFormat("Descarto un payload de busqueda de servidores: {0}", payload.ToString());
                 }
 
-                /*
-                                //agrego los contactos a la lista acumulada de contactos
-                                e.ContactList.ToList().ForEach(x => tmpContactList.Add(x.Key, x.Value));
-
-                                //cuando me mandaron la ultima porcion de la lista de contactos refresco el form
-                                if (e.IsLastPart)
-                                {
-                                    listaContactos.Items.Clear();
-                                    foreach (KeyValuePair<string, bool> contacto in tmpContactList)
-                                    {
-                                        ListViewItem lvi = new ListViewItem(contacto.Key);
-                                        lvi.Tag = contacto;
-                                        SetearEstadoContacto(lvi, contacto);
-                                        listaContactos.Items.Add(lvi);
-                                    }
-                                    FormUtils.AjustarTamanoColumnas(listaContactos);
-
-                                    //reseteo la lista de contactos temporal
-                                    tmpContactList.Clear();
-                                }
-                 * */
+              
             }));
         }
 
@@ -253,9 +276,10 @@ namespace Chat
             if (pattern != null && !pattern.Trim().Equals(""))
             {
                 btnBuscar.Enabled = false;
+                ClearResults();
                 this.pattern = pattern;
                 ClientHandler.GetInstance().REQGetServerList(GenerateHashQuery(pattern));// .FindContact(Login, pattern);
-                searchStatus = SearchStatus.WAITING_SERVERS;
+              
             }
 
             //if (FormUtils.TxtBoxTieneDatos(txtBuscarArchivo))
