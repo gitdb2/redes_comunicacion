@@ -17,19 +17,26 @@
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v10.0\ArchitectureTools\Microsoft.VisualStudio.TeamArchitect.ModelingProject.targets" />
   <ItemGroup>
-    <Content Include="UMLComponentDiagram1.componentdiagram">
+    <Content Include="Compoenentes.componentdiagram">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="UMLComponentDiagram1.componentdiagram.layout">
+    <Content Include="Compoenentes.componentdiagram.layout">
       <SubType>Content</SubType>
-      <DependentUpon>UMLComponentDiagram1.componentdiagram</DependentUpon>
+      <DependentUpon>Compoenentes.componentdiagram</DependentUpon>
     </Content>
-    <Content Include="UMLSequenceDiagram1.sequencediagram">
+    <Content Include="BuscarArchivos.sequencediagram">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="UMLSequenceDiagram1.sequencediagram.layout">
+    <Content Include="BuscarArchivos.sequencediagram.layout">
       <SubType>Content</SubType>
-      <DependentUpon>UMLSequenceDiagram1.sequencediagram</DependentUpon>
+      <DependentUpon>BuscarArchivos.sequencediagram</DependentUpon>
+    </Content>
+    <Content Include="DescargaArchivo.sequencediagram">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="DescargaArchivo.sequencediagram.layout">
+      <SubType>Content</SubType>
+      <DependentUpon>DescargaArchivo.sequencediagram</DependentUpon>
     </Content>
     <Folder Include="ModelDefinition\" />
     <Content Include="ModelDefinition\ModelingProject1.uml">
@@ -40,10 +47,6 @@
     <ProjectReference Include="..\..\Obligatorio\Chat\ClientImplementation\ClientImplementation.csproj">
       <Name>ClientImplementation</Name>
       <Project>{2c2c0e33-cf9f-4415-993f-7b357fb46eb8}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Obligatorio\Chat\FormsCliente\FormsCliente.csproj">
-      <Name>FormsCliente</Name>
-      <Project>{f09407ec-2311-4132-8bd7-45dc42062372}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\Obligatorio\DNS\ServidorDns\Commons\Commons.csproj">
       <Name>Commons</Name>
