@@ -23,6 +23,7 @@ namespace Chat
             InitializeComponent();
             ClientHandler.GetInstance().LoginOK += new EventHandler(EventLoginOK);
             ClientHandler.GetInstance().LoginFailed += new ClientHandler.ChatErrorEventHandler(EventLoginFailed);
+            txtBoxLogin.Text = Settings.GetInstance().GetProperty("default.user", txtBoxLogin.Text);
         }
 
         private void btnOK_Click(object sender, EventArgs e)
