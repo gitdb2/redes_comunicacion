@@ -5,6 +5,7 @@ using System.Text;
 using Comunicacion;
 using uy.edu.ort.obligatorio.Commons;
 using System.IO;
+using System.Threading;
 
 
 namespace uy.edu.ort.obligatorio.ContentServer
@@ -97,9 +98,10 @@ namespace uy.edu.ort.obligatorio.ContentServer
             string hashfile = payload[2];
 
             FileInfo fi = FileOperationsSingleton.GetInstance().GetFile(hashfile, owner);
-            Data retDato;
+         //   Data retDato;
             if (fi == null)
             {
+                /*
                 retDato = new Data()
                 {
                     Command = Command.RES,
@@ -111,45 +113,53 @@ namespace uy.edu.ort.obligatorio.ContentServer
                     Console.WriteLine("Envio :{0}", ConversionUtil.GetString(item));
                     connection.WriteToStream(item);
                 }
+                 * */
+                return false;
             }
             else
             {
                 long size = fi.Length;
 
-                string message = login + ParseConstants.SEPARATOR_PIPE + owner + ParseConstants.SEPARATOR_PIPE + hashfile + ParseConstants.SEPARATOR_PIPE + fi.Name + ParseConstants.SEPARATOR_PIPE + size;
-
-                retDato = new Data()
-                {
-                    Command = Command.RES,
-                    OpCode = OpCodeConstants.RES_DOWNLOAD_FILE,
-                    Payload = new Payload() { Message = message }
-                };
-                foreach (var item in retDato.GetBytes())
-                {
-                    Console.WriteLine("Envio :{0}", ConversionUtil.GetString(item));
-                    connection.WriteToStream(item);
-                }
-
+                log.Info("Espero antes de mandar el binario");
+              //  Thread.Sleep(2000);
                 FileStream fileStream = fi.OpenRead();
-                const int BUFF_SIZE = 1024;
+                const int BUFF_SIZE = 10000;
                 byte[] buffer = new byte[BUFF_SIZE];
-                
+                long sentData = 0;
                 bool done = false;
-                while (!done)
-	            {
-                     int countRead = fileStream.Read(buffer,0, BUFF_SIZE);
-                     if(countRead > 0){
-                         if(countRead < BUFF_SIZE){
-                             done = true;
-                         }
-                         connection.WriteToNetworkStream(buffer, 0, countRead);
-                     }else{//no leyo nada de la entrada (cantidad de bytes justa, en la siguiente lectura)
-                         done = true;
-                     }
-	            }
+                try
+                {
+                    while (!done)
+                    {
+                        int countRead = fileStream.Read(buffer, 0, BUFF_SIZE);
+                     //   Thread.Sleep(20);
+                        log.DebugFormat("countRead={0}", countRead);
+                        sentData += countRead;
+                        if (countRead > 0)
+                        {
+                            if (sentData == size)
+                            {
+                                done = true;
+                            }
+                            connection.WriteToNetworkStream(buffer, 0, countRead);
+                            log.DebugFormat("Enviando {2} - {0}: {3}  - {1}", countRead, size, fi.FullName, sentData);
+                         //   Thread.Sleep(2000);
+                        }
+                        else
+                        {//no leyo nada de la entrada (cantidad de bytes justa, en la siguiente lectura)
+                            done = true;
+                        }
+                    }
+                    connection.FlushNetworkStream();
+                }
+                catch (Exception e)
+                {
+                    log.Error("descarga", e);
+                }
                 fileStream.Close();
+                log.DebugFormat("Archivo puesto todo en el stream , y crerrado el file local");
             }
-            return false; //terminar la conexion
+            return true; //terminar la conexion
         }
 
         private bool CommandClientUploadsFile(Connection clientConnection, Data dato)
@@ -158,6 +168,8 @@ namespace uy.edu.ort.obligatorio.ContentServer
             string owner = payloadSplitted[0];
             string fileName = payloadSplitted[1];
             long fileSize = long.Parse(payloadSplitted[2]);
+
+           
 
             SendReadyToReceiveFile(clientConnection);
             string fullFilePath = GetFileFullPath(fileName, owner);
@@ -174,13 +186,16 @@ namespace uy.edu.ort.obligatorio.ContentServer
                 {
                     int countRead = clientConnection.ReadFromNetworkStream(ref buffer, 0, BUFF_SIZE);
                     bytescount += countRead;
+                   
+                     
                     if (countRead > 0)
                     {
-                        if (countRead < BUFF_SIZE)
+                        if (bytescount >= fileSize)
                         {
                             done = true;
                         }
                         writer.Write(buffer, 0, countRead);
+                        log.DebugFormat("Write to {2} - {0}: {3}  - {1}", countRead, fileSize, fileName, bytescount);
                     }
                     else
                     {
@@ -197,6 +212,7 @@ namespace uy.edu.ort.obligatorio.ContentServer
             {
                 writer.Close();
             }
+            log.DebugFormat("Done file: {0} de {1}", bytescount, fileSize);
             return done;
         }
 
