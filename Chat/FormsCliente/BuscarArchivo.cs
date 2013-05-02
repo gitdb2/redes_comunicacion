@@ -92,7 +92,7 @@ namespace Chat
                         log.Error(payload.Payload);
                         ClearResults();
                         MessageBox.Show(payload.Payload);
-                    
+                        btnBuscar.Enabled = true;
                     }
                     else
                     {
@@ -107,21 +107,6 @@ namespace Chat
                         }
 
                         resultsByServer[serverName][payload.PartsCurrent-1] = payload;
-                       // string[] infoArr = payload.Payload.Split('|');
-                        //foreach (var fileStr in infoArr)
-                        //{
-                        //    if (fileStr.Length > 0)//si tiene resultados
-                        //    {
-                        //        FileObject file = FileObject.FromNetworkString(fileStr);
-                        //        file.Server = serverName;
-
-                        //        lock (resultsByServer[serverName])
-                        //        {
-                        //            resultsByServer[serverName].Add(file);
-                        //        }
-                        //    }
-                        //}
-
                         if (payload.IsLastpart())
                         {
                             lock (this)
@@ -136,7 +121,6 @@ namespace Chat
                                     filesSB.Append(item.Payload);
                                 }
                             }
-                 //           log.DebugFormat("-->la trama entea: {0}", filesSB.ToString());
                             string[] infoArr = filesSB.ToString().Split('|');
                             foreach (var fileStr in infoArr)
                             {
@@ -287,10 +271,17 @@ namespace Chat
             string pattern = txtBuscarArchivo.Text;
             if (pattern != null && !pattern.Trim().Equals(""))
             {
-                btnBuscar.Enabled = false;
-                ClearResults();
-                this.pattern = pattern;
-                ClientHandler.GetInstance().REQGetServerList(GenerateHashQuery(pattern));
+                try
+                {
+                    btnBuscar.Enabled = false;
+                    ClearResults();
+                    this.pattern = pattern;
+                    ClientHandler.GetInstance().REQGetServerList(GenerateHashQuery(pattern));
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
 

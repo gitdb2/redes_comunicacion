@@ -14,13 +14,15 @@ namespace FormsCliente
     {
         private FileDownloader.UpdateProgressBarEventHandler updateProgressBarEventHandler;
         private FileDownloader fileDownloader;
-
+        private FileDownloader.DonwloadCancelledEventHandler donwloadCancelledEventHandler;
         public DownloadProgress(FileDownloader fd)
         {
             InitializeComponent();
             this.fileDownloader = fd;
             updateProgressBarEventHandler = new FileDownloader.UpdateProgressBarEventHandler(UpdateProgressBarEvent);
             fileDownloader.UpdateProgressBar += updateProgressBarEventHandler;
+            donwloadCancelledEventHandler = new FileDownloader.DonwloadCancelledEventHandler(DownloadCancelledEvent);
+            fileDownloader.DownloadCancelled += donwloadCancelledEventHandler;
         }
 
         private void UpdateProgressBarEvent(object sender, ProgressBarEventArgs e)
@@ -41,15 +43,30 @@ namespace FormsCliente
             }));
         }
 
+        private void DownloadCancelledEvent(object sender, SimpleEventArgs e)
+        {
+            this.BeginInvoke((Action)(delegate
+            {
+                MessageBox.Show(e.Message, "Descarga de archivo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.lblStatus.Text = "Ocurrio un error";
+                this.progressBar.Value = 0;
+                this.btnCancelar.Text = "Cerrar";
+            }));
+        }
+
+
         private void DownloadProgress_FormClosing(object sender, FormClosingEventArgs e)
         {
             fileDownloader.UpdateProgressBar -= updateProgressBarEventHandler;
+            fileDownloader.DownloadCancelled -= donwloadCancelledEventHandler;
+        
             fileDownloader.Cancel = true;
         }
 
         private void btnCerrar_Click(object sender, EventArgs e)
         {
             fileDownloader.UpdateProgressBar -= updateProgressBarEventHandler;
+            fileDownloader.DownloadCancelled -= donwloadCancelledEventHandler;
             fileDownloader.Cancel = true;
             this.Dispose();
         }

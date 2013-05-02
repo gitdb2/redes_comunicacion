@@ -409,15 +409,27 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             {
                 SingletonClientConnection scc = SingletonClientConnection.GetInstance();
                 Connection oldConnection = scc.GetClient(login);
-                if (oldConnection != null)
+                if (oldConnection == null)
                 {
-                    scc.RemoveClient(login);
-                    oldConnection.CloseConn();
+
+                    if (SingletonServerConnection.GetInstance().GetServer(UsersPersistenceHandler.GetInstance().GetServerName(login)) != null)
+                    {
+                        scc.AddClient(login, clientConnection);
+                        SendMessage(clientConnection, Command.RES, OpCodeConstants.REQ_LOGIN, new Payload("SUCCESS"));
+                    }
+                    else
+                    {
+                        SendMessage(clientConnection, Command.RES, OpCodeConstants.REQ_LOGIN, new Payload("ERROR Servidor Offline"));
+                        clientConnection.CloseConn();
+                        ret = false;
+                    }
                 }
-
-                scc.AddClient(login, clientConnection);
-
-                SendMessage(clientConnection, Command.RES, OpCodeConstants.REQ_LOGIN, new Payload("SUCCESS"));
+                else
+                {
+                    SendMessage(clientConnection, Command.RES, OpCodeConstants.REQ_LOGIN, new Payload("ERROR Login en uso"));
+                    clientConnection.CloseConn();
+                    ret = false;
+                }
             }
             else
             {

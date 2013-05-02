@@ -81,6 +81,7 @@ namespace Chat
             fileUploader.Cancel = true;
             fileUploader.UpdateProgressBar -= updateProgressBarEventHandler;
             clientHandler.ServerInfoResponse -= serverInfoResponseEventHandler;
+            fileUploader.UploadCancelled -= uploadCancelledEventHandler;
             this.Dispose();
         }
 
@@ -121,6 +122,7 @@ namespace Chat
             fileUploader.Cancel = true;
             fileUploader.UpdateProgressBar -= updateProgressBarEventHandler;
             clientHandler.ServerInfoResponse -= serverInfoResponseEventHandler;
+            fileUploader.UploadCancelled -= uploadCancelledEventHandler;
             this.Dispose();
         }
 

@@ -12,6 +12,9 @@ namespace ClientImplementation
 {
     public class FileUploader
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
+
         public string Destination { get; set; }
         public FileObject FileSelected { get; set; }
         public ServerInfo ServerInfo { get; set; }
@@ -187,9 +190,9 @@ namespace ClientImplementation
                 uploadNetStream.Close();
                 uploadTcpClient.Close();
             }
-            catch (Exception)
-            { 
-                //loguear
+            catch (Exception e)
+            {
+                log.Error("closeConnection", e);
             }
         }
 

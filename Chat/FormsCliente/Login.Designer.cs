@@ -37,17 +37,19 @@
             // lblUsuario
             // 
             this.lblUsuario.AutoSize = true;
-            this.lblUsuario.Location = new System.Drawing.Point(23, 22);
+            this.lblUsuario.Location = new System.Drawing.Point(31, 27);
+            this.lblUsuario.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblUsuario.Name = "lblUsuario";
-            this.lblUsuario.Size = new System.Drawing.Size(43, 13);
+            this.lblUsuario.Size = new System.Drawing.Size(57, 17);
             this.lblUsuario.TabIndex = 0;
             this.lblUsuario.Text = "Usuario";
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(26, 73);
+            this.btnOK.Location = new System.Drawing.Point(35, 90);
+            this.btnOK.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(75, 23);
+            this.btnOK.Size = new System.Drawing.Size(100, 28);
             this.btnOK.TabIndex = 2;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
@@ -55,9 +57,10 @@
             // 
             // btnCancelar
             // 
-            this.btnCancelar.Location = new System.Drawing.Point(132, 73);
+            this.btnCancelar.Location = new System.Drawing.Point(176, 90);
+            this.btnCancelar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(75, 23);
+            this.btnCancelar.Size = new System.Drawing.Size(100, 28);
             this.btnCancelar.TabIndex = 3;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = true;
@@ -65,24 +68,26 @@
             // 
             // txtBoxLogin
             // 
-            this.txtBoxLogin.Location = new System.Drawing.Point(72, 19);
+            this.txtBoxLogin.Location = new System.Drawing.Point(96, 23);
+            this.txtBoxLogin.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtBoxLogin.MaxLength = 8;
             this.txtBoxLogin.Name = "txtBoxLogin";
-            this.txtBoxLogin.Size = new System.Drawing.Size(135, 20);
+            this.txtBoxLogin.Size = new System.Drawing.Size(179, 22);
             this.txtBoxLogin.TabIndex = 1;
-            this.txtBoxLogin.Text = "mauricio";
+            this.txtBoxLogin.Text = "rodrigo";
             // 
             // Login
             // 
             this.AcceptButton = this.btnOK;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(230, 115);
+            this.ClientSize = new System.Drawing.Size(307, 142);
             this.Controls.Add(this.txtBoxLogin);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.lblUsuario);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.Name = "Login";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
