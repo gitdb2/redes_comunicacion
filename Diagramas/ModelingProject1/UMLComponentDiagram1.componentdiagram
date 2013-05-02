@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<componentModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" dslVersion="1.0.0.0" Id="08616034-e933-4e6d-8d4b-ea887f1511ba" name="UMLComponentDiagram1" linkedPackageId="43a4ff9c-5e68-4d13-99fc-cb7945d614b3" xmlns="http://schemas.microsoft.com/VisualStudio/TeamArchitect/ComponentDesigner">
+  <ownedCommentsInternal>
+    <comment Id="0d20ba66-244e-4379-836d-6012d0bd6efb">
+      <elementDefinition Id="a978c5fa-371e-45de-87f4-fc411a2d29e8" />
+      <body>Las interfaces provistas representan puntos de escucha del componente, mientras que las requeridas representan, junto con la direccion de la flecha  de los conectores que un componenete va a establecer una conexion (cliente) hacia la interface provista en el otro componente, al puerto especificado (en dicha interfaz) </body>
+    </comment>
+  </ownedCommentsInternal>
+  <profileInstances>
+    <packageHasProfileInstances Id="da199d9a-a266-47b6-8198-3237064fb9be">
+      <profileInstance Id="52edd55d-e842-44c0-bf99-402a6f83be05" name="StandardProfileL2">
+        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+      </profileInstance>
+      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="bc0d891c-8889-407e-9b84-466e85107576">
+      <profileInstance Id="ba9ead51-17e3-4434-bcfe-5d5154f736b2" name="StandardProfileL3">
+        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+      </profileInstance>
+      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <componentModelHasComponents>
+      <component Id="6c6f666c-72d8-4bc3-8853-bcdd38a8bfa1" name="ServidorDns" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="5695e767-f438-4259-984a-5e6722ba4d20" />
+        <ownedAttributesInternal>
+          <providedInterface Id="814f99b4-b5f5-4564-a025-f2625a7dac9d" name="Port1" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isService="false" isBehavior="false">
+            <elementDefinition Id="f8c16577-3f51-46c3-8a0b-0c9f6d883858" />
+            <type_NamedElement>
+              <interfaceMoniker Id="49e2e187-6bc8-4fd6-a2e6-877256e916fc" LastKnownName="Control:2000" />
+            </type_NamedElement>
+          </providedInterface>
+        </ownedAttributesInternal>
+      </component>
+    </componentModelHasComponents>
+    <modelContainsNamedElements>
+      <Interface Id="49e2e187-6bc8-4fd6-a2e6-877256e916fc" name="Control:2000" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="0ced35b8-ee03-4eee-a72d-f656c92a88a3" />
+      </Interface>
+    </modelContainsNamedElements>
+    <componentModelHasComponents>
+      <component Id="4e39111f-5add-4302-9023-d868852325ed" name="Chat (FormCliente)" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="76734f7f-506e-468a-9de4-98933985eff6" />
+        <ownedAttributesInternal>
+          <requiredInterface Id="5aec2ad5-313e-4a63-9953-ee46ee2da444" name="Port1" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isService="false" isBehavior="false">
+            <elementDefinition Id="a53c902b-d98e-4cdb-81a2-9cb9ce765853" />
+            <suppliersInternal>
+              <dependency Id="2719d480-6713-4bca-916f-7e09b3790496">
+                <providedInterfaceMoniker Id="814f99b4-b5f5-4564-a025-f2625a7dac9d" LastKnownName="Port1" />
+                <elementDefinition Id="5e6d021d-5281-4bc9-af34-e441404e977b" />
+              </dependency>
+            </suppliersInternal>
+            <type_NamedElement>
+              <interfaceMoniker Id="9008c039-e0d1-469d-b690-1f2ade0221d7" LastKnownName="ServidorDns-Control" />
+            </type_NamedElement>
+          </requiredInterface>
+          <requiredInterface Id="eec27e7e-5fa7-4ebf-9a11-4493ccc612e7" name="Port2" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isService="false" isBehavior="false">
+            <elementDefinition Id="15b941d5-6ca1-4e4d-ac12-e6f62c819fa8" />
+            <suppliersInternal>
+              <dependency Id="0fb47ba6-0142-4dba-bf89-6f0865b273f9">
+                <providedInterfaceMoniker Id="f00704a0-9e39-43be-b290-c187f6170fe5" LastKnownName="Port2" />
+                <elementDefinition Id="edc51ae7-1413-4adc-9ee9-e033394be2c8" />
+              </dependency>
+            </suppliersInternal>
+            <type_NamedElement>
+              <interfaceMoniker Id="a781876b-b80d-493d-a012-0d709ca53a36" LastKnownName="ContentServer-Control" />
+            </type_NamedElement>
+          </requiredInterface>
+          <requiredInterface Id="9717eb38-6c1d-44ec-a379-1b7b889c1673" name="Port3" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isService="false" isBehavior="false">
+            <elementDefinition Id="dd5e0690-2626-48b2-b4d9-538e1b55b4aa" />
+            <suppliersInternal>
+              <dependency Id="825666d2-cb6d-4a5d-aae7-4b042bee297b">
+                <providedInterfaceMoniker Id="2fb4d6c8-1b87-4009-9ec0-8f54501157ec" LastKnownName="Port3" />
+                <elementDefinition Id="da1de75e-3073-4ec0-ba3f-ef6bd883a51c" />
+              </dependency>
+            </suppliersInternal>
+            <type_NamedElement>
+              <interfaceMoniker Id="69a6de7b-13d0-4d06-9c63-be7ea8db49f5" LastKnownName="ContentServer-Transfer" />
+            </type_NamedElement>
+          </requiredInterface>
+        </ownedAttributesInternal>
+      </component>
+    </componentModelHasComponents>
+    <modelContainsNamedElements>
+      <Interface Id="9008c039-e0d1-469d-b690-1f2ade0221d7" name="ServidorDns-Control" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="44cec547-c228-4c3e-a98d-23135e185e35" />
+      </Interface>
+    </modelContainsNamedElements>
+    <componentModelHasComponents>
+      <component Id="99c2c82c-fdc5-4d1e-ae2e-e12cedf2a5da" name="ContentServer" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="d2ff163b-5755-4b6c-9044-607b8b4bbab5" />
+        <ownedAttributesInternal>
+          <requiredInterface Id="d59c0406-43c4-4e0d-8787-b98d9ba161c9" name="Port1" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isService="false" isBehavior="false">
+            <elementDefinition Id="ef67b4ff-d053-49ca-8be5-e97a61cac31e" />
+            <suppliersInternal>
+              <dependency Id="43e5a15c-f6fa-4473-b2e8-d73bf5b9e395">
+                <providedInterfaceMoniker Id="814f99b4-b5f5-4564-a025-f2625a7dac9d" LastKnownName="Port1" />
+                <elementDefinition Id="a836f80e-a3a3-40ba-9c3c-870ee202ff85" />
+              </dependency>
+            </suppliersInternal>
+            <type_NamedElement>
+              <interfaceMoniker Id="b3691366-a37a-4bc0-b35a-0740b7925856" LastKnownName="DnsControl" />
+            </type_NamedElement>
+          </requiredInterface>
+          <providedInterface Id="f00704a0-9e39-43be-b290-c187f6170fe5" name="Port2" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isService="false" isBehavior="false">
+            <elementDefinition Id="376c53cd-6f3c-4f5d-83b1-2b52e14fc410" />
+            <type_NamedElement>
+              <interfaceMoniker Id="018424e8-3b4d-4195-adbf-3f4ecb46302e" LastKnownName="Control:2001" />
+            </type_NamedElement>
+          </providedInterface>
+          <providedInterface Id="2fb4d6c8-1b87-4009-9ec0-8f54501157ec" name="Port3" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isService="false" isBehavior="false">
+            <elementDefinition Id="f6c08b20-8884-45e0-b060-e4f76837908a" />
+            <type_NamedElement>
+              <interfaceMoniker Id="90d99ad8-6a39-46a4-a2c2-45fb8384aa68" LastKnownName="Transfer:20001" />
+            </type_NamedElement>
+          </providedInterface>
+        </ownedAttributesInternal>
+      </component>
+    </componentModelHasComponents>
+    <modelContainsNamedElements>
+      <Interface Id="b3691366-a37a-4bc0-b35a-0740b7925856" name="DnsControl" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="20d9f3a0-83e3-443c-8f66-363a2d7748f7" />
+      </Interface>
+    </modelContainsNamedElements>
+    <modelContainsNamedElements>
+      <Interface Id="018424e8-3b4d-4195-adbf-3f4ecb46302e" name="Control:2001" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="53309805-0dcd-4d8c-835d-5e0bb94169e0" />
+      </Interface>
+    </modelContainsNamedElements>
+    <modelContainsNamedElements>
+      <Interface Id="90d99ad8-6a39-46a4-a2c2-45fb8384aa68" name="Transfer:20001" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="9428df20-6bef-4d18-922b-da577e2ba5e7" />
+      </Interface>
+    </modelContainsNamedElements>
+    <modelContainsNamedElements>
+      <Interface Id="a781876b-b80d-493d-a012-0d709ca53a36" name="ContentServer-Control" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="e64f8ce1-8d99-4570-9426-4b63a4dd59f0" />
+      </Interface>
+    </modelContainsNamedElements>
+    <modelContainsNamedElements>
+      <Interface Id="69a6de7b-13d0-4d06-9c63-be7ea8db49f5" name="ContentServer-Transfer" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="081988d0-7650-4a99-8cef-e9d67f8ff0fe" />
+      </Interface>
+    </modelContainsNamedElements>
+  </packagedElements>
+  <package Id="43a4ff9c-5e68-4d13-99fc-cb7945d614b3" name="ModelingProject1">
+    <elementDefinition Id="a88f3c89-e88b-4150-8b01-426641c928e9" />
+  </package>
+</componentModel>
