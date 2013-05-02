@@ -412,22 +412,22 @@ Si se agrego el contacto retorna true, false en otro caso.
             </covered>
           </executionOccurrenceSpecification>
           <messageOccurrenceSpecification
-            Id="c00503ee-5689-4182-849d-58b4d1e688b3"
-            name="MessageOccurrenceSpecification52">
-            <covered>
-              <lifelineMoniker
-                Id="d06e1b15-9560-4806-acad-432ed7677635"
-                LastKnownName="servidorDns : ServidorDns"
-                LastKnownLocation="ModelingProject1.uml" />
-            </covered>
-          </messageOccurrenceSpecification>
-          <messageOccurrenceSpecification
             Id="ca472093-034b-4032-9724-7c5fee4b4919"
             name="MessageOccurrenceSpecification51">
             <covered>
               <lifelineMoniker
                 Id="30e1aa52-fb1f-4beb-a948-cd523f906c57"
                 LastKnownName="chat (FormCliente) : Chat (FormCliente)"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="c00503ee-5689-4182-849d-58b4d1e688b3"
+            name="MessageOccurrenceSpecification52">
+            <covered>
+              <lifelineMoniker
+                Id="d06e1b15-9560-4806-acad-432ed7677635"
+                LastKnownName="servidorDns : ServidorDns"
                 LastKnownLocation="ModelingProject1.uml" />
             </covered>
           </messageOccurrenceSpecification>
@@ -490,22 +490,22 @@ Si se agrego el contacto retorna true, false en otro caso.
             </covered>
           </executionOccurrenceSpecification>
           <messageOccurrenceSpecification
-            Id="b79fd64f-72b0-40bb-9759-021f6d48ca27"
-            name="MessageOccurrenceSpecification55">
-            <covered>
-              <lifelineMoniker
-                Id="8874621f-b27c-47d3-9911-121ead4a8879"
-                LastKnownName="loginContentServer : ContentServer"
-                LastKnownLocation="ModelingProject1.uml" />
-            </covered>
-          </messageOccurrenceSpecification>
-          <messageOccurrenceSpecification
             Id="d4f5edac-9301-42e8-b86b-3112e093077e"
             name="MessageOccurrenceSpecification54">
             <covered>
               <lifelineMoniker
                 Id="d06e1b15-9560-4806-acad-432ed7677635"
                 LastKnownName="servidorDns : ServidorDns"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="b79fd64f-72b0-40bb-9759-021f6d48ca27"
+            name="MessageOccurrenceSpecification55">
+            <covered>
+              <lifelineMoniker
+                Id="8874621f-b27c-47d3-9911-121ead4a8879"
+                LastKnownName="loginContentServer : ContentServer"
                 LastKnownLocation="ModelingProject1.uml" />
             </covered>
           </messageOccurrenceSpecification>
@@ -638,22 +638,22 @@ Si se agrego el contacto retorna true, false en otro caso.
             </covered>
           </executionOccurrenceSpecification>
           <messageOccurrenceSpecification
-            Id="9a753d5d-de4e-4880-896c-8decfb31a2f3"
-            name="MessageOccurrenceSpecification62">
-            <covered>
-              <lifelineMoniker
-                Id="8874621f-b27c-47d3-9911-121ead4a8879"
-                LastKnownName="loginContentServer : ContentServer"
-                LastKnownLocation="ModelingProject1.uml" />
-            </covered>
-          </messageOccurrenceSpecification>
-          <messageOccurrenceSpecification
             Id="4b35fd9d-b7b5-4a7d-b4ed-f2cd5b919b53"
             name="MessageOccurrenceSpecification63">
             <covered>
               <lifelineMoniker
                 Id="d06e1b15-9560-4806-acad-432ed7677635"
                 LastKnownName="servidorDns : ServidorDns"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="9a753d5d-de4e-4880-896c-8decfb31a2f3"
+            name="MessageOccurrenceSpecification62">
+            <covered>
+              <lifelineMoniker
+                Id="8874621f-b27c-47d3-9911-121ead4a8879"
+                LastKnownName="loginContentServer : ContentServer"
                 LastKnownLocation="ModelingProject1.uml" />
             </covered>
           </messageOccurrenceSpecification>
@@ -950,22 +950,22 @@ Si se agrego el contacto retorna true, false en otro caso.
             </covered>
           </executionOccurrenceSpecification>
           <messageOccurrenceSpecification
-            Id="2855f47b-5d6c-420f-8e81-344aa9b04b63"
-            name="MessageOccurrenceSpecification71">
-            <covered>
-              <lifelineMoniker
-                Id="30e1aa52-fb1f-4beb-a948-cd523f906c57"
-                LastKnownName="chat (FormCliente) : Chat (FormCliente)"
-                LastKnownLocation="ModelingProject1.uml" />
-            </covered>
-          </messageOccurrenceSpecification>
-          <messageOccurrenceSpecification
             Id="862f8df1-be68-4c7a-b685-687a9f7aabfa"
             name="MessageOccurrenceSpecification70">
             <covered>
               <lifelineMoniker
                 Id="d06e1b15-9560-4806-acad-432ed7677635"
                 LastKnownName="servidorDns : ServidorDns"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="2855f47b-5d6c-420f-8e81-344aa9b04b63"
+            name="MessageOccurrenceSpecification71">
+            <covered>
+              <lifelineMoniker
+                Id="30e1aa52-fb1f-4beb-a948-cd523f906c57"
+                LastKnownName="chat (FormCliente) : Chat (FormCliente)"
                 LastKnownLocation="ModelingProject1.uml" />
             </covered>
           </messageOccurrenceSpecification>
@@ -1028,12 +1028,12 @@ Si se agrego el contacto retorna true, false en otro caso.
             </covered>
           </executionOccurrenceSpecification>
           <messageOccurrenceSpecification
-            Id="4b3e781f-6fa6-4f1e-a836-912ada04cfed"
-            name="MessageOccurrenceSpecification72">
+            Id="6b1de47f-b8d2-4d74-9920-feb01bfd6050"
+            name="MessageOccurrenceSpecification57">
             <covered>
               <lifelineMoniker
-                Id="30e1aa52-fb1f-4beb-a948-cd523f906c57"
-                LastKnownName="chat (FormCliente) : Chat (FormCliente)"
+                Id="676a3dfe-b458-4758-aa32-9aba8ec6ff46"
+                LastKnownName="contactoContentServer : ContentServer"
                 LastKnownLocation="ModelingProject1.uml" />
             </covered>
           </messageOccurrenceSpecification>
@@ -1048,12 +1048,12 @@ Si se agrego el contacto retorna true, false en otro caso.
             </covered>
           </messageOccurrenceSpecification>
           <messageOccurrenceSpecification
-            Id="6b1de47f-b8d2-4d74-9920-feb01bfd6050"
-            name="MessageOccurrenceSpecification57">
+            Id="4b3e781f-6fa6-4f1e-a836-912ada04cfed"
+            name="MessageOccurrenceSpecification72">
             <covered>
               <lifelineMoniker
-                Id="676a3dfe-b458-4758-aa32-9aba8ec6ff46"
-                LastKnownName="contactoContentServer : ContentServer"
+                Id="30e1aa52-fb1f-4beb-a948-cd523f906c57"
+                LastKnownName="chat (FormCliente) : Chat (FormCliente)"
                 LastKnownLocation="ModelingProject1.uml" />
             </covered>
           </messageOccurrenceSpecification>
@@ -1266,22 +1266,22 @@ Si se agrego el contacto retorna true, false en otro caso.
             </covered>
           </executionOccurrenceSpecification>
           <messageOccurrenceSpecification
-            Id="67b76ea5-0b7c-472d-b715-52ec03953fa0"
-            name="MessageOccurrenceSpecification64">
-            <covered>
-              <lifelineMoniker
-                Id="676a3dfe-b458-4758-aa32-9aba8ec6ff46"
-                LastKnownName="contactoContentServer : ContentServer"
-                LastKnownLocation="ModelingProject1.uml" />
-            </covered>
-          </messageOccurrenceSpecification>
-          <messageOccurrenceSpecification
             Id="74a875d5-2cdd-4292-be22-47efeeb00526"
             name="MessageOccurrenceSpecification65">
             <covered>
               <lifelineMoniker
                 Id="d06e1b15-9560-4806-acad-432ed7677635"
                 LastKnownName="servidorDns : ServidorDns"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="67b76ea5-0b7c-472d-b715-52ec03953fa0"
+            name="MessageOccurrenceSpecification64">
+            <covered>
+              <lifelineMoniker
+                Id="676a3dfe-b458-4758-aa32-9aba8ec6ff46"
+                LastKnownName="contactoContentServer : ContentServer"
                 LastKnownLocation="ModelingProject1.uml" />
             </covered>
           </messageOccurrenceSpecification>
@@ -1843,6 +1843,1493 @@ Si se agrego el contacto retorna true, false en otro caso.
     <packageHasNamedElement>
       <executionEvent
         Id="c8e630e1-87ad-4053-aa14-694e45b8e824"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <interaction
+        Id="cac81b73-07b6-4b82-a7c5-223e71890087"
+        name="Sequence2"
+        collapseFragmentsFlag="false"
+        isActiveClass="false"
+        isAbstract="false"
+        isLeaf="false"
+        isReentrant="false">
+        <ownedCommentsInternal>
+          <comment
+            Id="3a187629-e541-42e4-b284-f866721683e8">
+            <body>El mensaje llego al DNS y este lo envio a su destinatario, se habilita el boton de Enviar para mandar un  nuevo mensaje. Se usa un delegado.</body>
+            <annotatedElements>
+              <behaviorExecutionSpecificationMoniker
+                Id="a791f038-b499-4756-8fd6-a2e8575cc9ee"
+                LastKnownName="BehaviorExecutionSpecification9"
+                LastKnownLocation="ModelingProject1.uml" />
+            </annotatedElements>
+          </comment>
+          <comment
+            Id="477edee8-ec59-4b09-b163-5f259a051803">
+            <body>Ocurrio un error en el envio del mensaje, se notifica en la ventana. Se usa un delegado.</body>
+            <annotatedElements>
+              <behaviorExecutionSpecificationMoniker
+                Id="1ce3dda3-69e2-4c75-b0e0-d23b5cd80eaf"
+                LastKnownName="BehaviorExecutionSpecification10"
+                LastKnownLocation="ModelingProject1.uml" />
+            </annotatedElements>
+          </comment>
+          <comment
+            Id="a2134df3-912d-4164-8f02-a4460aaf4e51">
+            <body>Se notifica a la aplicacion del destinatario la llegada del mensaje. Se abre una nueva ventana de chat si no existia y se muestra el mensaje recibido. Se usa un delegado.</body>
+            <annotatedElements>
+              <behaviorExecutionSpecificationMoniker
+                Id="2ddca3e3-82ea-49f7-94eb-50e15cc7ee1c"
+                LastKnownName="BehaviorExecutionSpecification11"
+                LastKnownLocation="ModelingProject1.uml" />
+            </annotatedElements>
+          </comment>
+        </ownedCommentsInternal>
+        <fragments>
+          <behaviorExecutionSpecification
+            Id="cf07e763-5868-41e4-8329-06a4a405bbb7"
+            name="BehaviorExecutionSpecification1">
+            <coveredLifelines>
+              <lifelineMoniker
+                Id="3ba9bf74-21fd-4939-81d1-0669fb75c84f"
+                LastKnownName="loginFromHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </coveredLifelines>
+            <finish>
+              <executionOccurrenceSpecificationMoniker
+                Id="3e77debc-6604-4f44-9a81-aec66baed2cb"
+                LastKnownName="ExecutionOccurrenceSpecification2"
+                LastKnownLocation="ModelingProject1.uml" />
+            </finish>
+            <start>
+              <executionOccurrenceSpecificationMoniker
+                Id="5b1a1eac-ac83-4858-ba92-eed3a2b2b53b"
+                LastKnownName="ExecutionOccurrenceSpecification1"
+                LastKnownLocation="ModelingProject1.uml" />
+            </start>
+            <nestedOccurrences>
+              <messageOccurrenceSpecificationMoniker
+                Id="f0ca65d1-d88e-4960-9379-952d625451cb"
+                LastKnownName="MessageOccurrenceSpecification2"
+                LastKnownLocation="ModelingProject1.uml" />
+            </nestedOccurrences>
+          </behaviorExecutionSpecification>
+          <executionOccurrenceSpecification
+            Id="5b1a1eac-ac83-4858-ba92-eed3a2b2b53b"
+            name="ExecutionOccurrenceSpecification1">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="b5191a19-0fa6-449b-8f9b-11e91b78a15d"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="ModelingProject1.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="3ba9bf74-21fd-4939-81d1-0669fb75c84f"
+                LastKnownName="loginFromHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="64eb3e47-883a-43ce-bc4a-d6b1582d2b4b"
+            name="MessageOccurrenceSpecification1">
+            <covered>
+              <lifelineMoniker
+                Id="42f178d6-6aea-4571-8519-f33779a3287a"
+                LastKnownName="loginFromVentanaChat (FormCliente) : VentanaChat (FormCliente)"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="f0ca65d1-d88e-4960-9379-952d625451cb"
+            name="MessageOccurrenceSpecification2">
+            <covered>
+              <lifelineMoniker
+                Id="3ba9bf74-21fd-4939-81d1-0669fb75c84f"
+                LastKnownName="loginFromHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <executionOccurrenceSpecification
+            Id="3e77debc-6604-4f44-9a81-aec66baed2cb"
+            name="ExecutionOccurrenceSpecification2">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="080430c6-cba8-4e5e-838f-ddf2bfb479a8"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="ModelingProject1.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="3ba9bf74-21fd-4939-81d1-0669fb75c84f"
+                LastKnownName="loginFromHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <behaviorExecutionSpecification
+            Id="3f7dee51-9d1b-4cda-a1de-51051c760bec"
+            name="BehaviorExecutionSpecification2">
+            <coveredLifelines>
+              <lifelineMoniker
+                Id="37409e8d-ad5a-480d-9c74-94df73dd4536"
+                LastKnownName="dnsServer : ServidorDns"
+                LastKnownLocation="ModelingProject1.uml" />
+            </coveredLifelines>
+            <finish>
+              <executionOccurrenceSpecificationMoniker
+                Id="ef3e8835-c535-4bdd-8f2a-88bb99dc3f79"
+                LastKnownName="ExecutionOccurrenceSpecification4"
+                LastKnownLocation="ModelingProject1.uml" />
+            </finish>
+            <start>
+              <executionOccurrenceSpecificationMoniker
+                Id="8ad1d69b-9837-42fb-b0d2-a1760c1fc820"
+                LastKnownName="ExecutionOccurrenceSpecification3"
+                LastKnownLocation="ModelingProject1.uml" />
+            </start>
+            <nestedOccurrences>
+              <messageOccurrenceSpecificationMoniker
+                Id="7c813984-bfcc-4aae-a3a2-5462323c5208"
+                LastKnownName="MessageOccurrenceSpecification4"
+                LastKnownLocation="ModelingProject1.uml" />
+              <messageOccurrenceSpecificationMoniker
+                Id="47f679e5-2d36-469c-bd44-d23749fc6206"
+                LastKnownName="MessageOccurrenceSpecification11"
+                LastKnownLocation="ModelingProject1.uml" />
+              <messageOccurrenceSpecificationMoniker
+                Id="7606546e-07f2-4372-b8f5-c2c85a2d1bbe"
+                LastKnownName="MessageOccurrenceSpecification13"
+                LastKnownLocation="ModelingProject1.uml" />
+              <messageOccurrenceSpecificationMoniker
+                Id="a2874621-5a2e-4f1c-9cbf-2c7e0e13788a"
+                LastKnownName="MessageOccurrenceSpecification15"
+                LastKnownLocation="ModelingProject1.uml" />
+            </nestedOccurrences>
+          </behaviorExecutionSpecification>
+          <executionOccurrenceSpecification
+            Id="8ad1d69b-9837-42fb-b0d2-a1760c1fc820"
+            name="ExecutionOccurrenceSpecification3">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="c9418a41-3e76-4d88-89a4-ba346d914fc9"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="ModelingProject1.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="37409e8d-ad5a-480d-9c74-94df73dd4536"
+                LastKnownName="dnsServer : ServidorDns"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="7c813984-bfcc-4aae-a3a2-5462323c5208"
+            name="MessageOccurrenceSpecification4">
+            <covered>
+              <lifelineMoniker
+                Id="37409e8d-ad5a-480d-9c74-94df73dd4536"
+                LastKnownName="dnsServer : ServidorDns"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="a1088fcb-1b9d-44c3-8632-2454279a6103"
+            name="MessageOccurrenceSpecification3">
+            <covered>
+              <lifelineMoniker
+                Id="3ba9bf74-21fd-4939-81d1-0669fb75c84f"
+                LastKnownName="loginFromHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <behaviorExecutionSpecification
+            Id="f442859b-a1af-465d-904a-822fe8d5d8cb"
+            name="BehaviorExecutionSpecification6">
+            <coveredLifelines>
+              <lifelineMoniker
+                Id="62898ff2-724f-4863-9384-27e48f7235cb"
+                LastKnownName="loginToClientHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </coveredLifelines>
+            <finish>
+              <executionOccurrenceSpecificationMoniker
+                Id="c4a87e1d-da0b-489c-9c09-84c6f40cd459"
+                LastKnownName="ExecutionOccurrenceSpecification12"
+                LastKnownLocation="ModelingProject1.uml" />
+            </finish>
+            <start>
+              <executionOccurrenceSpecificationMoniker
+                Id="d431cdca-3650-442f-96ad-7897a6d04595"
+                LastKnownName="ExecutionOccurrenceSpecification11"
+                LastKnownLocation="ModelingProject1.uml" />
+            </start>
+            <nestedOccurrences>
+              <messageOccurrenceSpecificationMoniker
+                Id="13cbb0a2-5912-4d4d-98ae-2da4cb39ce50"
+                LastKnownName="MessageOccurrenceSpecification12"
+                LastKnownLocation="ModelingProject1.uml" />
+              <messageOccurrenceSpecificationMoniker
+                Id="e57e7d5a-9104-4450-89c4-1ed4edce7eea"
+                LastKnownName="MessageOccurrenceSpecification27"
+                LastKnownLocation="ModelingProject1.uml" />
+              <messageOccurrenceSpecificationMoniker
+                Id="0c3c4acc-37cc-4016-a41f-96a35f5ceb16"
+                LastKnownName="MessageOccurrenceSpecification21"
+                LastKnownLocation="ModelingProject1.uml" />
+              <executionOccurrenceSpecificationMoniker
+                Id="aa789f87-830d-4342-9987-2d0af9a9adec"
+                LastKnownName="ExecutionOccurrenceSpecification27"
+                LastKnownLocation="ModelingProject1.uml" />
+              <executionOccurrenceSpecificationMoniker
+                Id="7d795fa5-6d55-4340-ba0d-7d6cfa709c73"
+                LastKnownName="ExecutionOccurrenceSpecification28"
+                LastKnownLocation="ModelingProject1.uml" />
+            </nestedOccurrences>
+          </behaviorExecutionSpecification>
+          <executionOccurrenceSpecification
+            Id="d431cdca-3650-442f-96ad-7897a6d04595"
+            name="ExecutionOccurrenceSpecification11">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="d8b7cb55-6a4c-4f56-8998-1e1a404ce007"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="ModelingProject1.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="62898ff2-724f-4863-9384-27e48f7235cb"
+                LastKnownName="loginToClientHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="13cbb0a2-5912-4d4d-98ae-2da4cb39ce50"
+            name="MessageOccurrenceSpecification12">
+            <covered>
+              <lifelineMoniker
+                Id="62898ff2-724f-4863-9384-27e48f7235cb"
+                LastKnownName="loginToClientHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="47f679e5-2d36-469c-bd44-d23749fc6206"
+            name="MessageOccurrenceSpecification11">
+            <covered>
+              <lifelineMoniker
+                Id="37409e8d-ad5a-480d-9c74-94df73dd4536"
+                LastKnownName="dnsServer : ServidorDns"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="e57e7d5a-9104-4450-89c4-1ed4edce7eea"
+            name="MessageOccurrenceSpecification27">
+            <covered>
+              <lifelineMoniker
+                Id="62898ff2-724f-4863-9384-27e48f7235cb"
+                LastKnownName="loginToClientHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <behaviorExecutionSpecification
+            Id="036042e4-0774-4ad9-a1d5-3e7dc6a2fd7a"
+            name="BehaviorExecutionSpecification7">
+            <coveredLifelines>
+              <lifelineMoniker
+                Id="3ba9bf74-21fd-4939-81d1-0669fb75c84f"
+                LastKnownName="loginFromHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </coveredLifelines>
+            <finish>
+              <executionOccurrenceSpecificationMoniker
+                Id="37b1f841-418f-44f2-84c5-ac52300ce062"
+                LastKnownName="ExecutionOccurrenceSpecification14"
+                LastKnownLocation="ModelingProject1.uml" />
+            </finish>
+            <start>
+              <executionOccurrenceSpecificationMoniker
+                Id="abff1c57-7306-454b-b4fe-746a9b6c6b05"
+                LastKnownName="ExecutionOccurrenceSpecification13"
+                LastKnownLocation="ModelingProject1.uml" />
+            </start>
+            <nestedOccurrences>
+              <messageOccurrenceSpecificationMoniker
+                Id="c67d387d-0916-4207-9fbe-959e4c721cab"
+                LastKnownName="MessageOccurrenceSpecification14"
+                LastKnownLocation="ModelingProject1.uml" />
+              <messageOccurrenceSpecificationMoniker
+                Id="63944383-47b1-483f-83cd-8df4787b0356"
+                LastKnownName="MessageOccurrenceSpecification23"
+                LastKnownLocation="ModelingProject1.uml" />
+              <executionOccurrenceSpecificationMoniker
+                Id="6e79036e-75db-4c1d-a956-be6859b1eed6"
+                LastKnownName="ExecutionOccurrenceSpecification23"
+                LastKnownLocation="ModelingProject1.uml" />
+              <executionOccurrenceSpecificationMoniker
+                Id="6d33315e-09ae-4704-b1e8-2e4eef06b2c8"
+                LastKnownName="ExecutionOccurrenceSpecification24"
+                LastKnownLocation="ModelingProject1.uml" />
+            </nestedOccurrences>
+          </behaviorExecutionSpecification>
+          <executionOccurrenceSpecification
+            Id="abff1c57-7306-454b-b4fe-746a9b6c6b05"
+            name="ExecutionOccurrenceSpecification13">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="df9a8ded-ac8f-4e10-b3b7-d418306eccd2"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="ModelingProject1.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="3ba9bf74-21fd-4939-81d1-0669fb75c84f"
+                LastKnownName="loginFromHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="7606546e-07f2-4372-b8f5-c2c85a2d1bbe"
+            name="MessageOccurrenceSpecification13">
+            <covered>
+              <lifelineMoniker
+                Id="37409e8d-ad5a-480d-9c74-94df73dd4536"
+                LastKnownName="dnsServer : ServidorDns"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="c67d387d-0916-4207-9fbe-959e4c721cab"
+            name="MessageOccurrenceSpecification14">
+            <covered>
+              <lifelineMoniker
+                Id="3ba9bf74-21fd-4939-81d1-0669fb75c84f"
+                LastKnownName="loginFromHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <behaviorExecutionSpecification
+            Id="74098d8b-2381-4764-9996-4a6f435d0093"
+            name="BehaviorExecutionSpecification14">
+            <coveredLifelines>
+              <lifelineMoniker
+                Id="62898ff2-724f-4863-9384-27e48f7235cb"
+                LastKnownName="loginToClientHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </coveredLifelines>
+            <finish>
+              <executionOccurrenceSpecificationMoniker
+                Id="7d795fa5-6d55-4340-ba0d-7d6cfa709c73"
+                LastKnownName="ExecutionOccurrenceSpecification28"
+                LastKnownLocation="ModelingProject1.uml" />
+            </finish>
+            <start>
+              <executionOccurrenceSpecificationMoniker
+                Id="aa789f87-830d-4342-9987-2d0af9a9adec"
+                LastKnownName="ExecutionOccurrenceSpecification27"
+                LastKnownLocation="ModelingProject1.uml" />
+            </start>
+            <nestedOccurrences>
+              <messageOccurrenceSpecificationMoniker
+                Id="c7fbcf11-2697-4b65-94ee-1ae71dfb8db9"
+                LastKnownName="MessageOccurrenceSpecification28"
+                LastKnownLocation="ModelingProject1.uml" />
+            </nestedOccurrences>
+          </behaviorExecutionSpecification>
+          <executionOccurrenceSpecification
+            Id="aa789f87-830d-4342-9987-2d0af9a9adec"
+            name="ExecutionOccurrenceSpecification27">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="65f92c3e-75c9-4e1e-b984-448871b3f21f"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="ModelingProject1.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="62898ff2-724f-4863-9384-27e48f7235cb"
+                LastKnownName="loginToClientHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="c7fbcf11-2697-4b65-94ee-1ae71dfb8db9"
+            name="MessageOccurrenceSpecification28">
+            <covered>
+              <lifelineMoniker
+                Id="62898ff2-724f-4863-9384-27e48f7235cb"
+                LastKnownName="loginToClientHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <behaviorExecutionSpecification
+            Id="2ddca3e3-82ea-49f7-94eb-50e15cc7ee1c"
+            name="BehaviorExecutionSpecification11">
+            <coveredLifelines>
+              <lifelineMoniker
+                Id="c294b905-ac4d-47c4-aabb-2df2855fd29e"
+                LastKnownName="loginToVentanaChat (FormCliente) : VentanaChat (FormCliente)"
+                LastKnownLocation="ModelingProject1.uml" />
+            </coveredLifelines>
+            <finish>
+              <executionOccurrenceSpecificationMoniker
+                Id="d836cf69-5557-4c85-896e-7db03aa8e3fb"
+                LastKnownName="ExecutionOccurrenceSpecification22"
+                LastKnownLocation="ModelingProject1.uml" />
+            </finish>
+            <start>
+              <executionOccurrenceSpecificationMoniker
+                Id="ae841bf4-c17b-4540-acdf-5ece6438d498"
+                LastKnownName="ExecutionOccurrenceSpecification21"
+                LastKnownLocation="ModelingProject1.uml" />
+            </start>
+            <nestedOccurrences>
+              <messageOccurrenceSpecificationMoniker
+                Id="b5f94025-6427-4164-a147-431fa57aea8d"
+                LastKnownName="MessageOccurrenceSpecification22"
+                LastKnownLocation="ModelingProject1.uml" />
+            </nestedOccurrences>
+          </behaviorExecutionSpecification>
+          <executionOccurrenceSpecification
+            Id="ae841bf4-c17b-4540-acdf-5ece6438d498"
+            name="ExecutionOccurrenceSpecification21">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="488e1f68-172f-4fde-a3b8-eea000527278"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="ModelingProject1.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="c294b905-ac4d-47c4-aabb-2df2855fd29e"
+                LastKnownName="loginToVentanaChat (FormCliente) : VentanaChat (FormCliente)"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="b5f94025-6427-4164-a147-431fa57aea8d"
+            name="MessageOccurrenceSpecification22">
+            <covered>
+              <lifelineMoniker
+                Id="c294b905-ac4d-47c4-aabb-2df2855fd29e"
+                LastKnownName="loginToVentanaChat (FormCliente) : VentanaChat (FormCliente)"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="0c3c4acc-37cc-4016-a41f-96a35f5ceb16"
+            name="MessageOccurrenceSpecification21">
+            <covered>
+              <lifelineMoniker
+                Id="62898ff2-724f-4863-9384-27e48f7235cb"
+                LastKnownName="loginToClientHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="63944383-47b1-483f-83cd-8df4787b0356"
+            name="MessageOccurrenceSpecification23">
+            <covered>
+              <lifelineMoniker
+                Id="3ba9bf74-21fd-4939-81d1-0669fb75c84f"
+                LastKnownName="loginFromHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <executionOccurrenceSpecification
+            Id="7d795fa5-6d55-4340-ba0d-7d6cfa709c73"
+            name="ExecutionOccurrenceSpecification28">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="4a2c1fa7-f86c-41e2-b782-1058a127d0d0"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="ModelingProject1.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="62898ff2-724f-4863-9384-27e48f7235cb"
+                LastKnownName="loginToClientHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <behaviorExecutionSpecification
+            Id="d27bbb64-6d58-40bf-8fe6-3221b61a60b2"
+            name="BehaviorExecutionSpecification12">
+            <coveredLifelines>
+              <lifelineMoniker
+                Id="3ba9bf74-21fd-4939-81d1-0669fb75c84f"
+                LastKnownName="loginFromHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </coveredLifelines>
+            <finish>
+              <executionOccurrenceSpecificationMoniker
+                Id="6d33315e-09ae-4704-b1e8-2e4eef06b2c8"
+                LastKnownName="ExecutionOccurrenceSpecification24"
+                LastKnownLocation="ModelingProject1.uml" />
+            </finish>
+            <start>
+              <executionOccurrenceSpecificationMoniker
+                Id="6e79036e-75db-4c1d-a956-be6859b1eed6"
+                LastKnownName="ExecutionOccurrenceSpecification23"
+                LastKnownLocation="ModelingProject1.uml" />
+            </start>
+            <nestedOccurrences>
+              <messageOccurrenceSpecificationMoniker
+                Id="8f952003-a522-4a42-ab58-d3285e3c5e03"
+                LastKnownName="MessageOccurrenceSpecification24"
+                LastKnownLocation="ModelingProject1.uml" />
+              <messageOccurrenceSpecificationMoniker
+                Id="bdd5abb2-f8ad-4136-8bdd-4e309c1454c9"
+                LastKnownName="MessageOccurrenceSpecification17"
+                LastKnownLocation="ModelingProject1.uml" />
+            </nestedOccurrences>
+          </behaviorExecutionSpecification>
+          <executionOccurrenceSpecification
+            Id="6e79036e-75db-4c1d-a956-be6859b1eed6"
+            name="ExecutionOccurrenceSpecification23">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="782306ab-8038-4443-ae5f-04fe66711717"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="ModelingProject1.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="3ba9bf74-21fd-4939-81d1-0669fb75c84f"
+                LastKnownName="loginFromHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="8f952003-a522-4a42-ab58-d3285e3c5e03"
+            name="MessageOccurrenceSpecification24">
+            <covered>
+              <lifelineMoniker
+                Id="3ba9bf74-21fd-4939-81d1-0669fb75c84f"
+                LastKnownName="loginFromHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <executionOccurrenceSpecification
+            Id="d836cf69-5557-4c85-896e-7db03aa8e3fb"
+            name="ExecutionOccurrenceSpecification22">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="19f7501a-5d60-401f-9464-db94f83e3d6d"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="ModelingProject1.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="c294b905-ac4d-47c4-aabb-2df2855fd29e"
+                LastKnownName="loginToVentanaChat (FormCliente) : VentanaChat (FormCliente)"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <executionOccurrenceSpecification
+            Id="c4a87e1d-da0b-489c-9c09-84c6f40cd459"
+            name="ExecutionOccurrenceSpecification12">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="80871194-c3ae-4ea5-8ce6-9ecf6c67b1e7"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="ModelingProject1.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="62898ff2-724f-4863-9384-27e48f7235cb"
+                LastKnownName="loginToClientHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <behaviorExecutionSpecification
+            Id="a791f038-b499-4756-8fd6-a2e8575cc9ee"
+            name="BehaviorExecutionSpecification9">
+            <coveredLifelines>
+              <lifelineMoniker
+                Id="42f178d6-6aea-4571-8519-f33779a3287a"
+                LastKnownName="loginFromVentanaChat (FormCliente) : VentanaChat (FormCliente)"
+                LastKnownLocation="ModelingProject1.uml" />
+            </coveredLifelines>
+            <finish>
+              <executionOccurrenceSpecificationMoniker
+                Id="a9e90713-837f-463d-89a4-cfe64ae42933"
+                LastKnownName="ExecutionOccurrenceSpecification18"
+                LastKnownLocation="ModelingProject1.uml" />
+            </finish>
+            <start>
+              <executionOccurrenceSpecificationMoniker
+                Id="cfd1d9b5-4785-47bb-8aea-056972942de9"
+                LastKnownName="ExecutionOccurrenceSpecification17"
+                LastKnownLocation="ModelingProject1.uml" />
+            </start>
+            <nestedOccurrences>
+              <messageOccurrenceSpecificationMoniker
+                Id="571516d0-3dd2-4bff-863f-6df33fabd6c3"
+                LastKnownName="MessageOccurrenceSpecification18"
+                LastKnownLocation="ModelingProject1.uml" />
+            </nestedOccurrences>
+          </behaviorExecutionSpecification>
+          <executionOccurrenceSpecification
+            Id="cfd1d9b5-4785-47bb-8aea-056972942de9"
+            name="ExecutionOccurrenceSpecification17">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="d6edb050-898a-437d-bd91-bd44d5cd2b3f"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="ModelingProject1.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="42f178d6-6aea-4571-8519-f33779a3287a"
+                LastKnownName="loginFromVentanaChat (FormCliente) : VentanaChat (FormCliente)"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="571516d0-3dd2-4bff-863f-6df33fabd6c3"
+            name="MessageOccurrenceSpecification18">
+            <covered>
+              <lifelineMoniker
+                Id="42f178d6-6aea-4571-8519-f33779a3287a"
+                LastKnownName="loginFromVentanaChat (FormCliente) : VentanaChat (FormCliente)"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="bdd5abb2-f8ad-4136-8bdd-4e309c1454c9"
+            name="MessageOccurrenceSpecification17">
+            <covered>
+              <lifelineMoniker
+                Id="3ba9bf74-21fd-4939-81d1-0669fb75c84f"
+                LastKnownName="loginFromHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <executionOccurrenceSpecification
+            Id="6d33315e-09ae-4704-b1e8-2e4eef06b2c8"
+            name="ExecutionOccurrenceSpecification24">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="b63cd333-74bd-4a69-8283-97684e7159c7"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="ModelingProject1.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="3ba9bf74-21fd-4939-81d1-0669fb75c84f"
+                LastKnownName="loginFromHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <executionOccurrenceSpecification
+            Id="a9e90713-837f-463d-89a4-cfe64ae42933"
+            name="ExecutionOccurrenceSpecification18">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="c33e4b06-7d8b-4932-b779-20527cf53cfb"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="ModelingProject1.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="42f178d6-6aea-4571-8519-f33779a3287a"
+                LastKnownName="loginFromVentanaChat (FormCliente) : VentanaChat (FormCliente)"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <executionOccurrenceSpecification
+            Id="37b1f841-418f-44f2-84c5-ac52300ce062"
+            name="ExecutionOccurrenceSpecification14">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="d93855a8-5906-4a9a-8999-7df31d4c9f88"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="ModelingProject1.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="3ba9bf74-21fd-4939-81d1-0669fb75c84f"
+                LastKnownName="loginFromHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <behaviorExecutionSpecification
+            Id="c7df3b2b-6d39-42fe-bcdc-8b4a1e4ab430"
+            name="BehaviorExecutionSpecification8">
+            <coveredLifelines>
+              <lifelineMoniker
+                Id="3ba9bf74-21fd-4939-81d1-0669fb75c84f"
+                LastKnownName="loginFromHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </coveredLifelines>
+            <finish>
+              <executionOccurrenceSpecificationMoniker
+                Id="9fa39f25-0881-4295-abee-716cc9e2bddb"
+                LastKnownName="ExecutionOccurrenceSpecification16"
+                LastKnownLocation="ModelingProject1.uml" />
+            </finish>
+            <start>
+              <executionOccurrenceSpecificationMoniker
+                Id="60fe5513-9aef-47c5-a815-65bb56477173"
+                LastKnownName="ExecutionOccurrenceSpecification15"
+                LastKnownLocation="ModelingProject1.uml" />
+            </start>
+            <nestedOccurrences>
+              <messageOccurrenceSpecificationMoniker
+                Id="e07dceb2-d0a8-4a62-9b70-1f13ad2068a7"
+                LastKnownName="MessageOccurrenceSpecification16"
+                LastKnownLocation="ModelingProject1.uml" />
+              <messageOccurrenceSpecificationMoniker
+                Id="14cb403a-fe3e-4cb7-a3a1-f8164d96b56f"
+                LastKnownName="MessageOccurrenceSpecification25"
+                LastKnownLocation="ModelingProject1.uml" />
+              <executionOccurrenceSpecificationMoniker
+                Id="36a495dc-d625-4eb9-9efb-b84d7f0c2e1a"
+                LastKnownName="ExecutionOccurrenceSpecification25"
+                LastKnownLocation="ModelingProject1.uml" />
+              <executionOccurrenceSpecificationMoniker
+                Id="53339906-72e1-4dde-b387-8e4dd4c6585b"
+                LastKnownName="ExecutionOccurrenceSpecification26"
+                LastKnownLocation="ModelingProject1.uml" />
+            </nestedOccurrences>
+          </behaviorExecutionSpecification>
+          <executionOccurrenceSpecification
+            Id="60fe5513-9aef-47c5-a815-65bb56477173"
+            name="ExecutionOccurrenceSpecification15">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="949375b9-8911-4bac-8248-02eee9f8bada"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="ModelingProject1.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="3ba9bf74-21fd-4939-81d1-0669fb75c84f"
+                LastKnownName="loginFromHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="a2874621-5a2e-4f1c-9cbf-2c7e0e13788a"
+            name="MessageOccurrenceSpecification15">
+            <covered>
+              <lifelineMoniker
+                Id="37409e8d-ad5a-480d-9c74-94df73dd4536"
+                LastKnownName="dnsServer : ServidorDns"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="e07dceb2-d0a8-4a62-9b70-1f13ad2068a7"
+            name="MessageOccurrenceSpecification16">
+            <covered>
+              <lifelineMoniker
+                Id="3ba9bf74-21fd-4939-81d1-0669fb75c84f"
+                LastKnownName="loginFromHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <executionOccurrenceSpecification
+            Id="ef3e8835-c535-4bdd-8f2a-88bb99dc3f79"
+            name="ExecutionOccurrenceSpecification4">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="ea378ca6-d8c6-423f-aafa-9e33873d1d30"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="ModelingProject1.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="37409e8d-ad5a-480d-9c74-94df73dd4536"
+                LastKnownName="dnsServer : ServidorDns"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="14cb403a-fe3e-4cb7-a3a1-f8164d96b56f"
+            name="MessageOccurrenceSpecification25">
+            <covered>
+              <lifelineMoniker
+                Id="3ba9bf74-21fd-4939-81d1-0669fb75c84f"
+                LastKnownName="loginFromHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <behaviorExecutionSpecification
+            Id="7e845dad-2542-4fdc-aafd-54e913aa2c9f"
+            name="BehaviorExecutionSpecification13">
+            <coveredLifelines>
+              <lifelineMoniker
+                Id="3ba9bf74-21fd-4939-81d1-0669fb75c84f"
+                LastKnownName="loginFromHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </coveredLifelines>
+            <finish>
+              <executionOccurrenceSpecificationMoniker
+                Id="53339906-72e1-4dde-b387-8e4dd4c6585b"
+                LastKnownName="ExecutionOccurrenceSpecification26"
+                LastKnownLocation="ModelingProject1.uml" />
+            </finish>
+            <start>
+              <executionOccurrenceSpecificationMoniker
+                Id="36a495dc-d625-4eb9-9efb-b84d7f0c2e1a"
+                LastKnownName="ExecutionOccurrenceSpecification25"
+                LastKnownLocation="ModelingProject1.uml" />
+            </start>
+            <nestedOccurrences>
+              <messageOccurrenceSpecificationMoniker
+                Id="7192d336-8603-4060-aa59-4fc832c99bc6"
+                LastKnownName="MessageOccurrenceSpecification26"
+                LastKnownLocation="ModelingProject1.uml" />
+              <messageOccurrenceSpecificationMoniker
+                Id="75a816c0-535e-49a4-819f-325a850e482c"
+                LastKnownName="MessageOccurrenceSpecification19"
+                LastKnownLocation="ModelingProject1.uml" />
+            </nestedOccurrences>
+          </behaviorExecutionSpecification>
+          <executionOccurrenceSpecification
+            Id="36a495dc-d625-4eb9-9efb-b84d7f0c2e1a"
+            name="ExecutionOccurrenceSpecification25">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="3b1ee113-f7d1-4fc0-9586-444fc9459af5"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="ModelingProject1.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="3ba9bf74-21fd-4939-81d1-0669fb75c84f"
+                LastKnownName="loginFromHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="7192d336-8603-4060-aa59-4fc832c99bc6"
+            name="MessageOccurrenceSpecification26">
+            <covered>
+              <lifelineMoniker
+                Id="3ba9bf74-21fd-4939-81d1-0669fb75c84f"
+                LastKnownName="loginFromHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <behaviorExecutionSpecification
+            Id="1ce3dda3-69e2-4c75-b0e0-d23b5cd80eaf"
+            name="BehaviorExecutionSpecification10">
+            <coveredLifelines>
+              <lifelineMoniker
+                Id="42f178d6-6aea-4571-8519-f33779a3287a"
+                LastKnownName="loginFromVentanaChat (FormCliente) : VentanaChat (FormCliente)"
+                LastKnownLocation="ModelingProject1.uml" />
+            </coveredLifelines>
+            <finish>
+              <executionOccurrenceSpecificationMoniker
+                Id="1de613f2-c119-472f-b0d1-47434d3317fc"
+                LastKnownName="ExecutionOccurrenceSpecification20"
+                LastKnownLocation="ModelingProject1.uml" />
+            </finish>
+            <start>
+              <executionOccurrenceSpecificationMoniker
+                Id="bc4ec7aa-bb46-4920-b4d3-294f4593bf30"
+                LastKnownName="ExecutionOccurrenceSpecification19"
+                LastKnownLocation="ModelingProject1.uml" />
+            </start>
+            <nestedOccurrences>
+              <messageOccurrenceSpecificationMoniker
+                Id="77f24c8f-6447-473b-af84-b8192a6f6f6e"
+                LastKnownName="MessageOccurrenceSpecification20"
+                LastKnownLocation="ModelingProject1.uml" />
+            </nestedOccurrences>
+          </behaviorExecutionSpecification>
+          <executionOccurrenceSpecification
+            Id="bc4ec7aa-bb46-4920-b4d3-294f4593bf30"
+            name="ExecutionOccurrenceSpecification19">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="0cee896d-2f09-4a24-b6f1-d37e948a56d1"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="ModelingProject1.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="42f178d6-6aea-4571-8519-f33779a3287a"
+                LastKnownName="loginFromVentanaChat (FormCliente) : VentanaChat (FormCliente)"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="75a816c0-535e-49a4-819f-325a850e482c"
+            name="MessageOccurrenceSpecification19">
+            <covered>
+              <lifelineMoniker
+                Id="3ba9bf74-21fd-4939-81d1-0669fb75c84f"
+                LastKnownName="loginFromHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <messageOccurrenceSpecification
+            Id="77f24c8f-6447-473b-af84-b8192a6f6f6e"
+            name="MessageOccurrenceSpecification20">
+            <covered>
+              <lifelineMoniker
+                Id="42f178d6-6aea-4571-8519-f33779a3287a"
+                LastKnownName="loginFromVentanaChat (FormCliente) : VentanaChat (FormCliente)"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </messageOccurrenceSpecification>
+          <executionOccurrenceSpecification
+            Id="53339906-72e1-4dde-b387-8e4dd4c6585b"
+            name="ExecutionOccurrenceSpecification26">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="174d3a89-3818-4c38-aaef-2bd81dfa780d"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="ModelingProject1.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="3ba9bf74-21fd-4939-81d1-0669fb75c84f"
+                LastKnownName="loginFromHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <executionOccurrenceSpecification
+            Id="1de613f2-c119-472f-b0d1-47434d3317fc"
+            name="ExecutionOccurrenceSpecification20">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="7e2c2632-ad7e-4fe6-a5c2-704fbc65d20c"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="ModelingProject1.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="42f178d6-6aea-4571-8519-f33779a3287a"
+                LastKnownName="loginFromVentanaChat (FormCliente) : VentanaChat (FormCliente)"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+          <executionOccurrenceSpecification
+            Id="9fa39f25-0881-4295-abee-716cc9e2bddb"
+            name="ExecutionOccurrenceSpecification16">
+            <event>
+              <executionOccurrenceSpecificationReferencesEvent>
+                <executionEventMoniker
+                  Id="5980d423-f336-4507-9604-8df938e61302"
+                  LastKnownName="ExecutionEvent"
+                  LastKnownLocation="ModelingProject1.uml" />
+              </executionOccurrenceSpecificationReferencesEvent>
+            </event>
+            <covered>
+              <lifelineMoniker
+                Id="3ba9bf74-21fd-4939-81d1-0669fb75c84f"
+                LastKnownName="loginFromHandler : ClientHandler"
+                LastKnownLocation="ModelingProject1.uml" />
+            </covered>
+          </executionOccurrenceSpecification>
+        </fragments>
+        <lifelines>
+          <lifeline
+            Id="42f178d6-6aea-4571-8519-f33779a3287a"
+            name="loginFromVentanaChat (FormCliente) : VentanaChat (FormCliente)"
+            isActor="false"
+            lifelineDisplayName="loginFromVentanaChat (FormCliente) : VentanaChat (FormCliente)">
+            <topLevelOccurrences>
+              <messageOccurrenceSpecificationMoniker
+                Id="64eb3e47-883a-43ce-bc4a-d6b1582d2b4b"
+                LastKnownName="MessageOccurrenceSpecification1"
+                LastKnownLocation="ModelingProject1.uml" />
+              <executionOccurrenceSpecificationMoniker
+                Id="cfd1d9b5-4785-47bb-8aea-056972942de9"
+                LastKnownName="ExecutionOccurrenceSpecification17"
+                LastKnownLocation="ModelingProject1.uml" />
+              <executionOccurrenceSpecificationMoniker
+                Id="a9e90713-837f-463d-89a4-cfe64ae42933"
+                LastKnownName="ExecutionOccurrenceSpecification18"
+                LastKnownLocation="ModelingProject1.uml" />
+              <executionOccurrenceSpecificationMoniker
+                Id="bc4ec7aa-bb46-4920-b4d3-294f4593bf30"
+                LastKnownName="ExecutionOccurrenceSpecification19"
+                LastKnownLocation="ModelingProject1.uml" />
+              <executionOccurrenceSpecificationMoniker
+                Id="1de613f2-c119-472f-b0d1-47434d3317fc"
+                LastKnownName="ExecutionOccurrenceSpecification20"
+                LastKnownLocation="ModelingProject1.uml" />
+            </topLevelOccurrences>
+          </lifeline>
+          <lifeline
+            Id="3ba9bf74-21fd-4939-81d1-0669fb75c84f"
+            name="loginFromHandler : ClientHandler"
+            isActor="false"
+            lifelineDisplayName="loginFromHandler : ClientHandler">
+            <topLevelOccurrences>
+              <executionOccurrenceSpecificationMoniker
+                Id="5b1a1eac-ac83-4858-ba92-eed3a2b2b53b"
+                LastKnownName="ExecutionOccurrenceSpecification1"
+                LastKnownLocation="ModelingProject1.uml" />
+              <executionOccurrenceSpecificationMoniker
+                Id="3e77debc-6604-4f44-9a81-aec66baed2cb"
+                LastKnownName="ExecutionOccurrenceSpecification2"
+                LastKnownLocation="ModelingProject1.uml" />
+              <messageOccurrenceSpecificationMoniker
+                Id="a1088fcb-1b9d-44c3-8632-2454279a6103"
+                LastKnownName="MessageOccurrenceSpecification3"
+                LastKnownLocation="ModelingProject1.uml" />
+              <executionOccurrenceSpecificationMoniker
+                Id="abff1c57-7306-454b-b4fe-746a9b6c6b05"
+                LastKnownName="ExecutionOccurrenceSpecification13"
+                LastKnownLocation="ModelingProject1.uml" />
+              <executionOccurrenceSpecificationMoniker
+                Id="37b1f841-418f-44f2-84c5-ac52300ce062"
+                LastKnownName="ExecutionOccurrenceSpecification14"
+                LastKnownLocation="ModelingProject1.uml" />
+              <executionOccurrenceSpecificationMoniker
+                Id="60fe5513-9aef-47c5-a815-65bb56477173"
+                LastKnownName="ExecutionOccurrenceSpecification15"
+                LastKnownLocation="ModelingProject1.uml" />
+              <executionOccurrenceSpecificationMoniker
+                Id="9fa39f25-0881-4295-abee-716cc9e2bddb"
+                LastKnownName="ExecutionOccurrenceSpecification16"
+                LastKnownLocation="ModelingProject1.uml" />
+            </topLevelOccurrences>
+          </lifeline>
+          <lifeline
+            Id="37409e8d-ad5a-480d-9c74-94df73dd4536"
+            name="dnsServer : ServidorDns"
+            isActor="false"
+            lifelineDisplayName="dnsServer : ServidorDns">
+            <represents>
+              <propertyMoniker
+                Id="3d839f54-c1cd-408d-b397-db62582ce7ac"
+                LastKnownLocation="ModelingProject1.uml" />
+            </represents>
+            <topLevelOccurrences>
+              <executionOccurrenceSpecificationMoniker
+                Id="8ad1d69b-9837-42fb-b0d2-a1760c1fc820"
+                LastKnownName="ExecutionOccurrenceSpecification3"
+                LastKnownLocation="ModelingProject1.uml" />
+              <executionOccurrenceSpecificationMoniker
+                Id="ef3e8835-c535-4bdd-8f2a-88bb99dc3f79"
+                LastKnownName="ExecutionOccurrenceSpecification4"
+                LastKnownLocation="ModelingProject1.uml" />
+            </topLevelOccurrences>
+          </lifeline>
+          <lifeline
+            Id="62898ff2-724f-4863-9384-27e48f7235cb"
+            name="loginToClientHandler : ClientHandler"
+            isActor="false"
+            lifelineDisplayName="loginToClientHandler : ClientHandler">
+            <topLevelOccurrences>
+              <executionOccurrenceSpecificationMoniker
+                Id="d431cdca-3650-442f-96ad-7897a6d04595"
+                LastKnownName="ExecutionOccurrenceSpecification11"
+                LastKnownLocation="ModelingProject1.uml" />
+              <executionOccurrenceSpecificationMoniker
+                Id="c4a87e1d-da0b-489c-9c09-84c6f40cd459"
+                LastKnownName="ExecutionOccurrenceSpecification12"
+                LastKnownLocation="ModelingProject1.uml" />
+            </topLevelOccurrences>
+          </lifeline>
+          <lifeline
+            Id="c294b905-ac4d-47c4-aabb-2df2855fd29e"
+            name="loginToVentanaChat (FormCliente) : VentanaChat (FormCliente)"
+            isActor="false"
+            lifelineDisplayName="loginToVentanaChat (FormCliente) : VentanaChat (FormCliente)">
+            <topLevelOccurrences>
+              <executionOccurrenceSpecificationMoniker
+                Id="ae841bf4-c17b-4540-acdf-5ece6438d498"
+                LastKnownName="ExecutionOccurrenceSpecification21"
+                LastKnownLocation="ModelingProject1.uml" />
+              <executionOccurrenceSpecificationMoniker
+                Id="d836cf69-5557-4c85-896e-7db03aa8e3fb"
+                LastKnownName="ExecutionOccurrenceSpecification22"
+                LastKnownLocation="ModelingProject1.uml" />
+            </topLevelOccurrences>
+          </lifeline>
+        </lifelines>
+        <messages>
+          <message
+            Id="c7b7e3ae-800e-4036-8edb-faeec74f439a"
+            name="sendChatMessage(loginFrom, loginTo, message)"
+            messageKind="Complete"
+            messageSort="AsynchCall"
+            createSelfMessage="false">
+            <sendEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="64eb3e47-883a-43ce-bc4a-d6b1582d2b4b"
+                LastKnownName="MessageOccurrenceSpecification1"
+                LastKnownLocation="ModelingProject1.uml" />
+            </sendEvent>
+            <receiveEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="f0ca65d1-d88e-4960-9379-952d625451cb"
+                LastKnownName="MessageOccurrenceSpecification2"
+                LastKnownLocation="ModelingProject1.uml" />
+            </receiveEvent>
+          </message>
+          <message
+            Id="0b2c14c5-2cab-4cd9-a5bf-85ab1f2fa519"
+            name="REQ: sendChatMessage (payload)"
+            messageKind="Complete"
+            messageSort="AsynchCall"
+            createSelfMessage="false">
+            <sendEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="a1088fcb-1b9d-44c3-8632-2454279a6103"
+                LastKnownName="MessageOccurrenceSpecification3"
+                LastKnownLocation="ModelingProject1.uml" />
+            </sendEvent>
+            <receiveEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="7c813984-bfcc-4aae-a3a2-5462323c5208"
+                LastKnownName="MessageOccurrenceSpecification4"
+                LastKnownLocation="ModelingProject1.uml" />
+            </receiveEvent>
+          </message>
+          <message
+            Id="b343f711-7ebe-4a53-bd5d-8089d6d0a63a"
+            name="[loginTo SI esta conectado] REQ: sendChatMessage (payload)"
+            messageKind="Complete"
+            messageSort="AsynchCall"
+            createSelfMessage="false">
+            <sendEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="47f679e5-2d36-469c-bd44-d23749fc6206"
+                LastKnownName="MessageOccurrenceSpecification11"
+                LastKnownLocation="ModelingProject1.uml" />
+            </sendEvent>
+            <receiveEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="13cbb0a2-5912-4d4d-98ae-2da4cb39ce50"
+                LastKnownName="MessageOccurrenceSpecification12"
+                LastKnownLocation="ModelingProject1.uml" />
+            </receiveEvent>
+          </message>
+          <message
+            Id="68e8c867-904b-403b-ac30-187ec63c4b1b"
+            name="[loginTo SI esta conectado] RES: chatMessageStatus(SUCCESS)"
+            messageKind="Complete"
+            messageSort="AsynchCall"
+            createSelfMessage="false">
+            <sendEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="7606546e-07f2-4372-b8f5-c2c85a2d1bbe"
+                LastKnownName="MessageOccurrenceSpecification13"
+                LastKnownLocation="ModelingProject1.uml" />
+            </sendEvent>
+            <receiveEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="c67d387d-0916-4207-9fbe-959e4c721cab"
+                LastKnownName="MessageOccurrenceSpecification14"
+                LastKnownLocation="ModelingProject1.uml" />
+            </receiveEvent>
+          </message>
+          <message
+            Id="9feafbe9-407e-4c4f-8711-3d47a5d35a33"
+            name="[loginTo NO esta conectado] RES: chatMessageStatus(ERROR)"
+            messageKind="Complete"
+            messageSort="AsynchCall"
+            createSelfMessage="false">
+            <sendEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="a2874621-5a2e-4f1c-9cbf-2c7e0e13788a"
+                LastKnownName="MessageOccurrenceSpecification15"
+                LastKnownLocation="ModelingProject1.uml" />
+            </sendEvent>
+            <receiveEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="e07dceb2-d0a8-4a62-9b70-1f13ad2068a7"
+                LastKnownName="MessageOccurrenceSpecification16"
+                LastKnownLocation="ModelingProject1.uml" />
+            </receiveEvent>
+          </message>
+          <message
+            Id="13d57ed6-d044-44f5-8027-63cefe2d2a32"
+            name="OnReceivedChatMessage(loginFrom, loginTo, message)"
+            messageKind="Complete"
+            messageSort="AsynchCall"
+            createSelfMessage="false">
+            <sendEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="0c3c4acc-37cc-4016-a41f-96a35f5ceb16"
+                LastKnownName="MessageOccurrenceSpecification21"
+                LastKnownLocation="ModelingProject1.uml" />
+            </sendEvent>
+            <receiveEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="b5f94025-6427-4164-a147-431fa57aea8d"
+                LastKnownName="MessageOccurrenceSpecification22"
+                LastKnownLocation="ModelingProject1.uml" />
+            </receiveEvent>
+          </message>
+          <message
+            Id="bc8bcb22-b34b-49f8-b118-0293580a1c76"
+            name="CommandRESMessageSent(payload)"
+            messageKind="Complete"
+            messageSort="SynchCall"
+            createSelfMessage="true">
+            <sendEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="63944383-47b1-483f-83cd-8df4787b0356"
+                LastKnownName="MessageOccurrenceSpecification23"
+                LastKnownLocation="ModelingProject1.uml" />
+            </sendEvent>
+            <receiveEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="8f952003-a522-4a42-ab58-d3285e3c5e03"
+                LastKnownName="MessageOccurrenceSpecification24"
+                LastKnownLocation="ModelingProject1.uml" />
+            </receiveEvent>
+          </message>
+          <message
+            Id="609c02cb-9224-4343-bb7f-8850c0f71671"
+            name="onMessageSentResponse(payload)"
+            messageKind="Complete"
+            messageSort="AsynchCall"
+            createSelfMessage="false">
+            <sendEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="bdd5abb2-f8ad-4136-8bdd-4e309c1454c9"
+                LastKnownName="MessageOccurrenceSpecification17"
+                LastKnownLocation="ModelingProject1.uml" />
+            </sendEvent>
+            <receiveEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="571516d0-3dd2-4bff-863f-6df33fabd6c3"
+                LastKnownName="MessageOccurrenceSpecification18"
+                LastKnownLocation="ModelingProject1.uml" />
+            </receiveEvent>
+          </message>
+          <message
+            Id="23498baf-ffbc-4660-ae18-b91e1c20baa9"
+            name="CommandRESMessageSent(payload)"
+            messageKind="Complete"
+            messageSort="SynchCall"
+            createSelfMessage="true">
+            <sendEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="14cb403a-fe3e-4cb7-a3a1-f8164d96b56f"
+                LastKnownName="MessageOccurrenceSpecification25"
+                LastKnownLocation="ModelingProject1.uml" />
+            </sendEvent>
+            <receiveEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="7192d336-8603-4060-aa59-4fc832c99bc6"
+                LastKnownName="MessageOccurrenceSpecification26"
+                LastKnownLocation="ModelingProject1.uml" />
+            </receiveEvent>
+          </message>
+          <message
+            Id="9e70d17e-7fa9-4d92-a3b5-42cf06f18335"
+            name="onMessageSentResponse(payload)"
+            messageKind="Complete"
+            messageSort="AsynchCall"
+            createSelfMessage="false">
+            <sendEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="75a816c0-535e-49a4-819f-325a850e482c"
+                LastKnownName="MessageOccurrenceSpecification19"
+                LastKnownLocation="ModelingProject1.uml" />
+            </sendEvent>
+            <receiveEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="77f24c8f-6447-473b-af84-b8192a6f6f6e"
+                LastKnownName="MessageOccurrenceSpecification20"
+                LastKnownLocation="ModelingProject1.uml" />
+            </receiveEvent>
+          </message>
+          <message
+            Id="e60a2766-e716-4941-91e7-0fedbe375343"
+            name="CommandREQSendChatMessage(payload)"
+            messageKind="Complete"
+            messageSort="SynchCall"
+            createSelfMessage="true">
+            <sendEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="e57e7d5a-9104-4450-89c4-1ed4edce7eea"
+                LastKnownName="MessageOccurrenceSpecification27"
+                LastKnownLocation="ModelingProject1.uml" />
+            </sendEvent>
+            <receiveEvent>
+              <messageOccurrenceSpecificationMoniker
+                Id="c7fbcf11-2697-4b65-94ee-1ae71dfb8db9"
+                LastKnownName="MessageOccurrenceSpecification28"
+                LastKnownLocation="ModelingProject1.uml" />
+            </receiveEvent>
+          </message>
+        </messages>
+        <ownedAttributesInternal>
+          <property
+            Id="3d839f54-c1cd-408d-b397-db62582ce7ac"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <type_NamedElement>
+              <componentMoniker
+                Id="5695e767-f438-4259-984a-5e6722ba4d20"
+                LastKnownName="ServidorDns"
+                LastKnownLocation="ModelingProject1.uml" />
+            </type_NamedElement>
+          </property>
+        </ownedAttributesInternal>
+      </interaction>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="b5191a19-0fa6-449b-8f9b-11e91b78a15d"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="080430c6-cba8-4e5e-838f-ddf2bfb479a8"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="c9418a41-3e76-4d88-89a4-ba346d914fc9"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="ea378ca6-d8c6-423f-aafa-9e33873d1d30"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="d8b7cb55-6a4c-4f56-8998-1e1a404ce007"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="80871194-c3ae-4ea5-8ce6-9ecf6c67b1e7"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="df9a8ded-ac8f-4e10-b3b7-d418306eccd2"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="d93855a8-5906-4a9a-8999-7df31d4c9f88"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="949375b9-8911-4bac-8248-02eee9f8bada"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="5980d423-f336-4507-9604-8df938e61302"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="488e1f68-172f-4fde-a3b8-eea000527278"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="19f7501a-5d60-401f-9464-db94f83e3d6d"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="782306ab-8038-4443-ae5f-04fe66711717"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="b63cd333-74bd-4a69-8283-97684e7159c7"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="d6edb050-898a-437d-bd91-bd44d5cd2b3f"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="c33e4b06-7d8b-4932-b779-20527cf53cfb"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="3b1ee113-f7d1-4fc0-9586-444fc9459af5"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="174d3a89-3818-4c38-aaef-2bd81dfa780d"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="0cee896d-2f09-4a24-b6f1-d37e948a56d1"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="7e2c2632-ad7e-4fe6-a5c2-704fbc65d20c"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="65f92c3e-75c9-4e1e-b984-448871b3f21f"
+        name="ExecutionEvent" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <executionEvent
+        Id="4a2c1fa7-f86c-41e2-b782-1058a127d0d0"
         name="ExecutionEvent" />
     </packageHasNamedElement>
   </packagedElements>
