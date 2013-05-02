@@ -266,6 +266,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         {
             //en la trama viene: login que hace el request|contacto a agregar
             string login = dato.Payload.Message.Split(ParseConstants.SEPARATOR_PIPE)[0];
+            string contacto = dato.Payload.Message.Split(ParseConstants.SEPARATOR_PIPE)[1];
             string serverName = UsersPersistenceHandler.GetInstance().GetServerName(login);
             if (serverName != null)
             {
@@ -276,6 +277,19 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                     serverConnection.WriteToStream(item);
                 }
             }
+            //agrega login a la lista de contacots de contacto
+            serverName = UsersPersistenceHandler.GetInstance().GetServerName(contacto);
+            dato.Payload.Message = contacto + ParseConstants.SEPARATOR_PIPE + login;
+            if (serverName != null)
+            {
+                Connection serverConnection = SingletonServerConnection.GetInstance().GetServer(serverName);
+                foreach (var item in dato.GetBytes())
+                {
+                    Console.WriteLine("Enviando peticion de agregar contacto al servidor");
+                    serverConnection.WriteToStream(item);
+                }
+            }
+
         }
 
         private void CommandREQFindContacts(Connection clientConnection, Data dato)
