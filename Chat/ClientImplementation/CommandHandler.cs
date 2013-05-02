@@ -119,7 +119,7 @@ namespace ClientImplementation
             } 
             else 
             {
-                ClientHandler.GetInstance().OnLoginFailed(new LoginErrorEventArgs() { ErrorMessage = dato.Payload.Message });
+                ClientHandler.GetInstance().OnLoginFailed(new SimpleEventArgs() { Message = dato.Payload.Message });
             }
         }
 

@@ -81,11 +81,11 @@ namespace Chat
             }));
         }
 
-        void EventLoginFailed(object sender, LoginErrorEventArgs e)
+        void EventLoginFailed(object sender, SimpleEventArgs e)
         {
             this.BeginInvoke((Action)(delegate
             {
-                MessageBox.Show("Mensaje detallado: " + e.ErrorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Mensaje detallado: " + e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.DialogResult = DialogResult.Abort;
             }));
         }

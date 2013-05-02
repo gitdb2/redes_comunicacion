@@ -21,6 +21,9 @@ namespace Chat
         private ClientHandler.UpdateContactStatusEventHandler updateContactStatusResponse;
         private ClientHandler.ChatMessageReceivedEventHandler chatMessageReceived;
         private ClientHandler.ChatMessageSentEventHandler chatMessageSent;
+
+        private ClientHandler.ErrorEventHandler errorEvent;
+
         private ListViewColumnSorter lvwColumnSorter;
         //las ventanas de chat activas, cuando llegue el evento de mensaje le envio el
         //mensaje a la ventana que corresponda
@@ -45,6 +48,10 @@ namespace Chat
             chatMessageReceived = new ClientHandler.ChatMessageReceivedEventHandler(EventChatMessageReceived);
             chatMessageSent = new ClientHandler.ChatMessageSentEventHandler(EventChatMessageSent);
 
+            errorEvent = new ClientHandler.ErrorEventHandler(EventErrorPopUP);
+
+
+            clientHandler.ErrorEvent += errorEvent;
             clientHandler.ChatMessageReceived += chatMessageReceived;
             clientHandler.ContactListResponse += contactListResponse;
             clientHandler.UpdateContactStatusResponse += updateContactStatusResponse;
@@ -52,6 +59,18 @@ namespace Chat
 
             lvwColumnSorter = new ListViewColumnSorter();
             listaContactos.ListViewItemSorter = lvwColumnSorter;
+        }
+
+
+
+
+        void EventErrorPopUP(object sender, SimpleEventArgs e)
+        {
+            this.BeginInvoke((Action)(delegate
+            {
+                MessageBox.Show("Se perdio la conexion con el Dns o ocurrio algun error:  " + e.Message,
+                     "Error inesperado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }));
         }
 
         void EventChatMessageSent(object sender, ChatMessageSentEventArgs e)

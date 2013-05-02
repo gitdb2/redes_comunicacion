@@ -86,9 +86,9 @@ namespace ClientImplementation
 
         public event ChatErrorEventHandler LoginFailed;
         
-        public delegate void ChatErrorEventHandler(object sender, LoginErrorEventArgs e);
-        
-        public void OnLoginFailed(LoginErrorEventArgs e)
+        public delegate void ChatErrorEventHandler(object sender, SimpleEventArgs e);
+
+        public void OnLoginFailed(SimpleEventArgs e)
         {
             if (LoginFailed != null)
                 LoginFailed(this, e);
@@ -116,11 +116,20 @@ namespace ClientImplementation
 
         private void SendMessage(Command command, int opCode, Payload payload)
         {
-            SendMessage(connection, command, opCode, payload);
+            try
+            {
+                SendMessage(connection, command, opCode, payload);
+            }
+            catch (Exception ex)
+            {
+                connection = null;
+                OnErrorEvent(new SimpleEventArgs(){Message =ex.Message});
+            }
         }
 
         private void SendMessage(Connection conn, Command command, int opCode, Payload payload)
         {
+
             Data data = new Data() { Command = command, OpCode = opCode, Payload = payload };
             foreach (var item in data.GetBytes())
             {
@@ -157,6 +166,22 @@ namespace ClientImplementation
             if (ChatMessageReceived != null)
                 ChatMessageReceived(this, chatMessageEventArgs);
         }
+
+
+     
+
+        public delegate void ErrorEventHandler(object sender, SimpleEventArgs e);
+
+        public event ErrorEventHandler ErrorEvent;
+
+        public void OnErrorEvent(SimpleEventArgs eventArgs)
+        {
+            if (ErrorEvent != null)
+                ErrorEvent(this, eventArgs);
+        }
+
+
+
 
         public delegate void ChatMessageSentEventHandler(object sender, ChatMessageSentEventArgs e);
 
