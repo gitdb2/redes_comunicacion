@@ -15,7 +15,7 @@ namespace ClientImplementation
         private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private const int puertoDNS = 2000;
-        private const string ipDNS = "localhost";
+        private const string ipDNS = "192.168.0.242";
         private Connection connection;
         public string Login { get; set; }
 

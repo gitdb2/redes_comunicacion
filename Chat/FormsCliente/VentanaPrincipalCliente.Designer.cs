@@ -53,8 +53,7 @@
             this.menuPrincipalAcciones});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(8, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(324, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(243, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuPrincipal";
             // 
@@ -63,13 +62,13 @@
             this.menuPrincipalArchivo.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.menuArchivoOpcionSalir});
             this.menuPrincipalArchivo.Name = "menuPrincipalArchivo";
-            this.menuPrincipalArchivo.Size = new System.Drawing.Size(71, 24);
+            this.menuPrincipalArchivo.Size = new System.Drawing.Size(60, 20);
             this.menuPrincipalArchivo.Text = "Archivo";
             // 
             // menuArchivoOpcionSalir
             // 
             this.menuArchivoOpcionSalir.Name = "menuArchivoOpcionSalir";
-            this.menuArchivoOpcionSalir.Size = new System.Drawing.Size(107, 24);
+            this.menuArchivoOpcionSalir.Size = new System.Drawing.Size(96, 22);
             this.menuArchivoOpcionSalir.Text = "Salir";
             this.menuArchivoOpcionSalir.Click += new System.EventHandler(this.menuArchivoOpcionSalir_Click);
             // 
@@ -80,27 +79,27 @@
             this.menuAccionesOpcionBuscarArchivo,
             this.menuAccionesOpcionSubirArchivo});
             this.menuPrincipalAcciones.Name = "menuPrincipalAcciones";
-            this.menuPrincipalAcciones.Size = new System.Drawing.Size(80, 24);
+            this.menuPrincipalAcciones.Size = new System.Drawing.Size(67, 20);
             this.menuPrincipalAcciones.Text = "Acciones";
             // 
             // menuAccionesOpcionAgregarContacto
             // 
             this.menuAccionesOpcionAgregarContacto.Name = "menuAccionesOpcionAgregarContacto";
-            this.menuAccionesOpcionAgregarContacto.Size = new System.Drawing.Size(196, 24);
+            this.menuAccionesOpcionAgregarContacto.Size = new System.Drawing.Size(168, 22);
             this.menuAccionesOpcionAgregarContacto.Text = "Agregar Contacto";
             this.menuAccionesOpcionAgregarContacto.Click += new System.EventHandler(this.menuAccionesOpcionAgregarContacto_Click);
             // 
             // menuAccionesOpcionBuscarArchivo
             // 
             this.menuAccionesOpcionBuscarArchivo.Name = "menuAccionesOpcionBuscarArchivo";
-            this.menuAccionesOpcionBuscarArchivo.Size = new System.Drawing.Size(196, 24);
+            this.menuAccionesOpcionBuscarArchivo.Size = new System.Drawing.Size(168, 22);
             this.menuAccionesOpcionBuscarArchivo.Text = "Buscar Archivo";
             this.menuAccionesOpcionBuscarArchivo.Click += new System.EventHandler(this.menuAccionesOpcionBuscarArchivo_Click);
             // 
             // menuAccionesOpcionSubirArchivo
             // 
             this.menuAccionesOpcionSubirArchivo.Name = "menuAccionesOpcionSubirArchivo";
-            this.menuAccionesOpcionSubirArchivo.Size = new System.Drawing.Size(196, 24);
+            this.menuAccionesOpcionSubirArchivo.Size = new System.Drawing.Size(168, 22);
             this.menuAccionesOpcionSubirArchivo.Text = "Subir Archivo";
             this.menuAccionesOpcionSubirArchivo.Click += new System.EventHandler(this.menuAccionesOpcionSubirArchivo_Click);
             // 
@@ -111,11 +110,10 @@
             this.columnEstado});
             this.listaContactos.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listaContactos.FullRowSelect = true;
-            this.listaContactos.Location = new System.Drawing.Point(0, 28);
-            this.listaContactos.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.listaContactos.Location = new System.Drawing.Point(0, 24);
             this.listaContactos.MultiSelect = false;
             this.listaContactos.Name = "listaContactos";
-            this.listaContactos.Size = new System.Drawing.Size(324, 374);
+            this.listaContactos.Size = new System.Drawing.Size(243, 303);
             this.listaContactos.TabIndex = 1;
             this.listaContactos.UseCompatibleStateImageBehavior = false;
             this.listaContactos.View = System.Windows.Forms.View.Details;
@@ -138,40 +136,38 @@
             this.lblStatus,
             this.toolStripStatusLabel,
             this.lblConnectedUser});
-            this.statusStripConnectedAs.Location = new System.Drawing.Point(0, 377);
+            this.statusStripConnectedAs.Location = new System.Drawing.Point(0, 305);
             this.statusStripConnectedAs.Name = "statusStripConnectedAs";
-            this.statusStripConnectedAs.Padding = new System.Windows.Forms.Padding(1, 0, 19, 0);
-            this.statusStripConnectedAs.Size = new System.Drawing.Size(324, 25);
+            this.statusStripConnectedAs.Size = new System.Drawing.Size(243, 22);
             this.statusStripConnectedAs.TabIndex = 2;
             this.statusStripConnectedAs.Text = "statusStrip1";
             // 
             // lblStatus
             // 
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(126, 20);
+            this.lblStatus.Size = new System.Drawing.Size(102, 17);
             this.lblStatus.Text = "Conectado como:";
             // 
             // toolStripStatusLabel
             // 
             this.toolStripStatusLabel.Name = "toolStripStatusLabel";
-            this.toolStripStatusLabel.Size = new System.Drawing.Size(0, 20);
+            this.toolStripStatusLabel.Size = new System.Drawing.Size(0, 17);
             // 
             // lblConnectedUser
             // 
             this.lblConnectedUser.Name = "lblConnectedUser";
-            this.lblConnectedUser.Size = new System.Drawing.Size(0, 20);
+            this.lblConnectedUser.Size = new System.Drawing.Size(0, 17);
             // 
             // VentanaPrincipalCliente
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(324, 402);
+            this.ClientSize = new System.Drawing.Size(243, 327);
             this.Controls.Add(this.statusStripConnectedAs);
             this.Controls.Add(this.listaContactos);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.Name = "VentanaPrincipalCliente";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

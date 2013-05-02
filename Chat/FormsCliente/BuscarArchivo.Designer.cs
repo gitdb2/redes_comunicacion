@@ -49,16 +49,14 @@
             this.columnOwner,
             this.columnMD5});
             this.listaArchivos.FullRowSelect = true;
-            this.listaArchivos.Location = new System.Drawing.Point(16, 52);
-            this.listaArchivos.Margin = new System.Windows.Forms.Padding(4);
+            this.listaArchivos.Location = new System.Drawing.Point(12, 42);
             this.listaArchivos.MultiSelect = false;
             this.listaArchivos.Name = "listaArchivos";
-            this.listaArchivos.Size = new System.Drawing.Size(431, 297);
+            this.listaArchivos.Size = new System.Drawing.Size(324, 242);
             this.listaArchivos.TabIndex = 10;
             this.listaArchivos.UseCompatibleStateImageBehavior = false;
             this.listaArchivos.View = System.Windows.Forms.View.Details;
             this.listaArchivos.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listaArchivos_ColumnClick);
-     
             this.listaArchivos.DoubleClick += new System.EventHandler(this.btnDescargar_Click);
             // 
             // columnNombreArchivo
@@ -86,10 +84,9 @@
             // 
             // btnCerrar
             // 
-            this.btnCerrar.Location = new System.Drawing.Point(255, 359);
-            this.btnCerrar.Margin = new System.Windows.Forms.Padding(4);
+            this.btnCerrar.Location = new System.Drawing.Point(191, 292);
             this.btnCerrar.Name = "btnCerrar";
-            this.btnCerrar.Size = new System.Drawing.Size(100, 28);
+            this.btnCerrar.Size = new System.Drawing.Size(75, 23);
             this.btnCerrar.TabIndex = 9;
             this.btnCerrar.Text = "Cerrar";
             this.btnCerrar.UseVisualStyleBackColor = true;
@@ -98,10 +95,9 @@
             // btnDescargar
             // 
             this.btnDescargar.Enabled = false;
-            this.btnDescargar.Location = new System.Drawing.Point(109, 359);
-            this.btnDescargar.Margin = new System.Windows.Forms.Padding(4);
+            this.btnDescargar.Location = new System.Drawing.Point(82, 292);
             this.btnDescargar.Name = "btnDescargar";
-            this.btnDescargar.Size = new System.Drawing.Size(100, 28);
+            this.btnDescargar.Size = new System.Drawing.Size(75, 23);
             this.btnDescargar.TabIndex = 8;
             this.btnDescargar.Text = "Descargar";
             this.btnDescargar.UseVisualStyleBackColor = true;
@@ -109,18 +105,17 @@
             // 
             // txtBuscarArchivo
             // 
-            this.txtBuscarArchivo.Location = new System.Drawing.Point(16, 18);
-            this.txtBuscarArchivo.Margin = new System.Windows.Forms.Padding(4);
+            this.txtBuscarArchivo.Location = new System.Drawing.Point(12, 15);
             this.txtBuscarArchivo.Name = "txtBuscarArchivo";
-            this.txtBuscarArchivo.Size = new System.Drawing.Size(323, 22);
+            this.txtBuscarArchivo.Size = new System.Drawing.Size(243, 20);
             this.txtBuscarArchivo.TabIndex = 7;
+            this.txtBuscarArchivo.Text = "*";
             // 
             // btnBuscar
             // 
-            this.btnBuscar.Location = new System.Drawing.Point(348, 15);
-            this.btnBuscar.Margin = new System.Windows.Forms.Padding(4);
+            this.btnBuscar.Location = new System.Drawing.Point(261, 12);
             this.btnBuscar.Name = "btnBuscar";
-            this.btnBuscar.Size = new System.Drawing.Size(100, 28);
+            this.btnBuscar.Size = new System.Drawing.Size(75, 23);
             this.btnBuscar.TabIndex = 6;
             this.btnBuscar.Text = "Buscar";
             this.btnBuscar.UseVisualStyleBackColor = true;
@@ -128,16 +123,15 @@
             // 
             // BuscarArchivo
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(464, 402);
+            this.ClientSize = new System.Drawing.Size(348, 327);
             this.Controls.Add(this.listaArchivos);
             this.Controls.Add(this.btnCerrar);
             this.Controls.Add(this.btnDescargar);
             this.Controls.Add(this.txtBuscarArchivo);
             this.Controls.Add(this.btnBuscar);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "BuscarArchivo";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

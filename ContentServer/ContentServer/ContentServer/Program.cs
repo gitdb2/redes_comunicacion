@@ -58,7 +58,7 @@ namespace uy.edu.ort.obligatorio.ContentServer
                 while (Program.running)
                 {
 
-                    Console.WriteLine("duermo");
+                    //Console.WriteLine("duermo");
                     Thread.Sleep(5000);
                 }
             }

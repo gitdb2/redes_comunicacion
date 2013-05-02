@@ -12,6 +12,9 @@ namespace ClientImplementation
 {
     public class FileDownloader
     {
+
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public string Destination { get; set; }
         public FileObject FileSelected { get; set; }
         public ServerInfo ServerInfo { get; set; }
@@ -19,8 +22,6 @@ namespace ClientImplementation
 
         private TcpClient dwnldTcpClient;
         private NetworkStream dwnldNetStream;
-
-        private StreamReader dwnldStreamReader; 
         private StreamWriter dwnldStreamWriter;
 
         private bool done = false;
@@ -37,66 +38,32 @@ namespace ClientImplementation
 
         private void DownloadFile()
         {
-            Data reqDownloadResponse = DataProccessor.GetInstance().LoadObject(dwnldStreamReader);
-
-            string[] payload = reqDownloadResponse.Payload.Message.Split(ParseConstants.SEPARATOR_PIPE);
-            string login = payload[0];
-            string owner = payload[1];
-            string hashfile = payload[2];
-            string filename = payload[3];
-            long size = long.Parse(payload[4]);
-
-            const int BUFF_SIZE = 1024;
-            byte[] buffer = new byte[BUFF_SIZE];
-            
-            long bytescount = 0;
-            
             BinaryWriter writer = new BinaryWriter(File.Open(Destination, FileMode.Create));
-            NotifyProgress("Descargando ...");
+            log.InfoFormat("Inicio descarga del archivo {0}, tamanio {1}", FileSelected.Name, FileSelected.Size);
+            
+            long total = 0;
+            long remaining = FileSelected.Size;
+            int BUFFER_SIZE = 10000;
+            byte[] buffer = new byte[BUFFER_SIZE];
 
-            try
+            while (remaining > 0 && !Cancel)
             {
-                while (!done && !Cancel)
+                int read = dwnldNetStream.Read(buffer, 0, BUFFER_SIZE);
+                total += read;
+                if (read <= 0)
                 {
-                    int countRead = dwnldNetStream.Read(buffer, 0, BUFF_SIZE);
-                    bytescount += countRead;
-
-                    if (countRead > 0)
-                    {
-                        if (countRead < BUFF_SIZE)
-                        {
-                            done = true;
-                        }
-                        writer.Write(buffer, 0, countRead);
-                    }
-                    else
-                    {
-                        //no leyo nada de la entrada (cantidad de bytes justa, en la siguiente lectura)
-                        done = true;
-                    }
-                    if (!Cancel)
-                    {
-                        if (bytescount == size && size == 0)
-                        {
-                            percentageDownloaded = 100;
-                            done = true;
-                        }
-                        else
-                        {
-                            percentageDownloaded = (int)(bytescount * 100 / size);
-                        }
-                        NotifyProgress((done ? "Descarga completa!" : "Descargando ..."));
-                    }
+                    percentageDownloaded = 100;
+                    done = true;
                 }
+                writer.Write(buffer, 0, read);
+                log.InfoFormat("Lei {0} bytes de {1}", total, FileSelected.Size);
+                percentageDownloaded = (int)(total * 100 / FileSelected.Size);
+                NotifyProgress((done ? "Descarga completa!" : "Descargando ..."));
+                remaining -= read;
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-            finally
-            {
-                writer.Close();
-            }
+            writer.Close();
+            if (remaining == 0)
+                NotifyProgress((done ? "Descarga completa!" : "Descargando ..."));
         }
 
         private void SendDownloadRequest()
@@ -125,7 +92,6 @@ namespace ClientImplementation
             NotifyProgress("Conectando con servidor ...");
             dwnldTcpClient = new TcpClient(ServerInfo.Ip, ServerInfo.TransfersPort);
             dwnldNetStream = dwnldTcpClient.GetStream();
-            dwnldStreamReader = new StreamReader(dwnldNetStream, Encoding.UTF8);
             dwnldStreamWriter = new StreamWriter(dwnldNetStream, Encoding.UTF8);
         }
 
@@ -141,7 +107,6 @@ namespace ClientImplementation
         private void CloseConnection()
         {
             NotifyProgress("Cerrando conexion ...");
-            dwnldStreamReader.Dispose();
             dwnldStreamWriter.Dispose();
             dwnldNetStream.Close();
             dwnldTcpClient.Close();
