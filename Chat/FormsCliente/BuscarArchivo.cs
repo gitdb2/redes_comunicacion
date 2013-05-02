@@ -198,8 +198,6 @@ namespace Chat
                         log.Error(payload.Payload);
                         ClearResults();
                         MessageBox.Show(payload.Payload);
-                        //searchStatus = SearchStatus.NO_SERVERS;
-                        //ProccessStatus();
                     }
                     else
                     {
@@ -245,26 +243,6 @@ namespace Chat
             }));
         }
 
-        private void ProccessStatus()
-        {
-            Boolean redraw = true;
-            switch (searchStatus)
-            {
-                case SearchStatus.NO_SERVERS:
-                    lock (serversToSearch)
-                    {
-                        ClearResults();
-                    }
-                    searchStatus = SearchStatus.NEW;
-                    break;
-                default:
-                    break;
-            }
-            if (redraw)
-            {
-                RefreshScreen();
-            }
-        }
 
         private void btnBuscar_Click(object sender, EventArgs e)
         {
@@ -338,7 +316,6 @@ namespace Chat
         {
             if (((ColumnClickEventArgs)e).Column == lvwColumnSorter.SortColumn)
             {
-                // Reverse the current sort direction for this column.
                 if (lvwColumnSorter.Order == SortOrder.Ascending)
                 {
                     lvwColumnSorter.Order = SortOrder.Descending;
@@ -350,12 +327,9 @@ namespace Chat
             }
             else
             {
-                // Set the column number that is to be sorted; default to ascending.
                 lvwColumnSorter.SortColumn = ((ColumnClickEventArgs)e).Column;
                 lvwColumnSorter.Order = SortOrder.Ascending;
             }
-
-            // Perform the sort with these new sort options.
             listaArchivos.Sort();
         }
 
