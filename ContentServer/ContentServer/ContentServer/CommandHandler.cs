@@ -192,7 +192,6 @@ namespace uy.edu.ort.obligatorio.ContentServer
             string contactToAdd = payloadSplitted[1];
 
             bool ok = UsersContactsPersistenceHandler.GetInstance().AddContact(login, contactToAdd);
-                      //&& UsersContactsPersistenceHandler.GetInstance().AddContact(contactToAdd, login);
 
             string statusMessage = ok ? "SUCCESS" : "ERROR";
             string message = contactToAdd + STATUS_DELIMITER + "0" + CONTACT_DELIMITER + statusMessage;
