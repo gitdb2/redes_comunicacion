@@ -58,7 +58,7 @@ namespace uy.edu.ort.obligatorio.ContentServer
                 while (Program.running)
                 {
 
-                    Console.WriteLine("duermo");
+                 //   Console.WriteLine("duermo");
                     Thread.Sleep(5000);
                 }
             }
@@ -117,9 +117,8 @@ namespace uy.edu.ort.obligatorio.ContentServer
             int portTransfers = int.Parse(Settings.GetInstance().GetProperty("server.transfers.port", "20001"));
 
 
-            transferServer = new ListeningServer("Transfers", ip, portTransfers, new ReceiveTransfersEventHandler());
-            controlServer = new ListeningServer("Control", ip, port, new ReceiveEventHandler());
-
+            transferServer = new ListeningServer(true, "Transfers", ip, portTransfers);
+            controlServer = new ListeningServer(false, "Control", ip, port);
 
 
             Console.WriteLine("[{0}] Server is running properly!", DateTime.Now);
@@ -169,6 +168,8 @@ namespace uy.edu.ort.obligatorio.ContentServer
         bool running = true;
         Thread thread;
 
+        bool isTransfer;
+        
         int connectionCounter = 0;
         Dictionary<string, Connection> openConnections = new Dictionary<string, Connection>();
 
@@ -176,11 +177,12 @@ namespace uy.edu.ort.obligatorio.ContentServer
         Connection.ConnectionDroppedDelegate delegado;
 
 
-        private IReceiveEvent responseHandler;
+     //   private IReceiveEvent responseHandler;
        
-        public ListeningServer(string function, IPAddress ip, int port, IReceiveEvent responseHandler)
+        public ListeningServer(bool tranasfer, string function, IPAddress ip, int port)
         {
-            this.responseHandler = responseHandler;
+            isTransfer = tranasfer;
+            //this.responseHandler = responseHandler;
             this.function = function;
             this.ip = ip;
             this.port = port;
@@ -275,7 +277,12 @@ namespace uy.edu.ort.obligatorio.ContentServer
                 if (running)
                 {
                     log.InfoFormat("nueva conexion de control(:{2}) desde {0}:{1}", ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Address, ((IPEndPoint)tcpClient.Client.RemoteEndPoint).Port, port);
-
+                    IReceiveEvent responseHandler = null;
+                    if(isTransfer){
+                        responseHandler = new ReceiveTransfersEventHandler();
+                    }else{
+                        responseHandler = new ReceiveEventHandler();
+                    }
                     Connection conn = new Connection(connectionCounter.ToString(), tcpClient, responseHandler, delegado);     // Handle in another thread.
                     lock (openConnections)
                     {

@@ -164,6 +164,13 @@ namespace uy.edu.ort.obligatorio.Commons
             semWrite.Release();
         }
 
+        public void FlushNetworkStream()
+        {
+            semWrite.WaitOne();
+            networkStream.Flush();
+            semWrite.Release();
+        }
+
         public int ReadFromNetworkStream(ref byte[] buffer, int offset, int size)
         {
             return networkStream.Read(buffer, offset, size);
