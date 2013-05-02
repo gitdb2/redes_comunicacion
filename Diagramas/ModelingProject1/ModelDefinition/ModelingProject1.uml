@@ -1848,7 +1848,7 @@ Si se agrego el contacto retorna true, false en otro caso.
     <packageHasNamedElement>
       <interaction
         Id="cac81b73-07b6-4b82-a7c5-223e71890087"
-        name="Sequence2"
+        name="Envio de mensaje de chat"
         collapseFragmentsFlag="false"
         isActiveClass="false"
         isAbstract="false"

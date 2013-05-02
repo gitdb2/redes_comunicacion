@@ -38,12 +38,12 @@
       <SubType>Content</SubType>
       <DependentUpon>UMLSequenceDiagram1.sequencediagram</DependentUpon>
     </Content>
-    <Content Include="UMLSequenceDiagram2.sequencediagram">
+    <Content Include="MensajeDeChat.sequencediagram">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="UMLSequenceDiagram2.sequencediagram.layout">
+    <Content Include="MensajeDeChat.sequencediagram.layout">
       <SubType>Content</SubType>
-      <DependentUpon>UMLSequenceDiagram2.sequencediagram</DependentUpon>
+      <DependentUpon>MensajeDeChat.sequencediagram</DependentUpon>
     </Content>
     <Folder Include="ModelDefinition\" />
     <Content Include="ModelDefinition\ModelingProject1.uml">
