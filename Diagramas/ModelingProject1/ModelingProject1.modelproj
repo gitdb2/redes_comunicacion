@@ -24,6 +24,13 @@
       <SubType>Content</SubType>
       <DependentUpon>AgregarContacto.sequencediagram</DependentUpon>
     </Content>
+    <Content Include="REQ_ agregarContacto.sequencediagram">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="REQ_ agregarContacto.sequencediagram.layout">
+      <SubType>Content</SubType>
+      <DependentUpon>REQ_ agregarContacto.sequencediagram</DependentUpon>
+    </Content>
     <Content Include="UMLComponentDiagram1.componentdiagram">
       <SubType>Content</SubType>
     </Content>
