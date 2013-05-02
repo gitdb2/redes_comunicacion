@@ -171,8 +171,19 @@ namespace Chat
 
         private VentanaDeChat CreateChatWindow(string chattingWith)
         {
-            VentanaDeChat vt = new VentanaDeChat(chattingWith, this);
-            chatWindows.Add(chattingWith, vt);
+             VentanaDeChat vt;
+            if (chatWindows.ContainsKey(chattingWith))
+            {
+                 vt = chatWindows[chattingWith];
+            }
+            else
+            {
+                 vt = new VentanaDeChat(chattingWith, this);
+                chatWindows.Add(chattingWith, vt);
+               
+            }
+            if(vt!=null)
+                   vt.Focus();
             return vt;
         }
 
