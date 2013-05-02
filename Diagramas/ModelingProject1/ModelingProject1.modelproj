@@ -17,6 +17,13 @@
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v10.0\ArchitectureTools\Microsoft.VisualStudio.TeamArchitect.ModelingProject.targets" />
   <ItemGroup>
+    <Content Include="AgregarContacto.sequencediagram">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="AgregarContacto.sequencediagram.layout">
+      <SubType>Content</SubType>
+      <DependentUpon>AgregarContacto.sequencediagram</DependentUpon>
+    </Content>
     <Content Include="UMLComponentDiagram1.componentdiagram">
       <SubType>Content</SubType>
     </Content>
