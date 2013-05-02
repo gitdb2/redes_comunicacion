@@ -433,7 +433,7 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             }
             else
             {
-                SendMessage(clientConnection, Command.RES, OpCodeConstants.REQ_LOGIN, new Payload("ERROR REGISTRO"));
+                SendMessage(clientConnection, Command.RES, OpCodeConstants.REQ_LOGIN, new Payload("ERROR No se pudo registrar el login nuevo (server offline??)"));
                 clientConnection.CloseConn();
             }
         }
