@@ -22,6 +22,13 @@ namespace uy.edu.ort.obligatorio.Commons
         Semaphore semWrite;//= new Semaphore(0, 1);
         Semaphore semRead;//= new Semaphore(0, 1);
 
+        /// <summary>
+        /// ESTE METODO ES NUEVO
+        /// </summary>
+        private bool online = true;
+        public bool OnlineStatus { get { return online; } set {online= value;} }
+
+
         public string Name { get; set; }
 
         public string Ip { get; set; }

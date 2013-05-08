@@ -46,5 +46,8 @@ namespace uy.edu.ort.obligatorio.Commons
         public const int REQ_UPLOAD_FILE = 13;
         public const int RES_UPLOAD_FILE = REQ_UPLOAD_FILE;
 
+
+        public const int REQ_CHANGE_STATUS = 14;
+        public const int RES_CHANGE_STATUS = REQ_CHANGE_STATUS;
     }
 }

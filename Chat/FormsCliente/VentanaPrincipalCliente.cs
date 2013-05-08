@@ -39,6 +39,8 @@ namespace Chat
         public VentanaPrincipalCliente()
         {
             InitializeComponent();
+
+            statusButton.Tag = true;
             clientHandler = ClientHandler.GetInstance();
 
             this.lblConnectedUser.Text = clientHandler.Login;
@@ -271,6 +273,46 @@ namespace Chat
 
             // Perform the sort with these new sort options.
             listaContactos.Sort();
+        }
+
+        /// <summary>
+        /// ESTE METODO ES NUEVO
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void statusButton_Click(object sender, EventArgs e)
+        {
+            statusButton.Tag = !(Boolean)statusButton.Tag;
+
+            clientHandler.ChangeStatus((Boolean)statusButton.Tag);
+
+            statusButton.Enabled = false;
+
+            if((Boolean)statusButton.Tag){
+                statusButton.Text = "Desconectar";
+            }else{
+                statusButton.Text = "Conectar";
+                
+                
+            }
+
+            timer1.Enabled = true;
+            timer1.Start();
+           
+
+        }
+
+        /// <summary>
+        /// ESTE METODO ES NUEVO
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            timer1.Stop();
+            timer1.Enabled = false;
+            statusButton.Enabled = true;
+            
         }
 
     }

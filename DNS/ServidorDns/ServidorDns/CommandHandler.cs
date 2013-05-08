@@ -121,7 +121,9 @@ namespace uy.edu.ort.obligatorio.ServidorDns
             var keys = new List<string>(tmpContactList.Keys);
             foreach (string key in keys)
             {
-                tmpContactList[key] = SingletonClientConnection.GetInstance().ClientIsConnected(key);
+
+                ///ESTE METODO ES NUEVO
+                tmpContactList[key] = SingletonClientConnection.GetInstance().ClientIsConnectedAndOnline(key);
             }
 
             //envio la trama actualizada con los contactos conectados
@@ -171,9 +173,28 @@ namespace uy.edu.ort.obligatorio.ServidorDns
                 case OpCodeConstants.REQ_SERVER_INFO: //un login pide los datos de su servidor
                     CommandREQServerInfo(clientConnection, dato);
                     break;
+                case OpCodeConstants.REQ_CHANGE_STATUS: //Pedido de cambio de estado de online a offline y viceversa
+                    CommandREQChangeStatus(clientConnection, dato);
+                    break;
                 default:
                     break;
             }
+        }
+        /// <summary>
+        /// ESTE METODO ES NUEVO
+        /// </summary>
+        /// <param name="connection"></param>
+        /// <param name="dato"></param>
+        private void CommandREQChangeStatus(Connection connection, Data dato)
+        {
+            bool isOnline = MessageConstants.STATUS_ONLINE.Equals(dato.Payload.Message);
+            if (connection.OnlineStatus != isOnline) //si cambia el estado notifico
+            {
+                log.InfoFormat("Cambio de estado el cliente {0}: Online?{1}", connection.Name, isOnline);
+                connection.OnlineStatus = isOnline;
+                NotifyUserChangedStatus(connection.Name,
+                     isOnline ? MessageConstants.STATUS_ONLINE : MessageConstants.STATUS_OFFLINE);
+             }
         }
 
         private void CommandREQServerInfo(Connection clientConnection, Data dato)

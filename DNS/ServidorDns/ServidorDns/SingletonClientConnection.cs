@@ -66,6 +66,24 @@ namespace uy.edu.ort.obligatorio.ServidorDns
         {
             return clientsMap.ContainsKey(login);
         }
+        /// <summary>
+        /// ESTE METODO ES NUEVO
+        /// </summary>
+        /// <param name="login"></param>
+        /// <returns></returns>
+        public bool ClientIsConnectedAndOnline(string login)
+        {
+            bool ret = false;
+            if (clientsMap.ContainsKey(login))
+            {
+                ret = clientsMap[login].OnlineStatus;
+            }
+            else
+            {
+                ret = false;
+            }
+            return ret;
+        }
 
         public List<string> FindRegisteredClientByPattern(string pattern, string exclude)
         {

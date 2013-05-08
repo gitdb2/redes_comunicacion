@@ -244,5 +244,13 @@ namespace ClientImplementation
                 ServerInfoResponse(this, serverInfoEventArgs);
         }
 
+        /// <summary>
+        /// ESTE METODO ES NUEVO
+        /// </summary>
+        /// <param name="isOnline"></param>
+        public void ChangeStatus(bool isOnline)
+        {
+            SendMessage(Command.REQ, OpCodeConstants.REQ_CHANGE_STATUS, new Payload(isOnline ? MessageConstants.STATUS_ONLINE : MessageConstants.STATUS_OFFLINE));
+        }
     }
 }
